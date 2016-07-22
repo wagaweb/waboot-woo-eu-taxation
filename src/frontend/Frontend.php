@@ -78,6 +78,7 @@ class Frontend {
 					'individual' => _x("Individual","WC Field",$this->plugin->get_textdomain()),
 					'company' => _x("Company","WC Field",$this->plugin->get_textdomain())
 				],
+				'default' => '',
 				'required' => true
 			]
 		];
@@ -101,12 +102,12 @@ class Frontend {
 			]
 		];
 		$address_fields = Utilities::associative_array_add_element_after($customer_type,"billing_last_name",$address_fields);
-		if($country == "IT"){
+		//if($country == "IT"){
 			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,"wb_woo_fi_customer_type",$address_fields);
 			$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_fiscal_code",$address_fields);
-		}else{
-			$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_customer_type",$address_fields);
-		}
+		//}else{
+		//	$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_customer_type",$address_fields);
+		//}
 		return $address_fields;
 	}
 }
