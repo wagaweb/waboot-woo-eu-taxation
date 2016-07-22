@@ -43,9 +43,12 @@ class Frontend {
 				'path' => $this->plugin->is_debug() ? $this->plugin->get_dir() . 'assets/dist/js/bundle.js' : $this->plugin->get_dir() . 'assets/dist/js/wb-woo-fi.min.js',
 				'deps' => ['jquery','backbone','underscore'],
 				'i10n' => [
-					'ajax_url' => admin_url('admin-ajax.php'),
-					'blogurl' => get_bloginfo("wpurl"),
-					'isAdmin' => is_admin()
+					'name' => 'wbFIData',
+					'params' => [
+						'ajax_url' => admin_url('admin-ajax.php'),
+						'blogurl' => get_bloginfo("wpurl"),
+						'isAdmin' => is_admin()
+					]
 				],
 				'type' => 'js',
 				'in_footer' => false,
