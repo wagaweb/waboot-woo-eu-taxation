@@ -11,11 +11,28 @@ export default class extends Backbone.Model{
     }
 
     /**
-     * Validate field callback
+     * Validate field callback.
+     *
+     * This mirror the format of validate_fields() in WooCommerce checkout.js
      */
-    validate_fields(e){
+    validate_fields(event){
         "use strict";
-        console.log(e);
-        console.log($(this));
+        var $el = $( this ),
+            $parent = $el.closest( '.form-row' ),
+            validated = true;
+
+        if ( $parent.is( '.validate-fiscal-code' ) ) {
+            //todo: validate the fiscal code
+            validated = true;
+        }
+
+        if ( $parent.is( '.validate-vat' ) ) {
+            //todo: validate the vat
+            validated = true;
+        }
+
+        if ( validated ) {
+            $parent.removeClass( 'woocommerce-invalid woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
+        }
     }
 }

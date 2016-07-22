@@ -3,7 +3,7 @@ import Dashboard from "./controllers/dashboard.js";
 
 jQuery(document).ready(function(){
     "use strict";
-    if(wbgData.isAdmin){
+    if(wbFIData.isAdmin){
         new Dashboard();
     }else{
         new FrontEnd();
