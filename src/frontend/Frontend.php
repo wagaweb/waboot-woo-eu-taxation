@@ -120,7 +120,7 @@ class Frontend {
 	 *
 	 * @return mixed
 	 */
-	function validate_fiscal_code($fiscal_code){
+	function validate_fiscal_code_on_checkout($fiscal_code){
 		$is_valid = false;
 		if(!$is_valid){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>Fiscal code</strong>' ) ), 'error' );
@@ -137,7 +137,7 @@ class Frontend {
 	 *
 	 * @return mixed
 	 */
-	function validate_vat($vat){
+	function validate_vat_during_on_checkout($vat){
 		$is_valid = false;
 		if(!$is_valid){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>VAT</strong>' ) ), 'error' );
