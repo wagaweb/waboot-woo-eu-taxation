@@ -110,4 +110,38 @@ class Frontend {
 		//}
 		return $address_fields;
 	}
+
+	/**
+	 * Performs validation on fiscal code
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $fiscal_code
+	 *
+	 * @return mixed
+	 */
+	function validate_fiscal_code($fiscal_code){
+		$is_valid = false;
+		if(!$is_valid){
+			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>Fiscal code</strong>' ) ), 'error' );
+		}
+		return $fiscal_code;
+	}
+
+	/**
+	 * Performs validation on VAT
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $vat
+	 *
+	 * @return mixed
+	 */
+	function validate_vat($vat){
+		$is_valid = false;
+		if(!$is_valid){
+			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>VAT</strong>' ) ), 'error' );
+		}
+		return $vat;
+	}
 }
