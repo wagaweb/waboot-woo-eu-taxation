@@ -27,9 +27,6 @@ export default class extends Backbone.Model{
 
         if(current_customer_type === undefined) return;
 
-        console.log(current_customer_type);
-        console.log(current_country);
-
         if(current_country == "IT"){
             $fiscal_code.removeClass("hidden");
         }else{
