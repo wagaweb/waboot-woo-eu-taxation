@@ -6,14 +6,14 @@ namespace WBWooFI;
  * The plugin bootstrap file
  *
  * @link              http://www.waboot.com
- * @since             0.0.1
+ * @since             0.1.0
  * @package           WBWooFI
  *
  * @wordpress-plugin
- * Plugin Name:       Wb Sample
+ * Plugin Name:       WB Fiscalità Italiana per WooCommerce
  * Plugin URI:        http://www.waboot.com/
- * Description:       Sample Plugin for WBF
- * Version:           0.0.1
+ * Description:       Un plugin per gestire la fiscalità italiana
+ * Version:           0.1.0
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+

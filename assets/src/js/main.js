@@ -1,20 +1,11 @@
-jQuery(document).ready(function($) {
+import FrontEnd from "./controllers/frontend.js";
+import Dashboard from "./controllers/dashboard.js";
+
+jQuery(document).ready(function(){
     "use strict";
-    if (wbData.isAdmin) {
-        /*************
-         *************
-         * ADMIN
-         *************
-         *************/
-        var dashboard = require("./controllers/dashboard.js");
-        new dashboard();
+    if(wbgData.isAdmin){
+        new Dashboard();
     }else{
-        /*************
-         *************
-         * PUBLIC
-         *************
-         *************/
-        var frontend = require("./controllers/frontend.js");
-        new frontend();
+        new FrontEnd();
     }
 });

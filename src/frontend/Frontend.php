@@ -1,6 +1,8 @@
 <?php
 
 namespace WBWooFI\frontend;
+use WBF\includes\AssetsManager;
+use WBF\includes\Utilities;
 
 /**
  * The public-facing functionality of the plugin.
@@ -16,8 +18,6 @@ class Frontend {
 	/**
 	 * The main plugin class
 	 * @var \WBWooFI\includes\Plugin
-	 *
-	 * [IT] E' possibile utilizzare $this->plugin->admin_plugin per riferirsi alla classe in class-admin.php
 	 */
 	private $plugin;
 
@@ -33,69 +33,77 @@ class Frontend {
 	}
 
 	public function styles(){
-		/*
-         * UNCOMMENT AND EDIT THESE LINES
-         */
-
-		//wp_enqueue_style('wb-woo-fi-style', $this->plugin->get_uri() . 'public/assets/dist/css/wb-woo-fi.min.css');
+		wp_enqueue_style('wb-woo-fi-style', $this->plugin->get_uri() . '/assets/dist/css/wb-woo-fi.min.css');
 	}
 
 	public function scripts(){
-		/*
-		 * UNCOMMENT AND EDIT THESE LINES
-		 */
-
-		/*if($this->plugin->is_debug()){
-			wp_register_script('wb-woo-fi', $this->plugin->get_uri() . 'public/assets/src/js/bundle.js', array('jquery','backbone','underscore'), false, true);
+		$scripts = [
+			"wb-woo-fi" => [
+				'uri' => $this->plugin->is_debug() ? $this->plugin->get_uri() . 'assets/dist/js/bundle.js' : $this->plugin->get_uri() . 'assets/dist/js/wb-woo-fi.min.js',
+				'path' => $this->plugin->is_debug() ? $this->plugin->get_dir() . 'assets/dist/js/bundle.js' : $this->plugin->get_dir() . 'assets/dist/js/wb-woo-fi.min.js',
+				'deps' => ['jquery','backbone','underscore'],
+				'i10n' => [
+					'ajax_url' => admin_url('admin-ajax.php'),
+					'blogurl' => get_bloginfo("wpurl"),
+					'isAdmin' => is_admin()
+				],
+				'type' => 'js',
+				'in_footer' => false,
+				'enqueue' => true
+			]
+		];
+		$am = new AssetsManager($scripts);
+		$am->enqueue();
+	}
+	
+	/**
+	 * Adds our fields to billing ones
+	 *
+	 * @hooked 'woocommerce_billing_fields'
+	 *
+	 * @param $address_fields
+	 * @param $country
+	 *
+	 * @return array
+	 */
+	public function add_billing_fields($address_fields, $country){
+		$customer_type = [
+			"wb_woo_fi_customer_type" => [
+				'label' => _x("Are you an individual or a company?", "WC Field", $this->plugin->get_textdomain()),
+				'type' => 'radio',
+				'options' => [
+					'individual' => _x("Individual","WC Field",$this->plugin->get_textdomain()),
+					'company' => _x("Company","WC Field",$this->plugin->get_textdomain())
+				],
+				'required' => true
+			]
+		];
+		$fiscal_code = [
+			"wb_woo_fi_fiscal_code" => [
+				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()),
+				'type' => 'text',
+				'validate' => ['fiscal-code'],
+				'class' => ['hidden']
+			]
+		];
+		$vat = [
+			"wb_woo_fi_vat" => [
+				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()),
+				'type' => 'text',
+				'validate' => ['vat'],
+				'class' => ['hidden'],
+				'custom_attributes' => [
+					'country' => $country
+				]
+			]
+		];
+		$address_fields = Utilities::associative_array_add_element_after($customer_type,"billing_last_name",$address_fields);
+		if($country == "IT"){
+			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,"wb_woo_fi_customer_type",$address_fields);
+			$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_fiscal_code",$address_fields);
 		}else{
-			wp_register_script('wb-woo-fi', $this->plugin->get_uri() . 'public/assets/dist/js/wb-woo-fi.min.js', array('jquery','backbone','underscore'), false, true);
+			$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_customer_type",$address_fields);
 		}
-
-		$localize_args = array(
-			'ajax_url' => admin_url('admin-ajax.php'),
-			'blogurl' => get_bloginfo("wpurl"),
-			'isAdmin' => is_admin()
-		);
-
-		wp_localize_script('wb-woo-fi','wbData',$localize_args);
-		wp_enqueue_script('wb-woo-fi');*/
+		return $address_fields;
 	}
-
-	public function register_post_type(){}
-
-	public function rewrite_tags(){}
-
-	public function rewrite_rules(){}
-
-	/**
-	 * FOR WBF <= 0.11.0 ONLY
-	 *
-	 * This functions is hooked to "wbf/get_template_part/path:/templates/parts/content" filter and makes calls to wbf_get_template_part("/templates/parts/content","<slug>") works.
-	 * @param $templates
-	 * @param array $tpl the first element is the first argument of wbf_get_template_part, the second is the template slug
-	 *
-	 * @return mixed
-	 */
-	/*public function get_template_part_override($templates, $tpl){
-		if($tpl[1] == "slug"){
-			$templates['sources'][] = $this->plugin->get_dir()."public/".ltrim($tpl[0],"/")."-".$tpl[1].".php";
-		}
-		return $templates;
-	}*/
-
-	/**
-	 * WIDGETS
-	 */
-
-	public function widgets(){
-		//...
-	}
-
-    /**
-     * SHORTCODES
-     */
-
-    public function shortcodes(){
-	    //...
-    }
 }
