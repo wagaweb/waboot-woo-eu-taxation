@@ -103,6 +103,7 @@ class Frontend {
 	 */
 	public function on_calculate_ex_tax_amount($tax_amount, $key, $rate, $price){
 		$customer = WC()->customer;
+		$cart = WC()->cart;
 		$custom_rates = $this->plugin->get_custom_tax_rate_settings();
 		return $tax_amount;
 	}
@@ -116,6 +117,7 @@ class Frontend {
 	 */
 	public function on_calculate_inc_tax_amount($tax_amount, $key, $rate, $price){
 		$customer = WC()->customer;
+		$cart = WC()->cart;
 		$custom_rates = $this->plugin->get_custom_tax_rate_settings();
 		return $tax_amount;
 	}
