@@ -41,8 +41,8 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
 		$this->loader->add_filter("woocommerce_process_myaccount_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
 
-
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 10, 1);
+		$this->loader->add_filter("woocommerce_process_myaccount_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
 	}
 
 	/**
