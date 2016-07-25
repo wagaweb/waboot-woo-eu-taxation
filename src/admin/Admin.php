@@ -72,6 +72,21 @@ class Admin {
 	}
 
 	/**
+	 * Handle the save operation for the custom tax rates settings
+	 *
+	 * @hooked 'admin_init'
+	 */
+	public function save_custom_tax_rate_settings(){
+		if(isset($_POST['apply_to_customer_type'])){
+			$validated = $_POST['apply_to_customer_type']; //todo: do some custom validation?
+			$r = update_option($this->plugin->get_plugin_name()."_custom_rates_settings",$validated);
+			if($r){
+				Utilities::add_admin_notice("rate_settings_updated",__("Private and company rates settings updated successfully."),"updated");
+			}
+		}
+	}
+
+	/**
 	 * Inject our setting tab
 	 *
 	 * @hooked 'woocommerce_get_sections_tax'
@@ -110,7 +125,13 @@ class Admin {
 
 			$v->clean()->display([
 				'rates' => $rates,
-				'textdomain' => $this->plugin->get_textdomain()
+				'textdomain' => $this->plugin->get_textdomain(),
+				'settings' => get_option($this->plugin->get_plugin_name()."_custom_rates_settings",[]),
+				'select_options' => [
+					'individual' => _x("Individual", "Admin table", $this->plugin->get_textdomain()),
+					'company' => _x("Company", "Admin table", $this->plugin->get_textdomain()),
+					'both' => _x("Both", "Admin table", $this->plugin->get_textdomain())
+				]
 			]);
 			return [];
 		}

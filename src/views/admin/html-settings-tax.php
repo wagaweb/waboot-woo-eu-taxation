@@ -34,9 +34,10 @@
 				<td><?php if($value->tax_rate_shipping == "0") _e("Yes"); else _e("No"); ?></td> -->
 				<td>
 					<label for="apply_to_customer_type[<?php echo $value->tax_rate_id ?>]"></label><select name="apply_to_customer_type[<?php echo $value->tax_rate_id ?>]" id="apply_to_customer_type">
-						<option value="individual"><?php _ex("Individual", "Admin table",$textdomain); ?></option>
-						<option value="company"><?php _ex("Company", "Admin table",$textdomain); ?></option>
-						<option value="both"><?php _ex("Both", "Admin table",$textdomain); ?></option>
+						<?php foreach($select_options as $opt_name => $opt_label): ?>
+							<?php $selected = array_key_exists($value->tax_rate_id,$settings) && $settings[$value->tax_rate_id] == $opt_name; ?>
+							<option value="<?php echo $opt_name ?>" <?php if($selected) echo "selected"; ?>><?php echo $opt_label; ?></option>
+						<?php endforeach; ?>
 					</select>
 				</td>
 			</tr>
