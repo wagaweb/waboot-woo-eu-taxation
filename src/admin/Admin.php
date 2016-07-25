@@ -79,7 +79,7 @@ class Admin {
 	public function save_custom_tax_rate_settings(){
 		if(isset($_POST['apply_to_customer_type'])){
 			$validated = $_POST['apply_to_customer_type']; //todo: do some custom validation?
-			$r = update_option($this->plugin->get_plugin_name()."_custom_rates_settings",$validated);
+			$r = $this->plugin->set_custom_tax_rate_settings($validated);
 			if($r){
 				Utilities::add_admin_notice("rate_settings_updated",__("Private and company rates settings updated successfully."),"updated");
 			}

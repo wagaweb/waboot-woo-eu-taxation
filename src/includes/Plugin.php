@@ -34,15 +34,23 @@ class Plugin extends TemplatePlugin {
 		
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'scripts' );
-		
+
+		//Tax management
+		$this->loader->add_action("woocommerce_checkout_update_order_review", $plugin_public, "on_update_order_review");
+		$this->loader->add_filter("woocommerce_price_ex_tax_amount", $plugin_public, "on_calculate_ex_tax_amount", 10, 4);
+		$this->loader->add_filter("woocommerce_price_inc_tax_amount", $plugin_public, "on_calculate_inc_tax_amount", 10, 4);
+
 		//Checkout and account fields
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'add_billing_fields', 10, 2 );
-		//Fields backend validation
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
-		$this->loader->add_filter("woocommerce_process_myaccount_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
 
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 10, 1);
-		$this->loader->add_filter("woocommerce_process_myaccount_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
+		//Fields management
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_customer_type", $plugin_public, "add_customer_type_to_customer_data", 10, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "add_vat_to_customer_data", 10, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "add_fiscal_code_to_customer_data", 10, 1);
+
+		//Fields backend validation
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 11, 1);
 	}
 
 	/**
@@ -57,6 +65,20 @@ class Plugin extends TemplatePlugin {
 
 		$this->loader->add_filter("woocommerce_get_sections_"."tax", $plugin_admin, "alter_tax_sections", 10, 1);
 		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);
+	}
+
+	/**
+	 * Get the custom tax rate settings
+	 */
+	public function get_custom_tax_rate_settings(){
+		return get_option($this->get_plugin_name()."_custom_rates_settings",[]);
+	}
+
+	/**
+	 * Set the custom tax rate settings
+	 */
+	public function set_custom_tax_rate_settings($rates){
+		return update_option($this->get_plugin_name()."_custom_rates_settings",$rates);
 	}
 
 	/**

@@ -58,6 +58,67 @@ class Frontend {
 		$am = new AssetsManager($scripts);
 		$am->enqueue();
 	}
+
+	/*
+	 * Performs action on update order review
+	 *
+	 * @param string $post_data (the query string for post_data)
+	 *
+	 * @hooked 'woocommerce_checkout_update_order_review'
+	 */
+	public function on_update_order_review($post_data){
+		$post_data = explode("&",$post_data);
+		$data_values = [];
+		foreach($post_data as $data_string){
+			preg_match("/billing_wb_woo_fi_customer_type=([a-zA-Z0-9]+)/",$data_string,$matches);
+			if(is_array($matches)){
+
+			}
+			preg_match("/billing_wb_woo_fi_fiscal_code=([a-zA-Z0-9]+)/",$data_string,$matches);
+			if(is_array($matches)){
+
+			}
+			preg_match("/billing_wb_woo_fi_vat=([a-zA-Z0-9]+)/",$data_string,$matches);
+			if(is_array($matches)){
+
+			}
+		}
+		if(isset($data_values['billing_wb_woo_fi_customer_type'])){
+			$this->add_customer_type_to_customer_data($data_values['billing_wb_woo_fi_customer_type']);
+		}
+		if(isset($data_values['billing_wb_woo_fi_fiscal_code'])){
+			$this->add_fiscal_code_to_customer_data($data_values['billing_wb_woo_fi_fiscal_code']);
+		}
+		if(isset($data_values['billing_wb_woo_fi_vat'])){
+			$this->add_vat_to_customer_data($data_values['billing_wb_woo_fi_vat']);
+		}
+	}
+
+	/**
+	 * Calculate tax amount for prices exclusive of taxes
+	 *
+	 * @see WC_TAX::calc_exclusive_tax
+	 *
+	 * @hooked 'woocommerce_price_ex_tax_amount'
+	 */
+	public function on_calculate_ex_tax_amount($tax_amount, $key, $rate, $price){
+		$customer = WC()->customer;
+		$custom_rates = $this->plugin->get_custom_tax_rate_settings();
+		return $tax_amount;
+	}
+
+	/**
+	 * Calculate tax amount for prices inclusive of taxes
+	 *
+	 * @see WC_TAX::calc_exclusive_tax
+	 *
+	 * @hooked 'woocommerce_price_ex_tax_amount'
+	 */
+	public function on_calculate_inc_tax_amount($tax_amount, $key, $rate, $price){
+		$customer = WC()->customer;
+		$custom_rates = $this->plugin->get_custom_tax_rate_settings();
+		return $tax_amount;
+	}
 	
 	/**
 	 * Adds our fields to billing ones
@@ -238,5 +299,23 @@ class Frontend {
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>VAT</strong>' ) ), 'error' );
 		}
 		return $vat;
+	}
+
+	function add_vat_to_customer_data($vat){
+		if(isset($vat)){
+			WC()->customer->billing_wb_woo_fi_vat = $vat;
+		}
+	}
+
+	function add_fiscal_code_to_customer_data($fiscal_code){
+		if(isset($fiscal_code)){
+			WC()->customer->billing_wb_woo_fi_fiscal_code = $fiscal_code;
+		}
+	}
+
+	function add_customer_type_to_customer_data($customer_type){
+		if(isset($customer_type)){
+			WC()->customer->billing_wb_woo_fi_customer_type = $customer_type;
+		}
 	}
 }
