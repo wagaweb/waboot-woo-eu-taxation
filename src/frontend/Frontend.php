@@ -71,7 +71,7 @@ class Frontend {
 	 */
 	public function add_billing_fields($address_fields, $country){
 		$customer_type = [
-			"wb_woo_fi_customer_type" => [
+			"billing_wb_woo_fi_customer_type" => [
 				'label' => _x("Are you an individual or a company?", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'radio',
 				'options' => [
@@ -83,7 +83,7 @@ class Frontend {
 			]
 		];
 		$fiscal_code = [
-			"wb_woo_fi_fiscal_code" => [
+			"billing_wb_woo_fi_fiscal_code" => [
 				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
@@ -91,7 +91,7 @@ class Frontend {
 			]
 		];
 		$vat = [
-			"wb_woo_fi_vat" => [
+			"billing_wb_woo_fi_vat" => [
 				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['vat'],
@@ -103,10 +103,10 @@ class Frontend {
 		];
 		$address_fields = Utilities::associative_array_add_element_after($customer_type,"billing_last_name",$address_fields);
 		//if($country == "IT"){
-			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,"wb_woo_fi_customer_type",$address_fields);
-			$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_fiscal_code",$address_fields);
+			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,"billing_wb_woo_fi_customer_type",$address_fields);
+			$address_fields = Utilities::associative_array_add_element_after($vat,"billing_wb_woo_fi_fiscal_code",$address_fields);
 		//}else{
-		//	$address_fields = Utilities::associative_array_add_element_after($vat,"wb_woo_fi_customer_type",$address_fields);
+		//	$address_fields = Utilities::associative_array_add_element_after($vat,"billing_wb_woo_fi_customer_type",$address_fields);
 		//}
 		return $address_fields;
 	}
@@ -121,7 +121,7 @@ class Frontend {
 	 * @return mixed
 	 */
 	function validate_fiscal_code_on_checkout($fiscal_code){
-		$is_valid = false;
+		$is_valid = true;
 		if(!$is_valid){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>Fiscal code</strong>' ) ), 'error' );
 		}
