@@ -109,7 +109,8 @@ class Admin {
 			}
 
 			$v->clean()->display([
-				'rates' => $rates
+				'rates' => $rates,
+				'textdomain' => $this->plugin->get_textdomain()
 			]);
 			return [];
 		}
