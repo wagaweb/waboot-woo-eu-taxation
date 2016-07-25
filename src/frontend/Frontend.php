@@ -283,21 +283,26 @@ class Frontend {
 	 */
 	function validate_vat_on_checkout($vat){
 
-		$client = new \SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
-
+		$countries = new \WC_Countries();
 		$cc = substr($vat, 0, 2);
 		$vn = substr($vat, 2);
-		$params = [
-			'countryCode' => $cc,
-			'vatNumber' => $vn
-		];
 
-		$response = $client->__soapCall("checkVat", array($params) );
+		$eu_countries = $countries->get_european_union_countries();
 
+		if (in_array($cc, $eu_countries)) {
+			$params = [
+				'countryCode' => $cc,
+				'vatNumber' => $vn
+			];
 
-		if(!$response->valid){
-			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>VAT</strong>' ) ), 'error' );
+			$client = new \SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
+			$response = $client->__soapCall("checkVat", array($params) );
+
+			if(!$response->valid){
+				wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>VAT</strong>' ) ), 'error' );
+			}
 		}
+
 		return $vat;
 	}
 
