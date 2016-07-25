@@ -315,17 +315,20 @@ class Frontend {
 		if(isset($vat)){
 			WC()->customer->billing_wb_woo_fi_vat = $vat;
 		}
+		return $vat;
 	}
 
 	function add_fiscal_code_to_customer_data($fiscal_code){
 		if(isset($fiscal_code)){
 			WC()->customer->billing_wb_woo_fi_fiscal_code = $fiscal_code;
 		}
+		return $fiscal_code;
 	}
 
 	function add_customer_type_to_customer_data($customer_type){
 		if(isset($customer_type)){
 			WC()->customer->billing_wb_woo_fi_customer_type = $customer_type;
 		}
+		return $customer_type;
 	}
 }
