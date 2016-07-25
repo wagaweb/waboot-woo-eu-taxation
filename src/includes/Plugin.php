@@ -49,6 +49,9 @@ class Plugin extends TemplatePlugin {
 		$plugin_admin = $this->loader->admin_plugin;
 
 		$this->loader->add_filter('woocommerce_customer_meta_fields', $plugin_admin, 'add_woocommerce_customer_meta_fields');
+
+		$this->loader->add_filter("woocommerce_get_sections_"."tax", $plugin_admin, "alter_tax_sections", 10, 1);
+		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);
 	}
 
 	/**
