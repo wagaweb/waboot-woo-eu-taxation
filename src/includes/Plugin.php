@@ -47,6 +47,8 @@ class Plugin extends TemplatePlugin {
 	 */
 	private function define_admin_hooks(){
 		$plugin_admin = $this->loader->admin_plugin;
+
+		$this->loader->add_filter('woocommerce_customer_meta_fields', $plugin_admin, 'add_woocommerce_customer_meta_fields');
 	}
 
 	/**
