@@ -264,6 +264,11 @@ class Frontend {
 				                             ."il codice di controllo non corrisponde.", "WC Field", $this->plugin->get_textdomain() );
 				return $result;
 			}
+			if (empty($result['err_message'])) {
+				$result['is_valid'] = true;
+				return $result;
+			}
+
 		}, $fiscal_code);
 
 		if(!$result['is_valid']){
