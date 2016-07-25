@@ -40,7 +40,7 @@ class Plugin extends TemplatePlugin {
 		//Fields backend validation
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
 		$this->loader->add_filter("woocommerce_process_myaccount_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
-		$this->loader->add_action("edit_user_profile_update", $plugin_public, "validate_fiscal_code_on_checkout", 10, 1);
+
 
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 10, 1);
 	}
