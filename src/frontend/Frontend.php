@@ -221,11 +221,9 @@ class Frontend {
 	 * @return mixed
 	 */
 	function validate_vat_on_checkout($vat){
-		$is_valid = true;
+
 		$client = new \SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
 
-		$functions = $client->__getFunctions();
-		$structure = $client->__getTypes();
 		$cc = substr($vat, 0, 2);
 		$vn = substr($vat, 2);
 		$params = [
@@ -236,7 +234,7 @@ class Frontend {
 		$response = $client->__soapCall("checkVat", array($params) );
 
 
-		if(!$response['valid']){
+		if(!$response->valid){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>VAT</strong>' ) ), 'error' );
 		}
 		return $vat;
