@@ -44,7 +44,7 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'add_billing_fields', 10, 2 );
 
 		//Fields management
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "add_fiscal_code_to_customer_data", 10, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "add_customer_type_to_customer_data", 10, 1);
 
 		//Fields backend validation
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
@@ -136,7 +136,7 @@ class Plugin extends TemplatePlugin {
 		];
 
 		if( $fiscal_code === '' ) {
-			$result['err_message'] = _x("The fiscal code is mandatory","WC Field Validation",$this->get_textdomain());
+			$result['err_message'] = _x("E' richiesto il codice fiscale","WC Field Validation",$this->get_textdomain());
 			return $result;
 		}
 		if( strlen($fiscal_code) != 16 ) {

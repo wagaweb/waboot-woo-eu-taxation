@@ -4,12 +4,20 @@ import $ from 'jquery';
 export default class extends Backbone.Model{
     initialize() {
         "use strict";
-        let $checkout_form = $( 'form.checkout' );
+        let $checkout_form = $( 'form.checkout' ),
+            $fiscal_code = $("#billing_wb_woo_fi_fiscal_code_field"),
+            $vat = $("#billing_wb_woo_fi_vat_field");
         if($checkout_form.length > 0){
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this.validate_fields);
             $checkout_form.on("change", ".input-radio[name='billing_wb_woo_fi_customer_type']", this, this.toggle_fields);
             $checkout_form.on("change", "#billing_country", this, this.toggle_fields);
             //$(document).on("update_checkout", "body", this, this.toggle_fields);
+        }
+        if($fiscal_code.is(".hidden")){
+            $fiscal_code.removeClass("validate-fiscal-code");
+        }
+        if($vat.is(".hidden")){
+            $vat.removeClass("validate-vat");
         }
     }
 
@@ -28,16 +36,16 @@ export default class extends Backbone.Model{
         if(current_customer_type === undefined) return;
 
         if(current_country == "IT"){
-            $fiscal_code.removeClass("hidden");
+            $fiscal_code.removeClass("hidden woocommerce-validated").addClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
         }else{
-            $fiscal_code.addClass("hidden");
+            $fiscal_code.addClass("hidden").removeClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
         }
         switch(current_customer_type){
             case 'individual':
-                $vat.addClass("hidden");
+                $vat.addClass("hidden").removeClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
                 break;
             case 'company':
-                $vat.removeClass("hidden");
+                $vat.removeClass("hidden woocommerce-validated").addClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
                 break;
         }
         $(document.body).trigger( 'update_checkout');
@@ -79,9 +87,9 @@ export default class extends Backbone.Model{
                     }
                 }
                 if(validated){
-                    $parent.removeClass( 'woocommerce-invalid woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
+                    $parent.removeClass( 'woocommerce-invalid validate-required woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
                 }else{
-                    $parent.removeClass( 'woocommerce-validated' ).addClass( 'woocommerce-invalid' );
+                    $parent.removeClass( 'woocommerce-validated' ).addClass( 'validate-required woocommerce-invalid woocommerce-invalid-required-field' );
                 }
                 $order_review.unblock();
             }).fail(function(jqXHR, textStatus, errorThrown){
@@ -89,12 +97,14 @@ export default class extends Backbone.Model{
             });
         };
 
-        if ( $parent.is( '.validate-fiscal-code' ) ) {
-            do_validation($el,$parent);
-        }
+        if( $parent.is( '.woocommerce-invalid' ) ){
+            if ( $parent.is( '.validate-fiscal-code' ) ) {
+                do_validation($el,$parent);
+            }
 
-        if ( $parent.is( '.validate-vat' ) ) {
-            do_validation($el,$parent);
+            if ( $parent.is( '.validate-vat' ) ) {
+                do_validation($el,$parent);
+            }
         }
     }
 }
