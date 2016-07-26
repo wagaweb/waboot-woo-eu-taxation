@@ -23,6 +23,8 @@ class Admin {
 	 */
 	private $plugin;
 
+	const MENU_SLUG = "custom_eu_settings";
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -77,7 +79,7 @@ class Admin {
 	 * @hooked 'admin_init'
 	 */
 	public function save_custom_tax_rate_settings(){
-		if(isset($_POST['_wp_http_referer']) && preg_match("/private_and_company_taxes/",$_POST['_wp_http_referer'])){
+		if(isset($_POST['_wp_http_referer']) && preg_match("/".self::MENU_SLUG."/",$_POST['_wp_http_referer'])){
 			$validated = [
 				'apply_to_customer_type' => [],
 				'add_to_tax_exclusion' => []
@@ -115,7 +117,7 @@ class Admin {
 	 * @return mixed
 	 */
 	public function alter_tax_sections($sections){
-		$sections['private_and_company_taxes'] = __( 'Private and Company Rates', $this->plugin->get_textdomain() );
+		$sections[self::MENU_SLUG] = __( 'Impostazioni per EU', $this->plugin->get_textdomain() );
 		return $sections;
 	}
 
@@ -131,7 +133,7 @@ class Admin {
 	 */
 	public function display_tax_settings($settings){
 		global $current_section;
-		if($current_section == "private_and_company_taxes"){
+		if($current_section == self::MENU_SLUG){
 			$v = new HTMLView("src/views/admin/html-settings-tax.php","wb-woo-fiscalita-italiana");
 
 			//Get the already set tax rates
