@@ -51,21 +51,50 @@ export default class extends Backbone.Model{
     validate_fields(event){
         "use strict";
         let $el = $( this ),
-            $parent = $el.closest( '.form-row' ),
-            validated = true;
+            $parent = $el.closest( '.form-row' );
+
+        var do_validation = function($el,$parent){
+            let $order_review = $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table'),
+                validated = true;
+
+            $order_review.block({
+                message: null,
+                overlayCSS: {
+                    background: '#fff',
+                    opacity: 0.6
+                }
+            });
+
+            $.ajax(wbFIData.ajax_url,{
+                data: {
+                    action: "validate_fiscal_code",
+                    fiscal_code: $el.val()
+                },
+                dataType: "json",
+                method: "POST"
+            }).done(function(data, textStatus, jqXHR){
+                if(typeof data === "object"){
+                    if(!data.valid){
+                        validated = false;
+                    }
+                }
+                if(validated){
+                    $parent.removeClass( 'woocommerce-invalid woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
+                }else{
+                    $parent.removeClass( 'woocommerce-validated' ).addClass( 'woocommerce-invalid' );
+                }
+                $order_review.unblock();
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                $order_review.unblock();
+            });
+        };
 
         if ( $parent.is( '.validate-fiscal-code' ) ) {
-            //todo: validate the fiscal code
-            validated = true;
+            do_validation($el,$parent);
         }
 
         if ( $parent.is( '.validate-vat' ) ) {
-            //todo: validate the vat
-            validated = true;
-        }
-
-        if ( validated ) {
-            $parent.removeClass( 'woocommerce-invalid woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
+            do_validation($el,$parent);
         }
     }
 }

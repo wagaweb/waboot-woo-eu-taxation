@@ -49,6 +49,12 @@ class Plugin extends TemplatePlugin {
 		//Fields backend validation
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 11, 1);
+
+		//Ajax
+		$this->loader->add_action( 'wp_ajax_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
+		$this->loader->add_action( 'wp_ajax_nopriv_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
+		$this->loader->add_action( 'wp_ajax_validate_vat', $plugin_public, "ajax_validate_vat" );
+		$this->loader->add_action( 'wp_ajax_nopriv_validate_vat', $plugin_public, "ajax_validate_vat" );
 	}
 
 	/**
@@ -210,27 +216,6 @@ class Plugin extends TemplatePlugin {
 	}
 
 	/**
-	 * Ajax callback to validate a fiscal code
-	 */
-	public function ajax_validate_fiscal_code(){
-		if(!defined("DOING_AJAX") || !DOING_AJAX) return;
-		$fiscal_code = isset($_POST['fiscal_code']) ? $_POST['fiscal_code'] : false;
-		if(!$fiscal_code){
-			echo json_encode([
-				'valid' => false,
-				'error' => __("Non è stato fornito un codice fiscale valido", $this->get_textdomain())
-			]);
-			die();
-		}
-		$result = $this->validate_fiscal_code($fiscal_code);
-		echo json_encode([
-			'valid' => $result['is_valid'],
-			'error' => $result['err_message']
-		]);
-		die();
-	}
-
-	/**
 	 * Validate an EU VAT number. Uses public EU API.
 	 * 
 	 * @param $vat
@@ -259,27 +244,6 @@ class Plugin extends TemplatePlugin {
 		}
 		
 		return false;
-	}
-
-	/**
-	 * Ajax callback to validate an EU VAT
-	 */
-	public function ajax_validate_eu_vat(){
-		if(!defined("DOING_AJAX") || !DOING_AJAX) return;
-		$vat = isset($_POST['vat']) ? $_POST['vat'] : false;
-		if(!$vat){
-			echo json_encode([
-				'valid' => false,
-				'error' => __("Non è stata fornita una partita IVA valida", $this->get_textdomain())
-			]);
-			die();
-		}
-		$result = $this->validate_eu_vat($vat);
-		echo json_encode([
-			'valid' => $result,
-			'error' => !$result ? __("Non è stata fornita una partita IVA valida", $this->get_textdomain()) : ""
-		]);
-		die();
 	}
 
 	/**

@@ -178,6 +178,27 @@ class Frontend {
 	}
 
 	/**
+	 * Ajax callback to validate a fiscal code
+	 */
+	public function ajax_validate_fiscal_code(){
+		if(!defined("DOING_AJAX") || !DOING_AJAX) return;
+		$fiscal_code = isset($_POST['fiscal_code']) ? $_POST['fiscal_code'] : false;
+		if(!$fiscal_code){
+			echo json_encode([
+				'valid' => false,
+				'error' => __("Non è stato fornito un codice fiscale valido", $this->plugin->get_textdomain())
+			]);
+			die();
+		}
+		$result = $this->plugin->validate_fiscal_code($fiscal_code);
+		echo json_encode([
+			'valid' => $result['is_valid'],
+			'error' => $result['err_message']
+		]);
+		die();
+	}
+
+	/**
 	 * Performs validation on VAT
 	 *
 	 * @hooked 'woocommerce_process_checkout_field_*'
@@ -191,6 +212,27 @@ class Frontend {
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>'.__("Partita IVA", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
 		}
 		return $vat;
+	}
+
+	/**
+	 * Ajax callback to validate an EU VAT
+	 */
+	public function ajax_validate_eu_vat(){
+		if(!defined("DOING_AJAX") || !DOING_AJAX) return;
+		$vat = isset($_POST['vat']) ? $_POST['vat'] : false;
+		if(!$vat){
+			echo json_encode([
+				'valid' => false,
+				'error' => __("Non è stata fornita una partita IVA valida", $this->plugin->get_textdomain())
+			]);
+			die();
+		}
+		$result = $this->plugin->validate_eu_vat($vat);
+		echo json_encode([
+			'valid' => $result,
+			'error' => !$result ? __("Non è stata fornita una partita IVA valida", $this->plugin->get_textdomain()) : ""
+		]);
+		die();
 	}
 
 	/**
