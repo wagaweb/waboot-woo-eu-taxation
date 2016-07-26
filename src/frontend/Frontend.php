@@ -170,7 +170,7 @@ class Frontend {
 	 * @return mixed/**
 	 */
 	function validate_fiscal_code_on_checkout($fiscal_code){
-		if(!isset($_POST['billing_wb_woo_fi_customer_type'])) return $fiscal_code;
+		if(!isset($_POST['billing_wb_woo_fi_customer_type']) || $_POST['billing_country'] != "IT") return $fiscal_code;
 		$result = $this->plugin->validate_fiscal_code($fiscal_code);
 		if(!$result['is_valid']){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_field_notice', sprintf( $result['err_message'], '<strong>'.__("Codice fiscale", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
@@ -209,7 +209,7 @@ class Frontend {
 	 * @return mixed
 	 */
 	function validate_vat_on_checkout($vat){
-		if(!isset($_POST['billing_wb_woo_fi_customer_type'])) return $vat;
+		if(!isset($_POST['billing_wb_woo_fi_customer_type']) || $_POST['billing_wb_woo_fi_customer_type'] == "individual") return $vat;
 		if(!$this->plugin->validate_eu_vat($vat)){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>'.__("Partita IVA", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
 		}

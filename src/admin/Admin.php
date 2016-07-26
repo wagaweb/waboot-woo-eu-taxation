@@ -77,11 +77,30 @@ class Admin {
 	 * @hooked 'admin_init'
 	 */
 	public function save_custom_tax_rate_settings(){
-		if(isset($_POST['apply_to_customer_type'])){
-			$validated = $_POST['apply_to_customer_type']; //todo: do some custom validation?
+		if(isset($_POST['_wp_http_referer']) && preg_match("/private_and_company_taxes/",$_POST['_wp_http_referer'])){
+			$validated = [
+				'apply_to_customer_type' => [],
+				'add_to_tax_exclusion' => []
+			];
+			if(isset($_POST['apply_to_customer_type'])){
+				$validated['apply_to_customer_type'] = $_POST['apply_to_customer_type'];
+			}
+			$rates = $this->plugin->get_tax_rates();
+			if(isset($_POST['add_to_tax_exclusion'])){
+				foreach($_POST['add_to_tax_exclusion'] as $rate_key => $value){
+					$validated['add_to_tax_exclusion'][$rate_key] = true;
+				}
+			}
+			foreach($rates as $r_name => $r_values){
+				foreach($r_values as $r_id => $rate){
+					if(!array_key_exists($r_id,$validated['add_to_tax_exclusion'])){
+						$validated['add_to_tax_exclusion'][$r_id] = false;
+					}
+				}
+			}
 			$r = $this->plugin->set_custom_tax_rate_settings($validated);
 			if($r){
-				Utilities::add_admin_notice("rate_settings_updated",__("Private and company rates settings updated successfully."),"updated");
+				Utilities::add_admin_notice("rate_settings_updated",__("Custom rates settings updated successfully."),"updated");
 			}
 		}
 	}
@@ -116,21 +135,20 @@ class Admin {
 			$v = new HTMLView("src/views/admin/html-settings-tax.php","wb-woo-fiscalita-italiana");
 
 			//Get the already set tax rates
-			$tax_classes[] = ""; //For some odd reason, the "standard" tax rate is identified by an empty string.
-			$tax_classes = array_merge($tax_classes,\WC_Tax::get_tax_classes());
-			$rates = [];
-			foreach ($tax_classes as $tax_class){
-				$rates[$tax_class] = \WC_Tax::get_rates_for_tax_class($tax_class);
-			}
+			$rates = $this->plugin->get_tax_rates();
 
 			$v->clean()->display([
 				'rates' => $rates,
 				'textdomain' => $this->plugin->get_textdomain(),
-				'settings' => get_option($this->plugin->get_plugin_name()."_custom_rates_settings",[]),
+				'settings' => $this->plugin->get_custom_tax_rate_settings(),
 				'select_options' => [
 					'both' => _x("Both", "Admin table", $this->plugin->get_textdomain()),
 					'individual' => _x("Individual", "Admin table", $this->plugin->get_textdomain()),
 					'company' => _x("Company", "Admin table", $this->plugin->get_textdomain()),
+				],
+				'checkbox' => [
+					'value' => '1',
+					'label' => _x("Escludi dalle imposte", "Admin table", $this->plugin->get_textdomain())
 				]
 			]);
 			return [];

@@ -71,11 +71,37 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);
 	}
 
+	public function get_tax_rates(){
+		//Get the already set tax rates
+		$tax_classes[] = ""; //For some odd reason, the "standard" tax rate is identified by an empty string.
+		$tax_classes = array_merge($tax_classes,\WC_Tax::get_tax_classes());
+		$rates = [];
+		foreach ($tax_classes as $tax_class){
+			$rates[$tax_class] = \WC_Tax::get_rates_for_tax_class($tax_class);
+		}
+		return $rates;
+	}
+	
 	/**
 	 * Get the custom tax rate settings
 	 */
 	public function get_custom_tax_rate_settings(){
-		return get_option($this->get_plugin_name()."_custom_rates_settings",[]);
+		$rates = $this->get_tax_rates();
+		$default = [
+			'apply_to_customer_type' => [],
+			'add_to_tax_exclusion' => call_user_func(function() use($rates){
+				$r = [];
+				foreach($rates as $r_name => $r_values){
+					foreach ($r_values as $r_key => $rate){
+						$r[$r_key] = true;
+					}
+				}
+				return $r;
+			})
+		];
+		$opt = get_option($this->get_plugin_name()."_custom_rates_settings",$default);
+		$opt = wp_parse_args($opt,$default);
+		return $opt;
 	}
 
 	/**

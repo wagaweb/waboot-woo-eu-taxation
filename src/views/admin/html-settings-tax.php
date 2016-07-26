@@ -12,7 +12,8 @@
 		<!-- <th width="8%"><?php _e( 'Priority', 'woocommerce' ); ?></th>
 		<th width="8%"><?php _e( 'Compound', 'woocommerce' ); ?></th>
 		<th width="8%"><?php _e( 'Shipping', 'woocommerce' ); ?></th> -->
-		<th width="8%"><?php _ex( 'Applies to', 'Admin table', $textdomain ); ?></th>
+		<!--<th width="8%"><?php _ex( 'Applies to', 'Admin table', $textdomain ); ?></th>-->
+		<th width="8%"><?php _ex( 'Escludi dalle imposte (solo EU)', 'Admin table', $textdomain ); ?></th>
 	</tr>
 	</thead>
 	<tfoot>
@@ -32,13 +33,19 @@
 				<!-- <td><?php echo $value->tax_rate_priority; ?></td>
 				<td><?php if($value->tax_rate_compound == "0") _e("Yes"); else _e("No"); ?></td>
 				<td><?php if($value->tax_rate_shipping == "0") _e("Yes"); else _e("No"); ?></td> -->
-				<td>
+				<!-- <td>
 					<label for="apply_to_customer_type[<?php echo $value->tax_rate_id ?>]"></label><select name="apply_to_customer_type[<?php echo $value->tax_rate_id ?>]" id="apply_to_customer_type">
 						<?php foreach($select_options as $opt_name => $opt_label): ?>
-							<?php $selected = array_key_exists($value->tax_rate_id,$settings) && $settings[$value->tax_rate_id] == $opt_name; ?>
+							<?php $selected = array_key_exists($value->tax_rate_id,$settings['apply_to_customer_type']) && $settings['apply_to_customer_type'][$value->tax_rate_id] == $opt_name; ?>
 							<option value="<?php echo $opt_name ?>" <?php if($selected) echo "selected"; ?>><?php echo $opt_label; ?></option>
 						<?php endforeach; ?>
 					</select>
+				</td>-->
+				<td>
+					<label>
+						<?php $checked = array_key_exists($value->tax_rate_id,$settings['add_to_tax_exclusion']) && $settings['add_to_tax_exclusion'][$value->tax_rate_id] || !array_key_exists($value->tax_rate_id,$settings['add_to_tax_exclusion']); ?>
+						<input name="add_to_tax_exclusion[<?php echo $value->tax_rate_id ?>]" type="checkbox" value="<?php $checkbox['value']; ?>" <?php if($checked) echo "checked"; ?>>&nbsp;<?php echo $checkbox['label']; ?>
+					</label>
 				</td>
 			</tr>
 		<?php endforeach; ?>
