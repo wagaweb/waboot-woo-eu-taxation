@@ -7,9 +7,9 @@ export default class extends Backbone.Model{
         let $checkout_form = $( 'form.checkout' );
         if($checkout_form.length > 0){
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this.validate_fields);
-            $checkout_form.on("change", ".input-radio[name='wb_woo_fi_customer_type']", this, this.toggle_fields);
+            $checkout_form.on("change", ".input-radio[name='billing_wb_woo_fi_customer_type']", this, this.toggle_fields);
             $checkout_form.on("change", "#billing_country", this, this.toggle_fields);
-            $(document).on("update_checkout", "body", this, this.toggle_fields);
+            //$(document).on("update_checkout", "body", this, this.toggle_fields);
         }
     }
 
@@ -20,10 +20,10 @@ export default class extends Backbone.Model{
      */
     toggle_fields(event){
         "use strict";
-        let current_customer_type = $(".input-radio[name='wb_woo_fi_customer_type']:checked").val(),
+        let current_customer_type = $(".input-radio[name='billing_wb_woo_fi_customer_type']:checked").val(),
             current_country = $("#billing_country").val(),
-            $fiscal_code = $("#wb_woo_fi_fiscal_code_field"),
-            $vat = $("#wb_woo_fi_vat_field");
+            $fiscal_code = $("#billing_wb_woo_fi_fiscal_code_field"),
+            $vat = $("#billing_wb_woo_fi_vat_field");
 
         if(current_customer_type === undefined) return;
 
@@ -40,6 +40,7 @@ export default class extends Backbone.Model{
                 $vat.removeClass("hidden");
                 break;
         }
+        $(document.body).trigger( 'update_checkout');
     }
 
     /**

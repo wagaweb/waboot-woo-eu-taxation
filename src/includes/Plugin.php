@@ -44,8 +44,6 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'add_billing_fields', 10, 2 );
 
 		//Fields management
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_customer_type", $plugin_public, "add_customer_type_to_customer_data", 10, 1);
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "add_vat_to_customer_data", 10, 1);
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "add_fiscal_code_to_customer_data", 10, 1);
 
 		//Fields backend validation
@@ -79,6 +77,39 @@ class Plugin extends TemplatePlugin {
 	 */
 	public function set_custom_tax_rate_settings($rates){
 		return update_option($this->get_plugin_name()."_custom_rates_settings",$rates);
+	}
+
+	/**
+	 * Checks if $rate_id can be applied to the $customer_type
+	 * 
+	 * @param $rate_id
+	 * @param bool $customer_type
+	 *
+	 * @return bool
+	 */
+	public function can_apply_custom_tax_rate($rate_id,$customer_type = false){
+		$custom_rates = $this->get_custom_tax_rate_settings();
+
+		//Get the current custom rate appliance rule:
+		$current_custom_rate_group = array_key_exists($rate_id,$custom_rates) ? $custom_rates[$rate_id] : "both";
+
+		//Get the current user customer type
+		if(!$customer_type){
+			$customer_type = "individual";
+			if(isset(WC()->customer->billing_wb_woo_fi_customer_type)){
+				$customer_type = WC()->customer->billing_wb_woo_fi_customer_type;
+			}else{
+				$current_user = wp_get_current_user();
+				if($current_user instanceof \WP_User){
+					$ct = get_user_meta($current_user->ID,"billing_wb_woo_fi_customer_type",true);
+					if($ct && !empty($ct)){
+						$customer_type = $ct;
+					}
+				}
+			}	
+		}
+		
+		return $current_custom_rate_group == "both" || $current_custom_rate_group == $customer_type;
 	}
 
 	/**

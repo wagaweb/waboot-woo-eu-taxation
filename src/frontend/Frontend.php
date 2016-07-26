@@ -68,29 +68,16 @@ class Frontend {
 	 */
 	public function on_update_order_review($post_data){
 		$post_data = explode("&",$post_data);
+		//Detect and save the customer type into WC Customer instance
 		$data_values = [];
 		foreach($post_data as $data_string){
 			preg_match("/billing_wb_woo_fi_customer_type=([a-zA-Z0-9]+)/",$data_string,$matches);
-			if(is_array($matches)){
-
-			}
-			preg_match("/billing_wb_woo_fi_fiscal_code=([a-zA-Z0-9]+)/",$data_string,$matches);
-			if(is_array($matches)){
-
-			}
-			preg_match("/billing_wb_woo_fi_vat=([a-zA-Z0-9]+)/",$data_string,$matches);
-			if(is_array($matches)){
-
+			if(is_array($matches) && isset($matches[1])){
+				$data_values['billing_wb_woo_fi_customer_type'] = $matches[1];
 			}
 		}
 		if(isset($data_values['billing_wb_woo_fi_customer_type'])){
 			$this->add_customer_type_to_customer_data($data_values['billing_wb_woo_fi_customer_type']);
-		}
-		if(isset($data_values['billing_wb_woo_fi_fiscal_code'])){
-			$this->add_fiscal_code_to_customer_data($data_values['billing_wb_woo_fi_fiscal_code']);
-		}
-		if(isset($data_values['billing_wb_woo_fi_vat'])){
-			$this->add_vat_to_customer_data($data_values['billing_wb_woo_fi_vat']);
 		}
 	}
 
@@ -102,9 +89,9 @@ class Frontend {
 	 * @hooked 'woocommerce_price_ex_tax_amount'
 	 */
 	public function on_calculate_ex_tax_amount($tax_amount, $key, $rate, $price){
-		$customer = WC()->customer;
-		$cart = WC()->cart;
-		$custom_rates = $this->plugin->get_custom_tax_rate_settings();
+		if(!$this->plugin->can_apply_custom_tax_rate($key)){
+			$tax_amount = 0; //WC does a sum of all applicable taxes. So by putting the "invalid" ones to 0, WC does not count them.
+		}
 		return $tax_amount;
 	}
 
@@ -116,9 +103,6 @@ class Frontend {
 	 * @hooked 'woocommerce_price_ex_tax_amount'
 	 */
 	public function on_calculate_inc_tax_amount($tax_amount, $key, $rate, $price){
-		$customer = WC()->customer;
-		$cart = WC()->cart;
-		$custom_rates = $this->plugin->get_custom_tax_rate_settings();
 		return $tax_amount;
 	}
 	
@@ -313,20 +297,15 @@ class Frontend {
 		return $vat;
 	}
 
-	function add_vat_to_customer_data($vat){
-		if(isset($vat)){
-			WC()->customer->billing_wb_woo_fi_vat = $vat;
-		}
-		return $vat;
-	}
-
-	function add_fiscal_code_to_customer_data($fiscal_code){
-		if(isset($fiscal_code)){
-			WC()->customer->billing_wb_woo_fi_fiscal_code = $fiscal_code;
-		}
-		return $fiscal_code;
-	}
-
+	/**
+	 * Adds customer type to WC Customer object
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $customer_type
+	 *
+	 * @return mixed
+	 */
 	function add_customer_type_to_customer_data($customer_type){
 		if(isset($customer_type)){
 			WC()->customer->billing_wb_woo_fi_customer_type = $customer_type;

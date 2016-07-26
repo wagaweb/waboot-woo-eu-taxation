@@ -128,9 +128,9 @@ class Admin {
 				'textdomain' => $this->plugin->get_textdomain(),
 				'settings' => get_option($this->plugin->get_plugin_name()."_custom_rates_settings",[]),
 				'select_options' => [
+					'both' => _x("Both", "Admin table", $this->plugin->get_textdomain()),
 					'individual' => _x("Individual", "Admin table", $this->plugin->get_textdomain()),
 					'company' => _x("Company", "Admin table", $this->plugin->get_textdomain()),
-					'both' => _x("Both", "Admin table", $this->plugin->get_textdomain())
 				]
 			]);
 			return [];
