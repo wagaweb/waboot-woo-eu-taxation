@@ -264,13 +264,40 @@ class Plugin extends TemplatePlugin {
 	}
 
 	/**
-	 * Validate an EU VAT number. Uses public EU API.
+	 * Validate an EU VAT number.
+	 *
+	 * @param $vat
+	 * @param bool $vies_vat
+	 *
+	 * @return bool
+	 */
+	public function validate_eu_vat($vat, $vies_vat = false){
+		if($vies_vat){
+			return $this->validate_eu_vies_vat($vat);
+		}else{
+			return $this->validate_eu_simple_vat($vat);
+		}
+	}
+
+	/**
+	 * A simple VAT Validation
+	 *
+	 * @param $vat
+	 *
+	 * @return bool
+	 */
+	public function validate_eu_simple_vat($vat){
+		return true;
+	}
+
+	/**
+	 * Validate an EU VIES VAT number. Uses public EU API.
 	 * 
 	 * @param $vat
 	 *
 	 * @return bool
 	 */
-	public function validate_eu_vat($vat){
+	public function validate_eu_vies_vat($vat){
 		$countries = new \WC_Countries();
 		$cc = substr($vat, 0, 2);
 		$vn = substr($vat, 2);
