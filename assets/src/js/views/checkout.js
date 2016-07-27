@@ -37,6 +37,8 @@ export default class extends Backbone.Model{
 
         if(current_customer_type === undefined) return;
 
+        //This is a jQuery event callback, so "this" is not a reference to the class. We sent the reference into the event.data propriety
+
         if(current_country == "IT"){
             event.data.show_fiscal_code();
         }else{
