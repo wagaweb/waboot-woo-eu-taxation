@@ -11,6 +11,9 @@ export default class extends Backbone.Model{
         if($checkout_form.length > 0){
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this.validate_fields);
             $checkout_form.on("change", ".input-radio[name='"+fields_ids.customer_type+"']", this, this.toggle_fields);
+            $checkout_form.on("change", ".input-checkbox[name='"+fields_ids.vies_valid_check+"']", this, function(){
+                $(document.body).trigger( 'update_checkout');
+            });
             $checkout_form.on("change", "#billing_country", this, this.toggle_fields);
             //$(document).on("update_checkout", "body", this, this.toggle_fields);
         }
@@ -167,7 +170,7 @@ export default class extends Backbone.Model{
         if(show){
             $vies_check.removeClass("hidden");
         }else{
-            $vies_check.addClass("hidden");
+            $vies_check.addClass("hidden").attr("checked",false);
         }
     }
 

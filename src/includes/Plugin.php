@@ -50,7 +50,8 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'add_billing_fields', 10, 2 );
 
 		//Fields management
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "add_customer_type_to_customer_data", 10, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_CUSTOMER_TYPE, $plugin_public, "add_customer_type_to_customer_data", 10, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_VAT, $plugin_public, "add_vat_to_customer_data", 10, 1);
 
 		//Fields backend validation
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
@@ -148,6 +149,21 @@ class Plugin extends TemplatePlugin {
 		}
 		
 		return $current_custom_rate_group == "both" || $current_custom_rate_group == $customer_type;
+	}
+
+	/**
+	 * Check if the tax exclusion rule can be applied to $rate_id
+	 *
+	 * @param $rate_id
+	 * @param bool $customer_type
+	 *
+	 * @return bool
+	 */
+	public function can_exclude_taxes($rate_id){
+		$vies_valid_check_field_name = Plugin::FIELD_VIES_VALID_CHECK;
+		if(!isset(WC()->customer->$vies_valid_check_field_name) || !WC()->customer->$vies_valid_check_field_name) return false;
+		$custom_rates = $this->get_custom_tax_rate_settings();
+		return array_key_exists($rate_id,$custom_rates['add_to_tax_exclusion']) && $custom_rates['add_to_tax_exclusion'][$rate_id];
 	}
 
 	/**

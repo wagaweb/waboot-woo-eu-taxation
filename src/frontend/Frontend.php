@@ -79,13 +79,22 @@ class Frontend {
 		//Detect and save the customer type into WC Customer instance
 		$data_values = [];
 		foreach($post_data as $data_string){
-			preg_match("/billing_wb_woo_fi_customer_type=([a-zA-Z0-9]+)/",$data_string,$matches);
+			preg_match("/".Plugin::FIELD_CUSTOMER_TYPE."=([a-zA-Z0-9]+)/",$data_string,$matches);
 			if(is_array($matches) && isset($matches[1])){
-				$data_values['billing_wb_woo_fi_customer_type'] = $matches[1];
+				$data_values[Plugin::FIELD_CUSTOMER_TYPE] = $matches[1];
+				continue;
+			}
+			preg_match("/".Plugin::FIELD_VIES_VALID_CHECK."=([a-zA-Z0-9]+)/",$data_string,$matches);
+			if(is_array($matches) && isset($matches[1])){
+				$data_values[Plugin::FIELD_VIES_VALID_CHECK] = true;
+				continue;
 			}
 		}
-		if(isset($data_values['billing_wb_woo_fi_customer_type'])){
-			$this->add_customer_type_to_customer_data($data_values['billing_wb_woo_fi_customer_type']);
+		if(!isset($data_values[Plugin::FIELD_VIES_VALID_CHECK])){
+			$data_values[Plugin::FIELD_VIES_VALID_CHECK] = false;
+		}
+		if(!empty($data_values)){
+			$this->inject_customer_data($data_values);
 		}
 	}
 
@@ -97,7 +106,7 @@ class Frontend {
 	 * @hooked 'woocommerce_price_ex_tax_amount'
 	 */
 	public function on_calculate_ex_tax_amount($tax_amount, $key, $rate, $price){
-		if(!$this->plugin->can_apply_custom_tax_rate($key)){
+		if(!$this->plugin->can_exclude_taxes($key)){
 			$tax_amount = 0; //WC does a sum of all applicable taxes. So by putting the "invalid" ones to 0, WC does not count them.
 		}
 		return $tax_amount;
@@ -264,8 +273,37 @@ class Frontend {
 	 */
 	function add_customer_type_to_customer_data($customer_type){
 		if(isset($customer_type)){
-			WC()->customer->billing_wb_woo_fi_customer_type = $customer_type;
+			$field_name = Plugin::FIELD_CUSTOMER_TYPE;
+			WC()->customer->$field_name = $customer_type;
 		}
 		return $customer_type;
+	}
+
+	/**
+	 * Adds customer type to WC Customer object
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $vat
+	 *
+	 * @return mixed
+	 */
+	function add_vat_to_customer_data($vat){
+		if(isset($customer_type)){
+			$field_name = Plugin::FIELD_VAT;
+			WC()->customer->$field_name = $vat;
+		}
+		return $vat;
+	}
+
+	/**
+	 * Adds custom data to WC Customer object
+	 *
+	 * @param $data
+	 */
+	function inject_customer_data($data){
+		foreach($data as $key => $value){
+			WC()->customer->$key = $value;
+		}
 	}
 }
