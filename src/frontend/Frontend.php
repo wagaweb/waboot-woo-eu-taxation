@@ -3,6 +3,7 @@
 namespace WBWooFI\frontend;
 use WBF\includes\AssetsManager;
 use WBF\includes\Utilities;
+use WBWooFI\includes\Plugin;
 
 /**
  * The public-facing functionality of the plugin.
@@ -47,7 +48,14 @@ class Frontend {
 					'params' => [
 						'ajax_url' => admin_url('admin-ajax.php'),
 						'blogurl' => get_bloginfo("wpurl"),
-						'isAdmin' => is_admin()
+						'isAdmin' => is_admin(),
+						'fields_id' => [
+							'customer_type' => Plugin::FIELD_CUSTOMER_TYPE,
+							'fiscal_code' => Plugin::FIELD_FISCAL_CODE,
+							'vat' => Plugin::FIELD_VAT,
+							'vies_valid_check' => Plugin::FIELD_VIES_VALID_CHECK
+						],
+						'eu_vat_countries' => WC()->countries->get_european_union_countries('eu_vat')
 					]
 				],
 				'type' => 'js',
@@ -118,7 +126,7 @@ class Frontend {
 	 */
 	public function add_billing_fields($address_fields, $country){
 		$customer_type = [
-			"billing_wb_woo_fi_customer_type" => [
+			Plugin::FIELD_CUSTOMER_TYPE => [
 				'label' => _x("Customer type", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'radio',
 				'options' => [
@@ -130,7 +138,7 @@ class Frontend {
 			]
 		];
 		$fiscal_code = [
-			"billing_wb_woo_fi_fiscal_code" => [
+			Plugin::FIELD_FISCAL_CODE => [
 				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
@@ -138,7 +146,7 @@ class Frontend {
 			]
 		];
 		$vat = [
-			"billing_wb_woo_fi_vat" => [
+			Plugin::FIELD_VAT => [
 				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['vat'],
@@ -148,10 +156,18 @@ class Frontend {
 				]
 			]
 		];
+		$vies_valid_check = [
+			Plugin::FIELD_VIES_VALID_CHECK => [
+				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
+				'type' => 'checkbox',
+				'class' => ['hidden'],
+			]
+		];
 		$address_fields = Utilities::associative_array_add_element_after($customer_type,"billing_last_name",$address_fields);
 		//if($country == "IT"){
-			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,"billing_wb_woo_fi_customer_type",$address_fields);
-			$address_fields = Utilities::associative_array_add_element_after($vat,"billing_wb_woo_fi_fiscal_code",$address_fields);
+			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,Plugin::FIELD_CUSTOMER_TYPE,$address_fields);
+			$address_fields = Utilities::associative_array_add_element_after($vat,Plugin::FIELD_FISCAL_CODE,$address_fields);
+			$address_fields = Utilities::associative_array_add_element_after($vies_valid_check,Plugin::FIELD_VAT,$address_fields);
 		//}else{
 		//	$address_fields = Utilities::associative_array_add_element_after($vat,"billing_wb_woo_fi_customer_type",$address_fields);
 		//}
@@ -170,7 +186,7 @@ class Frontend {
 	 * @return mixed/**
 	 */
 	function validate_fiscal_code_on_checkout($fiscal_code){
-		if(!isset($_POST['billing_wb_woo_fi_customer_type']) || $_POST['billing_country'] != "IT") return $fiscal_code;
+		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] != "IT") return $fiscal_code;
 		$result = $this->plugin->validate_fiscal_code($fiscal_code);
 		if(!$result['is_valid']){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_field_notice', sprintf( $result['err_message'], '<strong>'.__("Codice fiscale", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
@@ -209,7 +225,7 @@ class Frontend {
 	 * @return mixed
 	 */
 	function validate_vat_on_checkout($vat){
-		if(!isset($_POST['billing_wb_woo_fi_customer_type']) || $_POST['billing_wb_woo_fi_customer_type'] == "individual") return $vat;
+		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST[Plugin::FIELD_CUSTOMER_TYPE] == "individual") return $vat;
 		if(!$this->plugin->validate_eu_vat($vat)){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>'.__("Partita IVA", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
 		}

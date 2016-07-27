@@ -4,9 +4,10 @@ import $ from 'jquery';
 export default class extends Backbone.Model{
     initialize() {
         "use strict";
-        let $checkout_form = $( 'form.checkout' ),
-            $fiscal_code = $("#billing_wb_woo_fi_fiscal_code_field"),
-            $vat = $("#billing_wb_woo_fi_vat_field");
+        let fields_ids = wbFIData.fields_id,
+            $checkout_form = $( 'form.checkout' ),
+            $fiscal_code = $(fields_ids.fiscal_code+"_field"),
+            $vat = $(fields_ids.vat+"_field");
         if($checkout_form.length > 0){
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this.validate_fields);
             $checkout_form.on("change", ".input-radio[name='billing_wb_woo_fi_customer_type']", this, this.toggle_fields);
@@ -29,23 +30,25 @@ export default class extends Backbone.Model{
     toggle_fields(event){
         "use strict";
         let current_customer_type = $(".input-radio[name='billing_wb_woo_fi_customer_type']:checked").val(),
-            current_country = $("#billing_country").val(),
-            $fiscal_code = $("#billing_wb_woo_fi_fiscal_code_field"),
-            $vat = $("#billing_wb_woo_fi_vat_field");
+            current_country = $("#billing_country").val();
 
         if(current_customer_type === undefined) return;
 
         if(current_country == "IT"){
-            $fiscal_code.removeClass("hidden woocommerce-validated").addClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
+            this.show_fiscal_code();
         }else{
-            $fiscal_code.addClass("hidden").removeClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
+            this.hide_fiscal_code();
         }
         switch(current_customer_type){
             case 'individual':
-                $vat.addClass("hidden").removeClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
+                this.hide_vat();
+                this.hide_vies_check();
                 break;
             case 'company':
-                $vat.removeClass("hidden woocommerce-validated").addClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
+                this.show_vat();
+                if(current_country != "IT" && $.inArray(current_country,wbFIData.eu_vat_countries)){
+                    this.show_vies_check();
+                }
                 break;
         }
         $(document.body).trigger( 'update_checkout');
@@ -106,5 +109,65 @@ export default class extends Backbone.Model{
                 do_validation($el,$parent);
             }
         }
+    }
+
+    /**
+     * Shows fiscal code
+     * @param hide
+     */
+    show_fiscal_code(hide = false){
+        let $fiscal_code = $(fields_ids.fiscal_code+"_field");
+        if(hide){
+            $fiscal_code.addClass("hidden").removeClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
+        }else{
+            $fiscal_code.removeClass("hidden woocommerce-validated").addClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
+        }
+    }
+
+    /**
+     * Hides fiscal codes
+     */
+    hide_fiscal_code(){
+        this.show_fiscal_code(true);
+    }
+
+    /**
+     * Shows VAT
+     * @param hide
+     */
+    show_vat(hide = false){
+        let $vat = $(fields_ids.vat+"_field");
+        if(hide){
+            $vat.addClass("hidden").removeClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
+        }else{
+            $vat.removeClass("hidden woocommerce-validated").addClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
+        }
+    }
+
+    /**
+     * Hides VAT
+     */
+    hide_vat(){
+        this.show_vat(true)
+    }
+
+    /**
+     * Shows VIES Check
+     * @param hide
+     */
+    show_vies_check(hide = false){
+        $vies_check = $(fields_ids.vies_valid_check+"_field");
+        if(hide){
+            $vies_check.addClass("hidden");
+        }else{
+            $vies_check.removeClass("hidden");
+        }
+    }
+
+    /**
+     * Hides VIES Check
+     */
+    hide_vies_check(){
+        this.show_fiscal_code(true);
     }
 }

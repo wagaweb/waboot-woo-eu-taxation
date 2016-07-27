@@ -17,6 +17,12 @@ use WBF\includes\pluginsframework\TemplatePlugin;
  * @subpackage WBWooFI/includes
  */
 class Plugin extends TemplatePlugin {
+
+	const FIELD_CUSTOMER_TYPE = "billing_wb_woo_fi_customer_type";
+	const FIELD_FISCAL_CODE = "billing_wb_woo_fi_fiscal_code";
+	const FIELD_VAT = "billing_wb_woo_fi_vat";
+	const FIELD_VIES_VALID_CHECK = "billing_wb_woo_fi_vies_valid";
+
 	/**
 	 * Define the core functionality of the plugin.
 	 */
