@@ -34,7 +34,17 @@ class Frontend {
 	}
 
 	public function styles(){
-		wp_enqueue_style('wb-woo-fi-style', $this->plugin->get_uri() . '/assets/dist/css/wb-woo-fi.min.css');
+		//wp_enqueue_style('wb-woo-fi-style', $this->plugin->get_uri() . '/assets/dist/css/wb-woo-fi.min.css');
+		//For now we have only this style to enqueue, an entire file is not necessary.
+		if(function_exists("is_checkout") && is_checkout()){
+			?>
+			<style>
+				.wbfi-hidden {
+					display: none !important;
+				}
+			</style>
+			<?php
+		}
 	}
 
 	public function scripts(){
@@ -151,7 +161,7 @@ class Frontend {
 				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
-				'class' => ['hidden']
+				'class' => ['wbfi-hidden']
 			]
 		];
 		$vat = [
@@ -159,7 +169,7 @@ class Frontend {
 				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['vat'],
-				'class' => ['hidden'],
+				'class' => ['wbfi-hidden'],
 				'custom_attributes' => [
 					'country' => $country
 				]
@@ -169,7 +179,7 @@ class Frontend {
 			Plugin::FIELD_VIES_VALID_CHECK => [
 				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
-				'class' => ['hidden'],
+				'class' => ['wbfi-hidden'],
 			]
 		];
 		$address_fields = Utilities::associative_array_add_element_after($customer_type,"billing_last_name",$address_fields);
