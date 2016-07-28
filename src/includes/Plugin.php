@@ -2,6 +2,7 @@
 
 namespace WBWooFI\includes;
 use WBF\includes\pluginsframework\TemplatePlugin;
+use WBF\includes\Utilities;
 
 /**
  * The core plugin class.
@@ -28,8 +29,14 @@ class Plugin extends TemplatePlugin {
 	 */
 	public function __construct() {
 		parent::__construct( "wb-woo-fiscalita-italiana", plugin_dir_path( dirname( dirname( __FILE__ ) ) ) );
-		$this->define_public_hooks();
-		$this->define_admin_hooks();
+		if(in_array("woocommerce/woocommerce.php",get_option("active_plugins",[]))){
+			$this->define_public_hooks();
+			$this->define_admin_hooks();
+		}else{
+			add_action("admin_init", function(){
+				Utilities::add_admin_notice("wb-woo-fi-require-wc",__("WB Fiscalità Italiana for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
+			});
+		}
 	}
 
 	/**
