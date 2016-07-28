@@ -304,6 +304,9 @@ class Plugin extends TemplatePlugin {
 	 * @return bool
 	 */
 	public function validate_eu_simple_vat($vat){
+		if($vat == "" || !is_string($vat)){
+			return false;
+		}
 		return true; //todo: implement this
 	}
 
