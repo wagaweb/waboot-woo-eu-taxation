@@ -9,12 +9,25 @@ export default class extends Backbone.Model{
             $fiscal_code = $(fields_ids.fiscal_code+"_field"),
             $vat = $(fields_ids.vat+"_field");
         if($checkout_form.length > 0){
-            $checkout_form.on("blur change", ".input-text, select, input:checkbox", this.validate_fields);
+            //On form fields change:
+            $checkout_form.on("blur change", ".input-text, select, input:checkbox", this, this.validate_fields);
+            //On Customer type change:
             $checkout_form.on("change", ".input-radio[name='"+fields_ids.customer_type+"']", this, this.toggle_fields);
-            $checkout_form.on("change", ".input-checkbox[name='"+fields_ids.vies_valid_check+"']", this, function(){
-                $(".input-text[name='"+fields_ids.vat+"']").trigger("change");
+            //On VIES check change:
+            $checkout_form.on("change", ".input-checkbox[name='"+fields_ids.vies_valid_check+"']", this, function(event){
+                //Do VAT validation
+                let $vat = $(".input-text[name='"+fields_ids.vat+"']"),
+                    $vat_parent = $vat.closest( '.form-row' ),
+                    $vies_check = $(this);
+                event.data.do_validation($vat,$vat_parent,{
+                    action: "validate_vat",
+                    vat: $vat.val(),
+                    view_check: $vies_check.is(":checked") ? 1 : 0
+                });
+                //Trigger checkout update
                 $(document.body).trigger( 'update_checkout');
             });
+            //On Billing country change:
             $checkout_form.on("change", "#billing_country", this, this.toggle_fields);
             //$(document).on("update_checkout", "body", this, this.toggle_fields);
         }
@@ -70,51 +83,11 @@ export default class extends Backbone.Model{
         let $el = $( this ),
             $parent = $el.closest( '.form-row' );
 
-        var do_validation = function($el,$parent,data){
-            let $order_review = $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table'),
-                validated = true;
-
-            $order_review.block({
-                message: null,
-                overlayCSS: {
-                    background: '#fff',
-                    opacity: 0.6
-                }
-            });
-
-            $parent.block({
-                message: null,
-                overlayCSS: {
-                    background: '#fff',
-                    opacity: 0.6
-                }
-            });
-
-            $.ajax(wbFIData.ajax_url,{
-                data: data,
-                dataType: "json",
-                method: "POST"
-            }).done(function(data, textStatus, jqXHR){
-                if(typeof data === "object"){
-                    if(!data.valid){
-                        validated = false;
-                    }
-                }
-                if(validated){
-                    $parent.removeClass( 'woocommerce-invalid validate-required woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
-                }else{
-                    $parent.removeClass( 'woocommerce-validated' ).addClass( 'validate-required woocommerce-invalid woocommerce-invalid-required-field' );
-                }
-                $order_review.unblock();
-                $parent.unblock();
-            }).fail(function(jqXHR, textStatus, errorThrown){
-                $parent.unblock();
-            });
-        };
+        //This is a jQuery event callback, so "this" is not a reference to the class. We sent the reference into the event.data propriety
 
         if( $parent.is( '.woocommerce-invalid' ) ){
             if ( $parent.is( '.validate-fiscal-code' ) ) {
-                do_validation($el,$parent,{
+                event.data.do_validation($el,$parent,{
                     action: "validate_fiscal_code",
                     fiscal_code: $el.val()
                 });
@@ -122,13 +95,62 @@ export default class extends Backbone.Model{
 
             if ( $parent.is( '.validate-vat' ) ) {
                 let $vies_check = $("#"+wbFIData.fields_id.vies_valid_check);
-                do_validation($el,$parent,{
+                event.data.do_validation($el,$parent,{
                     action: "validate_vat",
                     vat: $el.val(),
                     view_check: $vies_check.is(":checked") ? 1 : 0
                 });
             }
         }
+    }
+
+    /**
+     * Perform custom field validation
+     *
+     * @param $el
+     * @param $parent
+     * @param data
+     */
+    do_validation($el,$parent,data){
+        let $order_review = $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table'),
+            validated = true;
+
+        $order_review.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        $parent.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        $.ajax(wbFIData.ajax_url,{
+            data: data,
+            dataType: "json",
+            method: "POST"
+        }).done(function(data, textStatus, jqXHR){
+            if(typeof data === "object"){
+                if(!data.valid){
+                    validated = false;
+                }
+            }
+            if(validated){
+                $parent.removeClass( 'woocommerce-invalid validate-required woocommerce-invalid-required-field' ).addClass( 'woocommerce-validated' );
+            }else{
+                $parent.removeClass( 'woocommerce-validated' ).addClass( 'validate-required woocommerce-invalid woocommerce-invalid-required-field' );
+            }
+            $order_review.unblock();
+            $parent.unblock();
+        }).fail(function(jqXHR, textStatus, errorThrown){
+            $parent.unblock();
+        });
     }
 
     /**
@@ -183,7 +205,6 @@ export default class extends Backbone.Model{
      * @param show
      */
     show_vies_check(show = true){
-        debugger;
         let $vies_check = $("#"+wbFIData.fields_id.vies_valid_check+"_field");
         if(show){
             $vies_check.removeClass("hidden");
