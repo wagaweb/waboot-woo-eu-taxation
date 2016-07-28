@@ -235,8 +235,20 @@ class Frontend {
 	 */
 	function validate_vat_on_checkout($vat){
 		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST[Plugin::FIELD_CUSTOMER_TYPE] == "individual") return $vat;
-		if(!$this->plugin->validate_eu_vat($vat)){
-			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice', sprintf( _x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ), '<strong>'.__("Partita IVA", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
+		if(isset($_POST[Plugin::FIELD_VIES_VALID_CHECK])){
+			//Advanced validation
+			$vies_validation_flag = true;
+		}else{
+			//Simple validation
+			$vies_validation_flag = false;
+		}
+		if(!$this->plugin->validate_eu_vat($vat,$vies_validation_flag)){
+			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_vat_field_notice',
+				sprintf(
+					_x( '%s is not a valid.', 'WC Validation Message', $this->plugin->get_textdomain() ),
+					'<strong>'.__("VAT Number", $this->plugin->get_textdomain()).'</strong>'
+				)
+			), 'error' );
 		}
 		return $vat;
 	}
@@ -247,17 +259,18 @@ class Frontend {
 	public function ajax_validate_eu_vat(){
 		if(!defined("DOING_AJAX") || !DOING_AJAX) return;
 		$vat = isset($_POST['vat']) ? $_POST['vat'] : false;
+		$view_check = isset($_POST['view_check']) ? (bool) $_POST['view_check'] : false;
 		if(!$vat){
 			echo json_encode([
 				'valid' => false,
-				'error' => __("Non è stata fornita una partita IVA valida", $this->plugin->get_textdomain())
+				'error' => __("No valid VAT provided", $this->plugin->get_textdomain())
 			]);
 			die();
 		}
-		$result = $this->plugin->validate_eu_vat($vat);
+		$result = $this->plugin->validate_eu_vat($vat,$view_check);
 		echo json_encode([
 			'valid' => $result,
-			'error' => !$result ? __("Non è stata fornita una partita IVA valida", $this->plugin->get_textdomain()) : ""
+			'error' => !$result ? __("No valid VAT provided", $this->plugin->get_textdomain()) : ""
 		]);
 		die();
 	}

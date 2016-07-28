@@ -60,8 +60,8 @@ class Plugin extends TemplatePlugin {
 		//Ajax
 		$this->loader->add_action( 'wp_ajax_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
 		$this->loader->add_action( 'wp_ajax_nopriv_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
-		$this->loader->add_action( 'wp_ajax_validate_vat', $plugin_public, "ajax_validate_vat" );
-		$this->loader->add_action( 'wp_ajax_nopriv_validate_vat', $plugin_public, "ajax_validate_vat" );
+		$this->loader->add_action( 'wp_ajax_validate_vat', $plugin_public, "ajax_validate_eu_vat" );
+		$this->loader->add_action( 'wp_ajax_nopriv_validate_vat', $plugin_public, "ajax_validate_eu_vat" );
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Plugin extends TemplatePlugin {
 	 *
 	 * @return array with 'is_valid' and 'err_message' keys.
 	 */
-	public function validate_fiscal_code($fiscal_code){
+	public function validate_fiscal_code($fiscal_code, $required = true){
 		$fiscal_code = str_replace(' ', '', $fiscal_code);
 
 		$result = [
@@ -183,21 +183,26 @@ class Plugin extends TemplatePlugin {
 			'err_message' => ''
 		];
 
-		if( $fiscal_code === '' ) {
-			$result['err_message'] = _x("E' richiesto il codice fiscale","WC Field Validation",$this->get_textdomain());
+		if( $fiscal_code === '' && $required ) {
+			$result['err_message'] = sprintf(
+				_x("%s is required","WC Field Validation", $this->get_textdomain()),
+				"<strong>".__("Fiscal code",$this->get_textdomain())."<strong>"
+			);
 			return $result;
 		}
 		if( strlen($fiscal_code) != 16 ) {
-			$result['err_message'] = _x( "La lunghezza del codice fiscale non &egrave;\n"
-			                             . "corretta: il codice fiscale dovrebbe essere lungo\n"
-			                             . "esattamente 16 caratteri.", "WC Field Validation", $this->get_textdomain() );
-
+			$result['err_message'] = sprintf(
+				_x("%s. Must have 16 character.","WC Field Validation",$this->get_textdomain()),
+				"<strong>"._x("Incorrect fiscal code length","WC Field Validation",$this->get_textdomain())."<strong>"
+			);
 			return $result;
 		}
 		$fiscal_code = strtoupper($fiscal_code);
 		if( preg_match("/^[A-Z0-9]+\$/", $fiscal_code) != 1 ){
-			$result['err_message'] = _x( "Il codice fiscale contiene dei caratteri non validi:\n"
-			                             ."i soli caratteri validi sono le lettere e le cifre.", "WC Field Validation", $this->get_textdomain() );
+			$result['err_message'] = sprintf(
+				_x("%s. Only letters and numbers are valid.","WC Field Validation",$this->get_textdomain()),
+				"<strong>"._x("Invalid fiscal code","WC Field Validation",$this->get_textdomain())."<strong>"
+			);
 			return $result;
 		}
 		$s = 0;
@@ -250,15 +255,20 @@ class Plugin extends TemplatePlugin {
 			}
 		}
 		if( chr($s%26 + ord('A')) != $fiscal_code[15] ) {
-			$result['err_message'] = _x( "Il codice fiscale non &egrave; corretto:\n"
-			                             ."il codice di controllo non corrisponde.", "WC Field", $this->get_textdomain() );
+			$result['err_message'] = sprintf(
+				_x("%s. Wrong control code detected.","WC Field Validation",$this->get_textdomain()),
+				"<strong>"._x("Invalid fiscal code","WC Field Validation",$this->get_textdomain())."<strong>"
+			);
 			return $result;
 		}
 		if (empty($result['err_message'])) {
 			$result['is_valid'] = true;
 			return $result;
 		}else{
-			$result['err_message'] = _x( "Si è verificato un errore inaspettato durante il controllo del codice fiscale", "WC Field Validation", $this->get_textdomain() );
+			$result['err_message'] = sprintf(
+				_x("%s. Unexpected error occurred. Please contact the administration.","WC Field Validation",$this->get_textdomain()),
+				"<strong>"._x("Invalid fiscal code","WC Field Validation",$this->get_textdomain())."<strong>"
+			);
 			return $result;
 		}
 	}
@@ -287,7 +297,7 @@ class Plugin extends TemplatePlugin {
 	 * @return bool
 	 */
 	public function validate_eu_simple_vat($vat){
-		return true;
+		return true; //todo: implement this
 	}
 
 	/**
