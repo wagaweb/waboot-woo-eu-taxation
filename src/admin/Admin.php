@@ -1,6 +1,7 @@
 <?php
 namespace WBWooFI\admin;
 use WBF\includes\mvc\HTMLView;
+use WBWooFI\includes\Plugin;
 use WBWooFI\includes\WCFI_Settings_Tax;
 
 use WBF\includes\Utilities;
@@ -37,11 +38,20 @@ class Admin {
 	}
 
 
+	/**
+	 * Adds custom fields to customer administration in dashboard
+	 *
+	 * @hooked 'woocommerce_customer_meta_fields'
+	 *
+	 * @param $fields_array
+	 *
+	 * @return mixed
+	 */
 	public function add_woocommerce_customer_meta_fields($fields_array) {
 
 		$fields = $fields_array['billing']['fields'];
 		$billing_wb_woo_fi_customer_type = [
-			"billing_wb_woo_fi_customer_type" => [
+			Plugin::FIELD_CUSTOMER_TYPE => [
 				'label' => __('Customer Type', "WC Field", $this->plugin->get_textdomain()),
 				'description' => "",
 				'type' => 'select',
@@ -53,20 +63,20 @@ class Admin {
 			]
 		];
 		$billing_wb_woo_fi_fiscal_code = [
-			"billing_wb_woo_fi_fiscal_code" => [
+			Plugin::FIELD_FISCAL_CODE => [
 				'label' => __('Fiscal Code', "WC Field", $this->plugin->get_textdomain()),
 				'description' => ""
 				]
 		];
 		$billing_wb_woo_fi_vat = [
-			"billing_wb_woo_fi_vat" => [
+			Plugin::FIELD_VAT => [
 				'label' => __('VAT', "WC Field", $this->plugin->get_textdomain()),
 				'description' => ""
 			]
 		];
 		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_customer_type,"billing_company",$fields);
-		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_fiscal_code,"billing_wb_woo_fi_customer_type",$new_fields);
-		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_vat,"billing_wb_woo_fi_fiscal_code",$new_fields);
+		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_fiscal_code,Plugin::FIELD_CUSTOMER_TYPE,$new_fields);
+		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_vat,Plugin::FIELD_FISCAL_CODE,$new_fields);
 
 		$fields_array['billing']['fields'] = $new_fields;
 		return $fields_array;
@@ -112,7 +122,7 @@ class Admin {
 	 *
 	 * @hooked 'woocommerce_get_sections_tax'
 	 *
-	 * @param $settings
+	 * @param $sections
 	 *
 	 * @return mixed
 	 */
@@ -150,7 +160,7 @@ class Admin {
 				],
 				'checkbox' => [
 					'value' => '1',
-					'label' => _x("Escludi dalle imposte", "Admin table", $this->plugin->get_textdomain())
+					'label' => _x("Exclude this tax when VAT is VIES Valid", "Admin table", $this->plugin->get_textdomain())
 				]
 			]);
 			return [];

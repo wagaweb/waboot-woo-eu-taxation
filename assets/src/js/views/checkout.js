@@ -31,10 +31,10 @@ export default class extends Backbone.Model{
             $checkout_form.on("change", "#billing_country", this, this.toggle_fields);
             //$(document).on("update_checkout", "body", this, this.toggle_fields);
         }
-        if($fiscal_code.is(".hidden")){
+        if($fiscal_code.is(".wbfi-hidden")){
             $fiscal_code.removeClass("validate-fiscal-code");
         }
-        if($vat.is(".hidden")){
+        if($vat.is(".wbfi-hidden")){
             $vat.removeClass("validate-vat");
         }
     }
@@ -161,12 +161,12 @@ export default class extends Backbone.Model{
     show_fiscal_code(show = true, mandatory = true){
         let $fiscal_code = $("#"+wbFIData.fields_id.fiscal_code+"_field");
         if(show){
-            $fiscal_code.removeClass("hidden woocommerce-validated");
+            $fiscal_code.removeClass("wbfi-hidden woocommerce-validated");
             if(mandatory){
                 $fiscal_code.addClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
             }
         }else{
-            $fiscal_code.addClass("hidden");
+            $fiscal_code.addClass("wbfi-hidden");
             if(mandatory){
                 $fiscal_code.removeClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
             }
@@ -187,9 +187,9 @@ export default class extends Backbone.Model{
     show_vat(show = true){
         let $vat = $("#"+wbFIData.fields_id.vat+"_field");
         if(show){
-            $vat.removeClass("hidden woocommerce-validated").addClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
+            $vat.removeClass("wbfi-hidden woocommerce-validated").addClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
         }else{
-            $vat.addClass("hidden").removeClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
+            $vat.addClass("wbfi-hidden").removeClass('validate-required validate-vat woocommerce-invalid-required-field woocommerce-invalid');
         }
     }
 
@@ -207,9 +207,9 @@ export default class extends Backbone.Model{
     show_vies_check(show = true){
         let $vies_check = $("#"+wbFIData.fields_id.vies_valid_check+"_field");
         if(show){
-            $vies_check.removeClass("hidden");
+            $vies_check.removeClass("wbfi-hidden");
         }else{
-            $vies_check.addClass("hidden").attr("checked",false);
+            $vies_check.addClass("wbfi-hidden").attr("checked",false);
         }
     }
 
