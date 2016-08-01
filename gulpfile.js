@@ -127,8 +127,8 @@ gulp.task('make-pot', function () {
     return gulp.src(['*.php', 'src/**/*.php'])
         .pipe(sort())
         .pipe(wpPot( {
-            domain: plugin_slug,
-            destFile: plugin_slug+'.pot',
+            domain: "wb-woo-fiscalita-italiana",
+            destFile: 'wb-woo-fiscalita-italiana.pot',
             team: 'Waga <info@waga.it>'
         } ))
         .pipe(gulp.dest('languages/'));
@@ -152,7 +152,7 @@ gulp.task('bower-update',function(){
  * Runs a build
  */
 gulp.task('build', function(callback) {
-    runSequence('bower-update', ['compile_js', 'compile_css'], 'make-package', 'archive', callback);
+    runSequence('bower-update', 'make-pot', ['compile_js', 'compile_css'], 'make-package', 'archive', callback);
 });
 
 /**
