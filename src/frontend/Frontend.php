@@ -182,14 +182,9 @@ class Frontend {
 				'class' => ['wbfi-hidden'],
 			]
 		];
-		$address_fields = Utilities::associative_array_add_element_after($customer_type,"billing_last_name",$address_fields);
-		//if($country == "IT"){
-			$address_fields = Utilities::associative_array_add_element_after($fiscal_code,Plugin::FIELD_CUSTOMER_TYPE,$address_fields);
-			$address_fields = Utilities::associative_array_add_element_after($vat,Plugin::FIELD_FISCAL_CODE,$address_fields);
-			$address_fields = Utilities::associative_array_add_element_after($vies_valid_check,Plugin::FIELD_VAT,$address_fields);
-		//}else{
-		//	$address_fields = Utilities::associative_array_add_element_after($vat,"billing_wb_woo_fi_customer_type",$address_fields);
-		//}
+
+		$address_fields = array_merge($address_fields,$customer_type,$fiscal_code,$vat,$vies_valid_check);
+
 		return $address_fields;
 	}
 
