@@ -6,9 +6,11 @@ export default class extends Backbone.Model{
         "use strict";
         let fields_ids = wbFIData.fields_id,
             $checkout_form = $( 'form.checkout' ),
-            $fiscal_code = $(fields_ids.fiscal_code+"_field"),
-            $vat = $(fields_ids.vat+"_field");
+            $fiscal_code = $("#"+fields_ids.fiscal_code+"_field"),
+            $vat = $("#"+fields_ids.vat+"_field");
         if($checkout_form.length > 0){
+            //On request invoice change:
+            $checkout_form.on("change", ".input-checkbox[name='"+fields_ids.request_invoice+"']", this, this.toggle_fields);
             //On form fields change:
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this, this.validate_fields);
             //On Customer type change:
@@ -46,10 +48,21 @@ export default class extends Backbone.Model{
      */
     toggle_fields(event){
         "use strict";
-        let current_customer_type = $(".select[name='"+wbFIData.fields_id.customer_type+"'] option:selected").val(),
-            current_country = $("#billing_country").val();
+        let $customer_type = $("#"+wbFIData.fields_id.customer_type+"_field"),
+            current_customer_type = $(".select[name='"+wbFIData.fields_id.customer_type+"'] option:selected").val(),
+            current_country = $("#billing_country").val(),
+            $request_invoice_check = $(".input-checkbox[name='"+wbFIData.fields_id.request_invoice+"']");
+
+        if($request_invoice_check.length > 0 && !$request_invoice_check.is(":checked") ){
+            event.data.hide_all();
+            return;
+        }
 
         if(current_customer_type === undefined) return;
+
+        if($customer_type.is(".wbfi-hidden")){
+            event.data.show_customer_type();
+        }
 
         //This is a jQuery event callback, so "this" is not a reference to the class. We sent the reference into the event.data propriety
 
@@ -154,6 +167,33 @@ export default class extends Backbone.Model{
     }
 
     /**
+     * Shows customer type
+     * @param show
+     * @param mandatory
+     */
+    show_customer_type(show = true, mandatory = true){
+        let $customer_type = $("#"+wbFIData.fields_id.customer_type+"_field");
+        if(show){
+            $customer_type.removeClass("wbfi-hidden woocommerce-validated");
+            if(mandatory){
+                $customer_type.addClass('validate-required woocommerce-invalid-required-field woocommerce-invalid');
+            }
+        }else{
+            $customer_type.addClass("wbfi-hidden");
+            if(mandatory){
+                $customer_type.removeClass('validate-required woocommerce-invalid-required-field woocommerce-invalid');
+            }
+        }
+    }
+
+    /**
+     * Hides the customer type
+     */
+    hide_customer_type(){
+        this.show_customer_type(false);
+    }
+
+    /**
      * Shows fiscal code
      * @param show
      * @param mandatory
@@ -218,5 +258,15 @@ export default class extends Backbone.Model{
      */
     hide_vies_check(){
         this.show_vies_check(false);
+    }
+
+    /**
+     * Hides all fields
+     */
+    hide_all(){
+        this.hide_customer_type();
+        this.hide_fiscal_code();
+        this.hide_vat();
+        this.hide_vies_check();
     }
 }

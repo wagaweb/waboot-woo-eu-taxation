@@ -112,9 +112,9 @@ class Admin {
 				}),
 			],
 			[
-				'title'   => __( 'VAT data are required', $this->plugin->get_textdomain() ),
-				'desc'    => __( 'Make VAT data mandatory', $this->plugin->get_textdomain() ),
-				'id'      => Plugin::FIELD_ADMIN_MANDATORY_CHECK,
+				'title'   => __( 'Billing data are required', $this->plugin->get_textdomain() ),
+				'desc'    => __( 'Customer type, fiscal code and VAT number will be required', $this->plugin->get_textdomain() ),
+				'id'      => Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,
 				'default' => 'no',
 				'type'    => 'checkbox',
 			]

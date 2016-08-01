@@ -19,13 +19,14 @@ use WBF\includes\Utilities;
  */
 class Plugin extends TemplatePlugin {
 
+	const FIELD_REQUEST_INVOICE = "billing_wb_woo_fi_request_invoice";
 	const FIELD_CUSTOMER_TYPE = "billing_wb_woo_fi_customer_type";
 	const FIELD_FISCAL_CODE = "billing_wb_woo_fi_fiscal_code";
 	const FIELD_VAT = "billing_wb_woo_fi_vat";
 	const FIELD_VIES_VALID_CHECK = "billing_wb_woo_fi_vies_valid";
 
 	const FIELD_ADMIN_SHOP_BILLING_COUNTRY = "wb_woo_fi_shop_billing_country";
-	const FIELD_ADMIN_MANDATORY_CHECK = "wb_woo_fi_mandatory_check";
+	const FIELD_ADMIN_REQUEST_INVOICE_CHECK = "wb_woo_fi_request_invoice_check";
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -64,6 +65,7 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_VAT, $plugin_public, "add_vat_to_customer_data", 10, 1);
 
 		//Fields backend validation
+		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_customer_type", $plugin_public, "validate_customer_type_on_checkout", 11, 1);
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
 		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 11, 1);
 
@@ -176,6 +178,17 @@ class Plugin extends TemplatePlugin {
 		if(!isset(WC()->customer->$vies_valid_check_field_name) || !WC()->customer->$vies_valid_check_field_name) return false;
 		$custom_rates = $this->get_custom_tax_rate_settings();
 		return array_key_exists($rate_id,$custom_rates['add_to_tax_exclusion']) && $custom_rates['add_to_tax_exclusion'][$rate_id];
+	}
+
+	/**
+	 * Checks if invoice data is required
+	 *
+	 * @return bool
+	 */
+	public function is_invoice_data_required(){
+		$field_name = self::FIELD_REQUEST_INVOICE;
+		$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no") == "yes" || WC()->customer->$field_name;
+		return $r;
 	}
 
 	/**

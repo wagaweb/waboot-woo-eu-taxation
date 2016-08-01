@@ -60,12 +60,14 @@ class Frontend {
 						'blogurl' => get_bloginfo("wpurl"),
 						'isAdmin' => is_admin(),
 						'fields_id' => [
+							'request_invoice' => Plugin::FIELD_REQUEST_INVOICE,
 							'customer_type' => Plugin::FIELD_CUSTOMER_TYPE,
 							'fiscal_code' => Plugin::FIELD_FISCAL_CODE,
 							'vat' => Plugin::FIELD_VAT,
 							'vies_valid_check' => Plugin::FIELD_VIES_VALID_CHECK
 						],
-						'eu_vat_countries' => WC()->countries->get_european_union_countries('eu_vat')
+						'eu_vat_countries' => WC()->countries->get_european_union_countries('eu_vat'),
+						'invoice_required' => get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no")
 					]
 				],
 				'type' => 'js',
@@ -99,9 +101,17 @@ class Frontend {
 				$data_values[Plugin::FIELD_VIES_VALID_CHECK] = true;
 				continue;
 			}
+			preg_match("/".Plugin::FIELD_REQUEST_INVOICE."=([a-zA-Z0-9]+)/",$data_string,$matches);
+			if(is_array($matches) && isset($matches[1])){
+				$data_values[Plugin::FIELD_REQUEST_INVOICE] = true;
+				continue;
+			}
 		}
 		if(!isset($data_values[Plugin::FIELD_VIES_VALID_CHECK])){
 			$data_values[Plugin::FIELD_VIES_VALID_CHECK] = false;
+		}
+		if(!isset($data_values[Plugin::FIELD_REQUEST_INVOICE])){
+			$data_values[Plugin::FIELD_REQUEST_INVOICE] = false;
 		}
 		if(!empty($data_values)){
 			$this->inject_customer_data($data_values);
@@ -144,6 +154,14 @@ class Frontend {
 	 * @return array
 	 */
 	public function add_billing_fields($address_fields, $country){
+		$invoice_required = get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no");
+
+		$request_billing = [
+			Plugin::FIELD_REQUEST_INVOICE => [
+				'label' => _x("Request invoice", "WC Field", $this->plugin->get_textdomain()),
+				'type' => 'checkbox'
+			]
+		];
 		$customer_type = [
 			Plugin::FIELD_CUSTOMER_TYPE => [
 				'label' => _x("Customer type", "WC Field", $this->plugin->get_textdomain()),
@@ -153,7 +171,8 @@ class Frontend {
 					'company' => _x("Company","WC Field",$this->plugin->get_textdomain())
 				],
 				'default' => 'individual',
-				'required' => true
+				'required' => $invoice_required == "yes",
+				'class' => $invoice_required != "yes" ? ['wbfi-hidden'] : []
 			]
 		];
 		$fiscal_code = [
@@ -183,9 +202,36 @@ class Frontend {
 			]
 		];
 
-		$address_fields = array_merge($address_fields,$customer_type,$fiscal_code,$vat,$vies_valid_check);
+		if($invoice_required == "yes"){
+			$address_fields = array_merge($address_fields,$customer_type,$fiscal_code,$vat,$vies_valid_check);
+		}else{
+			$address_fields = array_merge($address_fields,$request_billing,$customer_type,$fiscal_code,$vat,$vies_valid_check);
+		}
+
 
 		return $address_fields;
+	}
+
+	/**
+	 * Performs validation on $customer_type
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $customer_type
+	 *
+	 * @return string
+	 */
+	function validate_customer_type_on_checkout($customer_type){
+		if($this->plugin->is_invoice_data_required()){
+			if($customer_type == ""){
+				wc_add_notice( apply_filters( 'wb_woo_fi/invalid_customer_type_field_notice',
+					sprintf(
+						_x( '%s is required.', 'WC Validation Message', $this->plugin->get_textdomain() ),
+						'<strong>'.__("Customer type", $this->plugin->get_textdomain()).'</strong>' )
+				), 'error' );
+			}
+		}
+		return $customer_type;
 	}
 
 	/**
@@ -197,13 +243,18 @@ class Frontend {
 	 *
 	 * @param $fiscal_code
 	 *
-	 * @return mixed/**
+	 * @return mixed
 	 */
 	function validate_fiscal_code_on_checkout($fiscal_code){
-		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] != "IT") return $fiscal_code;
+		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] != "IT" || !$this->plugin->is_invoice_data_required()) return $fiscal_code;
 		$result = $this->plugin->validate_fiscal_code($fiscal_code);
 		if(!$result['is_valid']){
-			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_field_notice', sprintf( $result['err_message'], '<strong>'.__("Codice fiscale", $this->plugin->get_textdomain()).'</strong>' ) ), 'error' );
+			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_notice',
+				sprintf(
+					_x( '%s is required.', 'WC Validation Message', $this->plugin->get_textdomain() ),
+					'<strong>'.__("Fiscal Code", $this->plugin->get_textdomain()).'</strong>'
+				)
+			), 'error' );
 		}
 		return $fiscal_code;
 	}
