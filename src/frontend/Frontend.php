@@ -138,6 +138,21 @@ class Frontend {
 	}
 
 	/**
+	 *
+	 * @see \WC_Tax::get_matched_tax_rates()
+	 *
+	 * @hooked 'woocommerce_matched_tax_rates'
+	 */
+	public function maybe_add_shop_billing_country_tax_to_item_taxes($matched_tax_rates, $country, $state, $postcode, $city, $tax_class){
+		global $wpdb;
+		//Check if there already a rate for $country
+		$wpdb->get_results("SELECT FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$country'");
+		//If not, search if there is for the country set by user in out options
+		//If yes, and is not already getted, append it to matches
+		return $matched_tax_rates;
+	}
+
+	/**
 	 * Calculate tax amount for prices exclusive of taxes
 	 *
 	 * @see WC_TAX::calc_exclusive_tax

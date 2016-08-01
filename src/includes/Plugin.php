@@ -54,6 +54,7 @@ class Plugin extends TemplatePlugin {
 
 		//Tax management
 		$this->loader->add_action("woocommerce_checkout_update_order_review", $plugin_public, "on_update_order_review");
+		//$this->loader->add_filter("woocommerce_matched_tax_rates", $plugin_public, "maybe_add_shop_billing_country_tax_to_item_taxes", 10, 6); //todo: in testing
 		$this->loader->add_filter("woocommerce_price_ex_tax_amount", $plugin_public, "on_calculate_ex_tax_amount", 10, 4);
 		$this->loader->add_filter("woocommerce_price_inc_tax_amount", $plugin_public, "on_calculate_inc_tax_amount", 10, 4);
 
