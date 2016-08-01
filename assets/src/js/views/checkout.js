@@ -85,7 +85,7 @@ export default class extends Backbone.Model{
                 break;
             case 'company':
                 event.data.show_vat();
-                if(current_country != "IT" && $.inArray(current_country,wbFIData.eu_vat_countries) != -1){
+                if(current_country != wbFIData.shop_billing_country && $.inArray(current_country,wbFIData.eu_vat_countries) != -1){
                     event.data.show_vies_check();
                 }
                 break;

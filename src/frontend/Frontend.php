@@ -67,7 +67,8 @@ class Frontend {
 							'vies_valid_check' => Plugin::FIELD_VIES_VALID_CHECK
 						],
 						'eu_vat_countries' => WC()->countries->get_european_union_countries('eu_vat'),
-						'invoice_required' => get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no")
+						'invoice_required' => get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no"),
+						'shop_billing_country' => get_option(Plugin::FIELD_ADMIN_SHOP_BILLING_COUNTRY,"IT")
 					]
 				],
 				'type' => 'js',
