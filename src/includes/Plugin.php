@@ -24,6 +24,9 @@ class Plugin extends TemplatePlugin {
 	const FIELD_VAT = "billing_wb_woo_fi_vat";
 	const FIELD_VIES_VALID_CHECK = "billing_wb_woo_fi_vies_valid";
 
+	const FIELD_ADMIN_SHOP_BILLING_COUNTRY = "wb_woo_fi_shop_billing_country";
+	const FIELD_ADMIN_MANDATORY_CHECK = "wb_woo_fi_mandatory_check";
+
 	/**
 	 * Define the core functionality of the plugin.
 	 */
@@ -80,6 +83,8 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_action('admin_init', $plugin_admin, 'save_custom_tax_rate_settings');
 
 		$this->loader->add_filter('woocommerce_customer_meta_fields', $plugin_admin, 'add_woocommerce_customer_meta_fields');
+
+		$this->loader->add_filter('woocommerce_tax_settings', $plugin_admin, 'add_tax_settings');
 
 		$this->loader->add_filter("woocommerce_get_sections_"."tax", $plugin_admin, "alter_tax_sections", 10, 1);
 		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);

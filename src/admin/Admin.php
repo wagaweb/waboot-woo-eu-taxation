@@ -84,6 +84,50 @@ class Admin {
 	}
 
 	/**
+	 * Adds our custom settings to Tax Settings page
+	 *
+	 * @param $settings
+	 *
+	 * @return mixed
+	 */
+	public function add_tax_settings($settings){
+		$custom_settings = [
+			[
+				'title'   => __( 'Shop billing country', $this->plugin->get_textdomain() ),
+				'desc'    => __( 'Select the country your shop billing from', $this->plugin->get_textdomain() ),
+				'id'      => Plugin::FIELD_ADMIN_SHOP_BILLING_COUNTRY,
+				'type' => 'select',
+				'class'   => 'wc-enhanced-select',
+				'default' => 'IT',
+				'options' => call_user_func(function(){
+					$output = [];
+					$countries = WC()->countries->get_countries();
+					$eu_countries = WC()->countries->get_european_union_countries();
+					foreach($eu_countries as $cc){
+						if(array_key_exists($cc,$countries)){
+							$output[$cc] = $countries[$cc];
+						}
+					}
+					return $output;
+				}),
+			],
+			[
+				'title'   => __( 'VAT data are required', $this->plugin->get_textdomain() ),
+				'desc'    => __( 'Make VAT data mandatory', $this->plugin->get_textdomain() ),
+				'id'      => Plugin::FIELD_ADMIN_MANDATORY_CHECK,
+				'default' => 'no',
+				'type'    => 'checkbox',
+			]
+		];
+
+		$top_elements = array_slice($settings, 0, count($settings)-1);
+		$last_element = array_slice($settings, -1, 1);
+		$new_settings = array_merge($top_elements,$custom_settings,$last_element);
+
+		return $new_settings;
+	}
+
+	/**
 	 * Handle the save operation for the custom tax rates settings
 	 *
 	 * @hooked 'admin_init'
