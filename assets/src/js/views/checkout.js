@@ -12,7 +12,7 @@ export default class extends Backbone.Model{
             //On form fields change:
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this, this.validate_fields);
             //On Customer type change:
-            $checkout_form.on("change", ".input-radio[name='"+fields_ids.customer_type+"']", this, this.toggle_fields);
+            $checkout_form.on("change", ".select[name='"+fields_ids.customer_type+"']", this, this.toggle_fields);
             //On VIES check change:
             $checkout_form.on("change", ".input-checkbox[name='"+fields_ids.vies_valid_check+"']", this, function(event){
                 //Do VAT validation
@@ -46,7 +46,7 @@ export default class extends Backbone.Model{
      */
     toggle_fields(event){
         "use strict";
-        let current_customer_type = $(".input-radio[name='"+wbFIData.fields_id.customer_type+"']:checked").val(),
+        let current_customer_type = $(".select[name='"+wbFIData.fields_id.customer_type+"'] option:selected").val(),
             current_country = $("#billing_country").val();
 
         if(current_customer_type === undefined) return;

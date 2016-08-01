@@ -147,12 +147,12 @@ class Frontend {
 		$customer_type = [
 			Plugin::FIELD_CUSTOMER_TYPE => [
 				'label' => _x("Customer type", "WC Field", $this->plugin->get_textdomain()),
-				'type' => 'radio',
+				'type' => 'select',
 				'options' => [
 					'individual' => _x("Private individual","WC Field",$this->plugin->get_textdomain()),
 					'company' => _x("Company","WC Field",$this->plugin->get_textdomain())
 				],
-				'default' => '',
+				'default' => 'individual',
 				'required' => true
 			]
 		];
