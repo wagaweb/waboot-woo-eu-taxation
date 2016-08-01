@@ -269,7 +269,7 @@ class Frontend {
 		if(!$result['is_valid']){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_notice',
 				sprintf(
-					_x( '%s is required.', 'WC Validation Message', $this->plugin->get_textdomain() ),
+					_x( '%s is not valid.', 'WC Validation Message', $this->plugin->get_textdomain() ),
 					'<strong>'.__("Fiscal Code", $this->plugin->get_textdomain()).'</strong>'
 				)
 			), 'error' );
