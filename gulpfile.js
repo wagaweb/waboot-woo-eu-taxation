@@ -108,7 +108,7 @@ gulp.task('browserify', function(){
  */
 gulp.task('make-package', function(){
     return gulp.src(paths.build)
-        .pipe(copy(paths.builddir+"/pkg/"+plugin_slug));
+        .pipe(copy(paths.builddir+"/pkg/"+"wb-woo-fiscalita-italiana"));
 });
 
 /**
@@ -116,7 +116,7 @@ gulp.task('make-package', function(){
  */
 gulp.task('archive', function(){
     return gulp.src(paths.builddir+"/pkg/**")
-        .pipe(zip(plugin_slug+'-'+pkg.version+'.zip'))
+        .pipe(zip("wb-woo-fiscalita-italiana"+'-'+pkg.version+'.zip'))
         .pipe(gulp.dest("./builds"));
 });
 
