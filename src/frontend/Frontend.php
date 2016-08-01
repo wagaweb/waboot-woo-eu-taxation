@@ -79,6 +79,24 @@ class Frontend {
 		$am->enqueue();
 	}
 
+	/**
+	 * Adds correct checkbox values to WC()->customer before checkout validation.
+	 * For some reason "woocommerce_checkout_update_order_review" recognize as always present the checkboxes selected at least one time.
+	 */
+	public function add_checkboxes_options_to_customer_on_checkout(){
+		$post_data = $_POST;
+		$data_values = [];
+		if(!isset($post_data[Plugin::FIELD_REQUEST_INVOICE])){
+			$data_values[Plugin::FIELD_REQUEST_INVOICE] = false;
+		}
+		if(!isset($data_values[Plugin::FIELD_VIES_VALID_CHECK])){
+			$data_values[Plugin::FIELD_VIES_VALID_CHECK] = false;
+		}
+		if(!empty($data_values)){
+			$this->inject_customer_data($data_values);
+		}
+	}
+
 	/*
 	 * Performs action on update order review
 	 *
@@ -108,10 +126,10 @@ class Frontend {
 			}
 		}
 		if(!isset($data_values[Plugin::FIELD_VIES_VALID_CHECK])){
-			$data_values[Plugin::FIELD_VIES_VALID_CHECK] = false;
+			$data_values[Plugin::FIELD_VIES_VALID_CHECK] = false; //add_checkboxes_options_to_customer_on_checkout() should take care of this case, but you never know.
 		}
 		if(!isset($data_values[Plugin::FIELD_REQUEST_INVOICE])){
-			$data_values[Plugin::FIELD_REQUEST_INVOICE] = false;
+			$data_values[Plugin::FIELD_REQUEST_INVOICE] = false; //add_checkboxes_options_to_customer_on_checkout() should take care of this case, but you never know.s
 		}
 		if(!empty($data_values)){
 			$this->inject_customer_data($data_values);

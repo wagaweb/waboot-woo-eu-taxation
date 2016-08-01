@@ -10,7 +10,14 @@ export default class extends Backbone.Model{
             $vat = $("#"+fields_ids.vat+"_field");
         if($checkout_form.length > 0){
             //On request invoice change:
-            $checkout_form.on("change", ".input-checkbox[name='"+fields_ids.request_invoice+"']", this, this.toggle_fields);
+            $checkout_form.on("blur change", ".input-checkbox[name='"+fields_ids.request_invoice+"']", this, function(event){
+                if($(this).is(":checked")){
+                   $(this).attr("value","1");
+                }else{
+                    $(this).attr("value","");
+                }
+                event.data.toggle_fields(event);
+            });
             //On form fields change:
             $checkout_form.on("blur change", ".input-text, select, input:checkbox", this, this.validate_fields);
             //On Customer type change:
