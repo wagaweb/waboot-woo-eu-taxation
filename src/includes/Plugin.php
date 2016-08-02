@@ -54,7 +54,7 @@ class Plugin extends TemplatePlugin {
 
 		//Tax management
 		$this->loader->add_action("woocommerce_checkout_update_order_review", $plugin_public, "on_update_order_review");
-		//$this->loader->add_filter("woocommerce_matched_tax_rates", $plugin_public, "maybe_add_shop_billing_country_tax_to_item_taxes", 10, 6); //todo: in testing
+		$this->loader->add_filter("woocommerce_matched_tax_rates", $plugin_public, "maybe_add_shop_billing_country_tax_to_item_taxes", 10, 6); //todo: in testing
 		$this->loader->add_filter("woocommerce_price_ex_tax_amount", $plugin_public, "on_calculate_ex_tax_amount", 10, 4);
 		$this->loader->add_filter("woocommerce_price_inc_tax_amount", $plugin_public, "on_calculate_inc_tax_amount", 10, 4);
 
@@ -84,6 +84,8 @@ class Plugin extends TemplatePlugin {
 	private function define_admin_hooks(){
 		$plugin_admin = $this->loader->admin_plugin;
 
+		$this->loader->add_action('admin_init', $plugin_admin, 'display_admin_notice');
+
 		$this->loader->add_action('admin_init', $plugin_admin, 'save_custom_tax_rate_settings');
 
 		$this->loader->add_filter('woocommerce_customer_meta_fields', $plugin_admin, 'add_woocommerce_customer_meta_fields');
@@ -94,6 +96,21 @@ class Plugin extends TemplatePlugin {
 		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);
 	}
 
+	/**
+	 * Gets the shop billing country
+	 * 
+	 * @return string
+	 */
+	public function get_shop_billing_country(){
+		$default = apply_filters("wb-woo-fi/default_shop_billing_country","IT");
+		return get_option(self::FIELD_ADMIN_SHOP_BILLING_COUNTRY,$default);
+	}
+
+	/**
+	 * Gets the current tax rates
+	 * 
+	 * @return array
+	 */
 	public function get_tax_rates(){
 		//Get the already set tax rates
 		$tax_classes[] = ""; //For some odd reason, the "standard" tax rate is identified by an empty string.
@@ -171,7 +188,6 @@ class Plugin extends TemplatePlugin {
 	 * Check if the tax exclusion rule can be applied to $rate_id
 	 *
 	 * @param $rate_id
-	 * @param bool $customer_type
 	 *
 	 * @return bool
 	 */

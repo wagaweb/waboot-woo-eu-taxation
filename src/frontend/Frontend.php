@@ -68,7 +68,7 @@ class Frontend {
 						],
 						'eu_vat_countries' => WC()->countries->get_european_union_countries('eu_vat'),
 						'invoice_required' => get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no"),
-						'shop_billing_country' => get_option(Plugin::FIELD_ADMIN_SHOP_BILLING_COUNTRY,"IT")
+						'shop_billing_country' => $this->plugin->get_shop_billing_country()
 					]
 				],
 				'type' => 'js',
@@ -138,7 +138,9 @@ class Frontend {
 	}
 
 	/**
-	 *
+	 * If there is no tax rate for customer billing country, this will search for the base IVA for shop billing country.
+	 * The shop owner must provide a tax rate called "%IVA%" with the country selected as billing country.
+	 * 
 	 * @see \WC_Tax::get_matched_tax_rates()
 	 *
 	 * @hooked 'woocommerce_matched_tax_rates'
@@ -146,9 +148,21 @@ class Frontend {
 	public function maybe_add_shop_billing_country_tax_to_item_taxes($matched_tax_rates, $country, $state, $postcode, $city, $tax_class){
 		global $wpdb;
 		//Check if there already a rate for $country
-		$wpdb->get_results("SELECT FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$country'");
+		$country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$country'");
 		//If not, search if there is for the country set by user in out options
-		//If yes, and is not already getted, append it to matches
+		if(empty($country_rate)){
+			$shop_billing_country = $this->plugin->get_shop_billing_country();
+			$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country' AND tax_rate_name LIKE('%IVA%') AND tax_rate_class = '$tax_class'");
+			if(!empty($shop_country_rate)){
+				$new_matched_rate = $shop_country_rate[0];
+				$matched_tax_rates[intval($new_matched_rate->tax_rate_id)] = [
+					'rate' => $new_matched_rate->tax_rate,
+					'label' => $new_matched_rate->tax_rate_name,
+					'shipping' => $new_matched_rate->tax_rate_shipping == "1" ? "yes" : "no",
+					'compound' => $new_matched_rate->tax_rate_compound == "1" ? "yes" : "no"
+				];
+			}
+		}
 		return $matched_tax_rates;
 	}
 
@@ -302,7 +316,7 @@ class Frontend {
 		if(!$fiscal_code){
 			echo json_encode([
 				'valid' => false,
-				'error' => __("Non è stato fornito un codice fiscale valido", $this->plugin->get_textdomain())
+				'error' => __("Fiscal code is not valid", $this->plugin->get_textdomain())
 			]);
 			die();
 		}
@@ -363,40 +377,6 @@ class Frontend {
 			'error' => !$result ? __("No valid VAT provided", $this->plugin->get_textdomain()) : ""
 		]);
 		die();
-	}
-
-	/**
-	 * Adds customer type to WC Customer object
-	 *
-	 * @hooked 'woocommerce_process_checkout_field_*'
-	 *
-	 * @param $customer_type
-	 *
-	 * @return mixed
-	 */
-	function add_customer_type_to_customer_data($customer_type){
-		if(isset($customer_type)){
-			$field_name = Plugin::FIELD_CUSTOMER_TYPE;
-			WC()->customer->$field_name = $customer_type;
-		}
-		return $customer_type;
-	}
-
-	/**
-	 * Adds customer type to WC Customer object
-	 *
-	 * @hooked 'woocommerce_process_checkout_field_*'
-	 *
-	 * @param $vat
-	 *
-	 * @return mixed
-	 */
-	function add_vat_to_customer_data($vat){
-		if(isset($customer_type)){
-			$field_name = Plugin::FIELD_VAT;
-			WC()->customer->$field_name = $vat;
-		}
-		return $vat;
 	}
 
 	/**

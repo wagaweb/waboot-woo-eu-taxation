@@ -37,6 +37,25 @@ class Admin {
 		if(isset($core)) $this->plugin = $core;
 	}
 
+	/**
+	 * Display admin notice if required
+	 *
+	 * @hooked 'admin_init'
+	 */
+	public function display_admin_notice(){
+		global $wpdb;
+		$shop_billing_country = $this->plugin->get_shop_billing_country();
+		$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country' AND tax_rate_name LIKE('%IVA%')");
+		if(empty($shop_country_rate)){
+			Utilities::admin_show_message(
+				sprintf(
+					__("WB Woo FI requires a tax rate with the following settings: <br/><br/> <strong>Country:</strong> %s <br /> <strong>Label</strong>: IVA - %s <br/><br/> You can change shop billing country in WooCommerce tax settings. ", $this->plugin->get_textdomain()),
+					$shop_billing_country,$shop_billing_country
+				),
+				"nag"
+			);
+		}
+	}
 
 	/**
 	 * Adds custom fields to customer administration in dashboard
@@ -98,7 +117,7 @@ class Admin {
 				'id'      => Plugin::FIELD_ADMIN_SHOP_BILLING_COUNTRY,
 				'type' => 'select',
 				'class'   => 'wc-enhanced-select',
-				'default' => 'IT',
+				'default' => apply_filters("wb-woo-fi/default_shop_billing_country","IT"),
 				'options' => call_user_func(function(){
 					$output = [];
 					$countries = WC()->countries->get_countries();
