@@ -6,23 +6,19 @@ namespace WBWooFI;
  * The plugin bootstrap file
  *
  * @link              http://www.waboot.com
- * @since             0.1.0
  * @package           WBWooFI
  *
  * @wordpress-plugin
  * Plugin Name:       WB Fiscalità Italiana per WooCommerce
  * Plugin URI:        http://www.waboot.com/
  * Description:       Un plugin per gestire la fiscalità italiana
- * Version:           0.1.0
+ * Version:           1.0.0
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wb-woo-fi
+ * Text Domain:       wb-woo-fiscalita-italiana
  * Domain Path:       /languages
- *
- *
- * [IT] Lo scheletro del plugin e composto dai file wb-woo-fi.php, admin/class-admin.php, public/class-public.php e includes/class-plugin.php (che connette admin e public e inizializza la plugin)
  */
 
 use WBWooFI\includes\Activator;
@@ -83,20 +79,8 @@ spl_autoload_register(function($class){
 register_activation_hook( __FILE__, function(){ Activator::activate(); } );
 register_deactivation_hook( __FILE__, function(){ Deactivator::deactivate(); } );
 
-if(\WBWooFI\includes\pluginsframework_is_present()): // Starts the plugin only if WBF Plugin Framework is present
-	require_once plugin_dir_path( __FILE__ ) . 'src/includes/Plugin.php';
-	/**
-	 * Begins execution of the plugin.
-	 *
-	 * @since    1.0.0
-	 */
-	function run() {
-		$plugin = new Plugin();
-		/*
-		 * [IT] Il metodo run si trova in: wbf/includes/pluginsframework/Plugin.php .
-		 * Al momento non fa altro che chiamare il metodo omonimo del Loader, che a sua volta registra azioni e filtri dentro WP.
-		 */
-		$plugin->run();
-	}
-	run();
-endif;
+if(!\WBWooFI\includes\pluginsframework_is_present()) return; // Starts the plugin only if WBF Plugin Framework is present
+
+require_once 'src/includes/Plugin.php';
+$plugin = new Plugin();
+$plugin->run();
