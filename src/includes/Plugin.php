@@ -1,8 +1,8 @@
 <?php
 
 namespace WBWooFI\includes;
-use WBF\includes\pluginsframework\TemplatePlugin;
-use WBF\includes\Utilities;
+use WBF\components\pluginsframework\TemplatePlugin;
+use WBF\components\utils\Utilities;
 
 /**
  * The core plugin class.

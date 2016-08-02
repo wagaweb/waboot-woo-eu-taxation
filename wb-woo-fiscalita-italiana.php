@@ -29,13 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die; //If this file is called directly, abort.
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'src/includes/utils.php';
-try{
-	$wbf_autoloader = includes\get_autoloader();
-	require_once $wbf_autoloader;
-}catch(\Exception $e){
-	includes\maybe_disable_plugin("wb-woo-fi/wb-woo-fi.php"); // /!\ /!\ /!\ HEY, LOOK! EDIT THIS ALSO!! /!\ /!\ /!\
-}
+require_once "vendor/autoload.php";
 
 /********************************************************/
 /****************** PLUGIN BEGIN ************************
@@ -78,8 +72,6 @@ spl_autoload_register(function($class){
 
 register_activation_hook( __FILE__, function(){ Activator::activate(); } );
 register_deactivation_hook( __FILE__, function(){ Deactivator::deactivate(); } );
-
-if(!\WBWooFI\includes\pluginsframework_is_present()) return; // Starts the plugin only if WBF Plugin Framework is present
 
 require_once 'src/includes/Plugin.php';
 $plugin = new Plugin();

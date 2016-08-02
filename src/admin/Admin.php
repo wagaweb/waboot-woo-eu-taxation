@@ -1,10 +1,10 @@
 <?php
 namespace WBWooFI\admin;
-use WBF\includes\mvc\HTMLView;
-use WBWooFI\includes\Plugin;
-use WBWooFI\includes\WCFI_Settings_Tax;
 
-use WBF\includes\Utilities;
+use WBF\components\mvc\HTMLView;
+use WBWooFI\includes\Plugin;
+use WBF\components\utils\Utilities;
+
 /**
  * The public-facing functionality of the plugin.
  *

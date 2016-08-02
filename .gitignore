@@ -3,6 +3,12 @@ bower_components/
 builds/
 npm-debug.log
 
+vendor/bin
+vendor/composer
+vendor/yahnis-elsts
+vendor/autoload.php
+composer.lock
+
 ############
 ## ASSETS
 ############

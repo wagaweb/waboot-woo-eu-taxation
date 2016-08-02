@@ -1,8 +1,8 @@
 <?php
 
 namespace WBWooFI\frontend;
-use WBF\includes\AssetsManager;
-use WBF\includes\Utilities;
+use WBF\components\assets\AssetsManager;
+use WBF\components\utils\Utilities;
 use WBWooFI\includes\Plugin;
 
 /**
