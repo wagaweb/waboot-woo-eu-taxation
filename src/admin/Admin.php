@@ -190,7 +190,7 @@ class Admin {
 	 * @return mixed
 	 */
 	public function alter_tax_sections($sections){
-		$sections[self::MENU_SLUG] = __( 'Impostazioni per EU', $this->plugin->get_textdomain() );
+		$sections[self::MENU_SLUG] = __( 'EU Settings', $this->plugin->get_textdomain() );
 		return $sections;
 	}
 
