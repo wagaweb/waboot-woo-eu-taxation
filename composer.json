@@ -22,6 +22,7 @@
       "vendor/wbf/assets",
       "vendor/wbf/customupdater",
       "vendor/wbf/customupdater/vendor/theme-update-checker.php",
+      "vendor/yahnis-elsts/plugin-update-checker",
       "vendor/wbf/mvc",
       "vendor/wbf/notices",
       "vendor/wbf/pluginsframework",

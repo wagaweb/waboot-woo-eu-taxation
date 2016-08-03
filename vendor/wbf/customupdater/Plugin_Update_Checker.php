@@ -6,8 +6,6 @@ use WBF\components\license\License;
 use WBF\components\notices\Notice_Manager;
 use WBF\components\utils\Utilities;
 
-require_once "vendor/autoload.php";
-
 class Plugin_Update_Checker extends \PluginUpdateChecker{
 
 	/**

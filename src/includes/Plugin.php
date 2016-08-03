@@ -33,10 +33,10 @@ class Plugin extends TemplatePlugin {
 	 * Define the core functionality of the plugin.
 	 */
 	public function __construct() {
-		parent::__construct( "wb-woo-fiscalita-italiana", plugin_dir_path( dirname( dirname( __FILE__ ) ) ) );
+		parent::__construct( "wb-woo-eu-taxation", plugin_dir_path( dirname( dirname( __FILE__ ) ) ) );
 
 		//Setting the update server:
-		//$this->set_update_server("http://update.waboot.org/?action=get_metadata&slug={$this->plugin_name}&type=plugin");
+		$this->set_update_server("http://update.waboot.org/?action=get_metadata&slug={$this->plugin_name}&type=plugin");
 
 		if(in_array("woocommerce/woocommerce.php",get_option("active_plugins",[]))){
 			$this->define_public_hooks();
