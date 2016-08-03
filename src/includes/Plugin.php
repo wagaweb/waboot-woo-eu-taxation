@@ -72,9 +72,9 @@ class Plugin extends TemplatePlugin {
 
 		//Fields backend validation
 		$this->loader->add_action("woocommerce_before_checkout_process", $plugin_public, "add_checkboxes_options_to_customer_on_checkout", 10);
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_customer_type", $plugin_public, "validate_customer_type_on_checkout", 11, 1);
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_fiscal_code", $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
-		$this->loader->add_filter("woocommerce_process_checkout_field_"."billing_wb_woo_fi_vat", $plugin_public, "validate_vat_on_checkout", 11, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_CUSTOMER_TYPE, $plugin_public, "validate_customer_type_on_checkout", 11, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_FISCAL_CODE, $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
+		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_VAT, $plugin_public, "validate_vat_on_checkout", 11, 1);
 
 		//Ajax
 		$this->loader->add_action( 'wp_ajax_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );

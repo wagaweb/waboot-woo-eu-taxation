@@ -398,6 +398,40 @@ class Frontend {
 	}
 
 	/**
+	 * Adds customer type to WC Customer object
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $customer_type
+	 *
+	 * @return mixed
+	 */
+	function add_customer_type_to_customer_data($customer_type){
+		if(isset($customer_type)){
+			$field_name = Plugin::FIELD_CUSTOMER_TYPE;
+			WC()->customer->$field_name = $customer_type;
+		}
+		return $customer_type;
+	}
+
+	/**
+	 * Adds customer type to WC Customer object
+	 *
+	 * @hooked 'woocommerce_process_checkout_field_*'
+	 *
+	 * @param $vat
+	 *
+	 * @return mixed
+	 */
+	function add_vat_to_customer_data($vat){
+		if(isset($customer_type)){
+			$field_name = Plugin::FIELD_VAT;
+			WC()->customer->$field_name = $vat;
+		}
+		return $vat;
+	}
+
+	/**
 	 * Adds custom data to WC Customer object
 	 *
 	 * @param $data
