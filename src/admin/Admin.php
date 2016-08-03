@@ -45,14 +45,15 @@ class Admin {
 	public function display_admin_notice(){
 		global $wpdb;
 		$shop_billing_country = $this->plugin->get_shop_billing_country();
-		$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country' AND tax_rate_name LIKE('%IVA%')");
+		$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country'");
 		if(empty($shop_country_rate)){
-			Utilities::admin_show_message(
+			Utilities::add_admin_notice("wb-woo-fi-required-tax",
 				sprintf(
-					__("WB Woo FI requires a tax rate with the following settings: <br/><br/> <strong>Country:</strong> %s <br /> <strong>Label</strong>: IVA - %s <br/><br/> You can change shop billing country in WooCommerce tax settings. ", $this->plugin->get_textdomain()),
+					__("WB Woo FI requires a tax rate with the following settings: <br/><br/> <strong>Country:</strong> %s <br/><br/> You can change shop billing country in WooCommerce tax settings. ", $this->plugin->get_textdomain()),
 					$shop_billing_country,$shop_billing_country
 				),
-				"nag"
+				"nag",
+				["category" => "_flash_"]
 			);
 		}
 	}
@@ -131,7 +132,14 @@ class Admin {
 				}),
 			],
 			[
-				'title'   => __( 'Billing data are required', $this->plugin->get_textdomain() ),
+				'title'   => __( 'Shop billing country tax rate as default for EU countries', $this->plugin->get_textdomain() ),
+				'desc'    => __( 'The tax rate associated with shop billing country will be applied when there is no rates for customer billing country', $this->plugin->get_textdomain() ),
+				'id'      => Plugin::FIELD_ADMIN_SHOP_BILLING_COUNTRY_RATE_AS_DEFAULT,
+				'default' => 'yes',
+				'type'    => 'checkbox',
+			],
+			[
+				'title'   => __( 'Invoice data are required', $this->plugin->get_textdomain() ),
 				'desc'    => __( 'Customer type, fiscal code and VAT number will be required', $this->plugin->get_textdomain() ),
 				'id'      => Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,
 				'default' => 'no',

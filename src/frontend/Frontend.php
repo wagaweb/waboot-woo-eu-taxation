@@ -147,14 +147,32 @@ class Frontend {
 	 */
 	public function maybe_add_shop_billing_country_tax_to_item_taxes($matched_tax_rates, $country, $state, $postcode, $city, $tax_class){
 		global $wpdb;
+
+		if(!in_array($country,WC()->countries->get_european_union_countries())) return $matched_tax_rates;
+		if(!$this->plugin->can_apply_shop_billing_country_as_default_tax_rate()) return $matched_tax_rates;
+
 		//Check if there already a rate for $country
 		$country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$country'");
 		//If not, search if there is for the country set by user in out options
 		if(empty($country_rate)){
 			$shop_billing_country = $this->plugin->get_shop_billing_country();
-			$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country' AND tax_rate_name LIKE('%IVA%') AND tax_rate_class = '$tax_class'");
+			$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country' AND tax_rate_class = '$tax_class'");
 			if(!empty($shop_country_rate)){
-				$new_matched_rate = $shop_country_rate[0];
+				if(count($shop_country_rate) > 1){
+					$new_matched_rate = call_user_func(function() use($shop_country_rate){
+						$current_priority = 0;
+						$new_matched_rate = [];
+						foreach($shop_country_rate as $r){
+							if(intval($r->tax_rate_priority) > $current_priority){
+								$current_priority = intval($r->tax_rate_priority);
+								$new_matched_rate = $r;
+							}
+						}
+						return $new_matched_rate;
+					});
+				}else{
+					$new_matched_rate = $shop_country_rate[0];
+				}
 				$matched_tax_rates[intval($new_matched_rate->tax_rate_id)] = [
 					'rate' => $new_matched_rate->tax_rate,
 					'label' => $new_matched_rate->tax_rate_name,

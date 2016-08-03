@@ -27,6 +27,7 @@ class Plugin extends TemplatePlugin {
 
 	const FIELD_ADMIN_SHOP_BILLING_COUNTRY = "wb_woo_fi_shop_billing_country";
 	const FIELD_ADMIN_REQUEST_INVOICE_CHECK = "wb_woo_fi_request_invoice_check";
+	const FIELD_ADMIN_SHOP_BILLING_COUNTRY_RATE_AS_DEFAULT = "wb_woo_fi_shop_billing_country_is_default_rate";
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -153,6 +154,16 @@ class Plugin extends TemplatePlugin {
 	 */
 	public function set_custom_tax_rate_settings($rates){
 		return update_option($this->get_plugin_name()."_custom_rates_settings",$rates);
+	}
+
+	/**
+	 * Checks if the shop billing country rate can be applied as default rate
+	 *
+	 * @return bool
+	 */
+	public function can_apply_shop_billing_country_as_default_tax_rate(){
+		$r = get_option(self::FIELD_ADMIN_SHOP_BILLING_COUNTRY_RATE_AS_DEFAULT,"yes") == "yes";
+		return $r;
 	}
 
 	/**
