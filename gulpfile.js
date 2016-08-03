@@ -127,8 +127,8 @@ gulp.task('make-pot', function () {
     return gulp.src(['*.php', 'src/**/*.php'])
         .pipe(sort())
         .pipe(wpPot( {
-            domain: "wb-woo-fiscalita-italiana",
-            destFile: 'wb-woo-fiscalita-italiana.pot',
+            domain: "wb-woo-eu-taxation",
+            destFile: 'wb-woo-eu-taxation.pot',
             team: 'Waga <info@waga.it>'
         } ))
         .pipe(gulp.dest('languages/'));
