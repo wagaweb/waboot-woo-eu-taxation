@@ -215,7 +215,7 @@ class Admin {
 	public function display_tax_settings($settings){
 		global $current_section;
 		if($current_section == self::MENU_SLUG){
-			$v = new HTMLView("src/views/admin/html-settings-tax.php","wb-woo-fiscalita-italiana");
+			$v = new HTMLView("src/views/admin/html-settings-tax.php","wb-woo-eu-taxation");
 
 			//Get the already set tax rates
 			$rates = $this->plugin->get_tax_rates();
