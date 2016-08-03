@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-08-03 13:04+0200\n"
+"PO-Revision-Date: 2016-08-03 13:29+0200\n"
 "Language-Team: Waga <info@waga.it>\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -15,7 +15,7 @@ msgstr ""
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "POT-Creation-Date: \n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.4\n"
 "Last-Translator: \n"
 "Language: it\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -23,85 +23,89 @@ msgstr ""
 
 #: src/admin/Admin.php:116
 msgid "Shop billing country"
-msgstr "Paese di fatturazione dello Shop"
+msgstr "Paese di fatturazione dello shop"
 
 #: src/admin/Admin.php:117
 msgid "Select the country your shop billing from"
-msgstr ""
+msgstr "Seleziona il paese da cui lo shop fattura"
 
 #: src/admin/Admin.php:135
 msgid "Shop billing country tax rate as default for EU countries"
-msgstr ""
+msgstr "Tassa del paese di fatturazione dello shop come base per i paesi europei"
 
 #: src/admin/Admin.php:136
 msgid ""
-"The tax rate associated with shop billing country will be applied when there "
-"is no rates for customer billing country"
+"The tax rate associated with shop billing country will be applied when there is "
+"no rates for customer billing country"
 msgstr ""
+"La tassazione associata al paese di fatturazione dello shop sarà applicata quando "
+"non esistono tassazioni per il paese di fatturazione del cliente"
 
 #: src/admin/Admin.php:142
 msgid "Invoice data are required"
-msgstr ""
+msgstr "Fattura obbligatoria"
 
 #: src/admin/Admin.php:143
 msgid "Customer type, fiscal code and VAT number will be required"
-msgstr ""
+msgstr "I campi: tipo di cliente, codice fiscale e P.IVA saranno sempre richiesti"
 
 #: src/admin/Admin.php:201
 msgid "EU Settings"
-msgstr ""
+msgstr "Settaggi per Unione Europea"
 
 #: src/frontend/Frontend.php:295
 msgctxt "WC Validation Message"
 msgid "%s is required."
-msgstr ""
+msgstr "%s è richiesto."
 
 #: src/frontend/Frontend.php:320
 msgctxt "WC Validation Message"
 msgid "%s is not valid."
-msgstr ""
+msgstr "%s non è valido."
 
 #: src/frontend/Frontend.php:370
 msgctxt "WC Validation Message"
 msgid "%s is not a valid."
-msgstr ""
+msgstr "%s non è un valido."
 
 #: src/includes/Plugin.php:246
 msgctxt "WC Field Validation"
 msgid "%s is required"
-msgstr ""
+msgstr "%s è richiesto"
 
 #: src/includes/Plugin.php:247
 msgid "Fiscal code"
-msgstr ""
+msgstr "Codice fiscale"
 
 #: src/includes/Plugin.php:253
 msgctxt "WC Field Validation"
 msgid "%s. Must have 16 character."
-msgstr ""
+msgstr "%s. Deve essere composto da 16 caratteri."
 
 #: src/includes/Plugin.php:254
 msgctxt "WC Field Validation"
 msgid "Incorrect fiscal code length"
-msgstr ""
+msgstr "Lunghezza codice fiscale non corretta"
 
 #: src/includes/Plugin.php:261
 msgctxt "WC Field Validation"
 msgid "%s. Only letters and numbers are valid."
-msgstr ""
+msgstr "%s. Solo numeri e lettere sono caratteri validi."
 
 #: src/includes/Plugin.php:262, src/includes/Plugin.php:318,
 #: src/includes/Plugin.php:328
 msgctxt "WC Field Validation"
 msgid "Invalid fiscal code"
-msgstr ""
+msgstr "Codice fiscale non valido."
 
 #: src/includes/Plugin.php:317
 msgctxt "WC Field Validation"
 msgid "%s. Wrong control code detected."
-msgstr ""
+msgstr "%s. Trovato un codice di controllo non valido."
 
 #: src/includes/Plugin.php:327
 msgctxt "WC Field Validation"
 msgid "%s. Unexpected error occurred. Please contact the administration."
 msgstr ""
+"%s. Si è verificato un errore inaspettato. Perfavore, contattare "
+"l'amministrazione."
