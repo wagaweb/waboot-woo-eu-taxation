@@ -206,6 +206,9 @@ class Frontend {
 	 * @hooked 'woocommerce_price_ex_tax_amount'
 	 */
 	public function on_calculate_inc_tax_amount($tax_amount, $key, $rate, $price){
+		if($this->plugin->can_exclude_taxes($key)){
+			$tax_amount = 0; //WC does a sum of all applicable taxes. So by putting the "invalid" ones to 0, WC does not count them.
+		}
 		return $tax_amount;
 	}
 	
