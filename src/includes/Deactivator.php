@@ -1,6 +1,6 @@
 <?php
 
-namespace WBWooFI\includes;
+namespace WBWooEUT\includes;
 
 /**
  * Fired during plugin deactivation.
@@ -8,8 +8,8 @@ namespace WBWooFI\includes;
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    WBWooFI
- * @subpackage WBWooFI/includes
+ * @package    WBWooEUT
+ * @subpackage WBWooEUT/includes
  */
 class Deactivator {
 	public static function deactivate() {}

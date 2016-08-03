@@ -1,11 +1,11 @@
 {
-  "name": "WBWooFI",
+  "name": "WBWooEUT",
   "version": "0.1.0",
   "author": "Waga",
   "homepage": "http://www.waga.it/",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/waga/wb-woo-fi"
+    "url": "https://bitbucket.org/waga/wb-woo-eut"
   },
   "bugs": {
     "url": "https://bitbucket.org/waga/wb-events/issues?status=new&status=open"

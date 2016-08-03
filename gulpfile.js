@@ -22,7 +22,7 @@ var gulp = require('gulp'),
     wpPot = require('gulp-wp-pot'),
     sort = require('gulp-sort');
 
-var plugin_slug = "wb-woo-fi";
+var plugin_slug = "wb-woo-eut";
 
 var paths = {
     builddir: "./builds",

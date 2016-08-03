@@ -1,9 +1,9 @@
 <?php
 
-namespace WBWooFI\frontend;
+namespace WBWooEUT\frontend;
 use WBF\components\assets\AssetsManager;
 use WBF\components\utils\Utilities;
-use WBWooFI\includes\Plugin;
+use WBWooEUT\includes\Plugin;
 
 /**
  * The public-facing functionality of the plugin.
@@ -11,14 +11,14 @@ use WBWooFI\includes\Plugin;
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the dashboard-specific stylesheet and JavaScript.
  *
- * @package    WBWooFI
- * @subpackage WBWooFI/public
+ * @package    WBWooEUT
+ * @subpackage WBWooEUT/public
  */
 class Frontend {
 
 	/**
 	 * The main plugin class
-	 * @var \WBWooFI\includes\Plugin
+	 * @var \WBWooEUT\includes\Plugin
 	 */
 	private $plugin;
 
@@ -34,12 +34,12 @@ class Frontend {
 	}
 
 	public function styles(){
-		//wp_enqueue_style('wb-woo-fi-style', $this->plugin->get_uri() . '/assets/dist/css/wb-woo-fi.min.css');
+		//wp_enqueue_style('wb-woo-eut-style', $this->plugin->get_uri() . '/assets/dist/css/wb-woo-eut.min.css');
 		//For now we have only this style to enqueue, an entire file is not necessary.
 		if(function_exists("is_checkout") && is_checkout()){
 			?>
 			<style>
-				.wbfi-hidden {
+				.wbeut-hidden {
 					display: none !important;
 				}
 			</style>
@@ -49,9 +49,9 @@ class Frontend {
 
 	public function scripts(){
 		$scripts = [
-			"wb-woo-fi" => [
-				'uri' => $this->plugin->is_debug() ? $this->plugin->get_uri() . 'assets/dist/js/bundle.js' : $this->plugin->get_uri() . 'assets/dist/js/wb-woo-fi.min.js',
-				'path' => $this->plugin->is_debug() ? $this->plugin->get_dir() . 'assets/dist/js/bundle.js' : $this->plugin->get_dir() . 'assets/dist/js/wb-woo-fi.min.js',
+			"wb-woo-eut" => [
+				'uri' => $this->plugin->is_debug() ? $this->plugin->get_uri() . 'assets/dist/js/bundle.js' : $this->plugin->get_uri() . 'assets/dist/js/wb-woo-eut.min.js',
+				'path' => $this->plugin->is_debug() ? $this->plugin->get_dir() . 'assets/dist/js/bundle.js' : $this->plugin->get_dir() . 'assets/dist/js/wb-woo-eut.min.js',
 				'deps' => ['jquery','backbone','underscore'],
 				'i10n' => [
 					'name' => 'wbFIData',
@@ -238,7 +238,7 @@ class Frontend {
 				],
 				'default' => 'individual',
 				'required' => $invoice_required == "yes",
-				'class' => $invoice_required != "yes" ? ['wbfi-hidden'] : []
+				'class' => $invoice_required != "yes" ? ['wbeut-hidden'] : []
 			]
 		];
 		$fiscal_code = [
@@ -246,7 +246,7 @@ class Frontend {
 				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
-				'class' => ['wbfi-hidden']
+				'class' => ['wbeut-hidden']
 			]
 		];
 		$vat = [
@@ -254,7 +254,7 @@ class Frontend {
 				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'text',
 				'validate' => ['vat'],
-				'class' => ['wbfi-hidden'],
+				'class' => ['wbeut-hidden'],
 				'custom_attributes' => [
 					'country' => $country
 				]
@@ -264,7 +264,7 @@ class Frontend {
 			Plugin::FIELD_VIES_VALID_CHECK => [
 				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
-				'class' => ['wbfi-hidden'],
+				'class' => ['wbeut-hidden'],
 			]
 		];
 

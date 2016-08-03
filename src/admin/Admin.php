@@ -1,8 +1,8 @@
 <?php
-namespace WBWooFI\admin;
+namespace WBWooEUT\admin;
 
 use WBF\components\mvc\HTMLView;
-use WBWooFI\includes\Plugin;
+use WBWooEUT\includes\Plugin;
 use WBF\components\utils\Utilities;
 
 /**
@@ -11,14 +11,14 @@ use WBF\components\utils\Utilities;
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the dashboard-specific stylesheet and JavaScript.
  *
- * @package    WBWooFI
- * @subpackage WBWooFI/admin
+ * @package    WBWooEUT
+ * @subpackage WBWooEUT/admin
  */
 class Admin {
 
 	/**
 	 * The main plugin class
-	 * @var \WBWooFI\includes\Plugin
+	 * @var \WBWooEUT\includes\Plugin
 	 *
 	 * [IT] E' possibile utilizzare $this->plugin->public_plugin per riferirsi alla classe in class-admin.php
 	 */
@@ -47,9 +47,9 @@ class Admin {
 		$shop_billing_country = $this->plugin->get_shop_billing_country();
 		$shop_country_rate = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}woocommerce_tax_rates WHERE tax_rate_country = '$shop_billing_country'");
 		if(empty($shop_country_rate)){
-			Utilities::add_admin_notice("wb-woo-fi-required-tax",
+			Utilities::add_admin_notice("wb-woo-eut-required-tax",
 				sprintf(
-					__("WB Woo FI requires a tax rate with the following settings: <br/><br/> <strong>Country:</strong> %s <br/><br/> You can change shop billing country in WooCommerce tax settings. ", $this->plugin->get_textdomain()),
+					__("WB Woo EU Taxation requires a tax rate with the following settings: <br/><br/> <strong>Country:</strong> %s <br/><br/> You can change shop billing country in WooCommerce tax settings. ", $this->plugin->get_textdomain()),
 					$shop_billing_country,$shop_billing_country
 				),
 				"nag",
@@ -118,7 +118,7 @@ class Admin {
 				'id'      => Plugin::FIELD_ADMIN_SHOP_BILLING_COUNTRY,
 				'type' => 'select',
 				'class'   => 'wc-enhanced-select',
-				'default' => apply_filters("wb-woo-fi/default_shop_billing_country","IT"),
+				'default' => apply_filters("wb-woo-eut/default_shop_billing_country","IT"),
 				'options' => call_user_func(function(){
 					$output = [];
 					$countries = WC()->countries->get_countries();

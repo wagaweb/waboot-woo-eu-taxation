@@ -1,29 +1,29 @@
 <?php
 
-namespace WBWooFI;
+namespace WBWooEUT;
 
 /**
  * The plugin bootstrap file
  *
  * @link              http://www.waboot.com
- * @package           WBWooFI
+ * @package           WBWooEUT
  *
  * @wordpress-plugin
- * Plugin Name:       WB Fiscalità Italiana per WooCommerce
- * Plugin URI:        http://www.waboot.com/
- * Description:       Un plugin per gestire la fiscalità italiana
+ * Plugin Name:       WB EU Taxation for WooCommerce
+ * Plugin URI:        http://www.waga.it/
+ * Description:       EU Taxation management for WooCommerce
  * Version:           1.0.0
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wb-woo-fiscalita-italiana
+ * Text Domain:       wb-woo-eu-taxation
  * Domain Path:       /languages
  */
 
-use WBWooFI\includes\Activator;
-use WBWooFI\includes\Deactivator;
-use WBWooFI\includes\Plugin;
+use WBWooEUT\includes\Activator;
+use WBWooEUT\includes\Deactivator;
+use WBWooEUT\includes\Plugin;
 
 if ( ! defined( 'WPINC' ) ) {
 	die; //If this file is called directly, abort.
@@ -37,7 +37,7 @@ require_once "vendor/autoload.php";
 
 // Custom plugin autoloader function
 spl_autoload_register( function($class){
-	$prefix = "WBWooFI\\";
+	$prefix = "WBWooEUT\\";
 	$plugin_path = plugin_dir_path( __FILE__ );
 	$base_dir = $plugin_path."src/";
 	// does the class use the namespace prefix?
@@ -62,7 +62,7 @@ spl_autoload_register( function($class){
 
 //Backward compatibility autoloader for pub\Pub
 spl_autoload_register(function($class){
-	$prefix = "WBWooFI\\";
+	$prefix = "WBWooEUT\\";
 	$plugin_path = plugin_dir_path( __FILE__ );
 	$base_dir = $plugin_path."src/";
 	if($class == $prefix."pub\\Pub"){

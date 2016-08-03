@@ -1,6 +1,6 @@
 <?php
 
-namespace WBWooFI\includes;
+namespace WBWooEUT\includes;
 use WBF\components\pluginsframework\TemplatePlugin;
 use WBF\components\utils\Utilities;
 
@@ -14,8 +14,8 @@ use WBF\components\utils\Utilities;
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    WBWooFI
- * @subpackage WBWooFI/includes
+ * @package    WBWooEUT
+ * @subpackage WBWooEUT/includes
  */
 class Plugin extends TemplatePlugin {
 
@@ -43,7 +43,7 @@ class Plugin extends TemplatePlugin {
 			$this->define_admin_hooks();
 		}else{
 			add_action("admin_init", function(){
-				Utilities::add_admin_notice("wb-woo-fi-require-wc",__("WB Fiscalità Italiana for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
+				Utilities::add_admin_notice("wb-woo-eut-require-wc",__("WB Fiscalità Italiana for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
 			});
 		}
 	}
@@ -107,7 +107,7 @@ class Plugin extends TemplatePlugin {
 	 * @return string
 	 */
 	public function get_shop_billing_country(){
-		$default = apply_filters("wb-woo-fi/default_shop_billing_country","IT");
+		$default = apply_filters("wb-woo-eut/default_shop_billing_country","IT");
 		return get_option(self::FIELD_ADMIN_SHOP_BILLING_COUNTRY,$default);
 	}
 
