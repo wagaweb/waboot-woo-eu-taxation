@@ -43,7 +43,7 @@ class Plugin extends TemplatePlugin {
 			$this->define_admin_hooks();
 		}else{
 			add_action("admin_init", function(){
-				Utilities::add_admin_notice("wb-woo-eut-require-wc",__("WB Fiscalità Italiana for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
+				Utilities::add_admin_notice("wb-woo-eut-require-wc",__("WB EU Taxation for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
 			});
 		}
 	}

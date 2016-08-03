@@ -3,23 +3,58 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: wb-woo-eu-taxation\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2016-08-03 14:58+0200\n"
+"Last-Translator: \n"
+"Language-Team: Waga <info@waga.it>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-08-03 13:29+0200\n"
-"Language-Team: Waga <info@waga.it>\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"POT-Creation-Date: \n"
 "X-Generator: Poedit 1.8.4\n"
-"Last-Translator: \n"
-"Language: it\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: src/admin/Admin.php:52
+#, php-format
+msgid ""
+"WB Woo EU Taxation requires a tax rate with the following settings: <br/><br/> "
+"<strong>Country:</strong> %s <br/><br/> You can change shop billing country in "
+"WooCommerce tax settings. "
+msgstr ""
+"WB Woo EU Taxation richiede la presenza di una tassazione con i seguenti "
+"settaggi: <br/><br/> <strong>Nazione:</strong> %s <br/><br/> Puoi modificare il "
+"paese di fatturazione dello shop dai settaggi delle imposte di WooCommerce"
+
+#: src/admin/Admin.php:75
+msgid "Customer Type"
+msgstr "Tipo di cliente"
+
+#: src/admin/Admin.php:79
+msgid "Select a Customer Category"
+msgstr "Seleziona una categoria di cliente"
+
+#: src/admin/Admin.php:80
+msgid "Individual"
+msgstr "Privato"
+
+#: src/admin/Admin.php:81
+msgid "Company"
+msgstr "Azienda"
+
+#: src/admin/Admin.php:87 src/frontend/Frontend.php:321
+msgid "Fiscal Code"
+msgstr "Codice fiscale"
+
+#: src/admin/Admin.php:93
+msgid "VAT"
+msgstr "P.IVA"
 
 #: src/admin/Admin.php:116
 msgid "Shop billing country"
@@ -49,26 +84,109 @@ msgstr "Fattura obbligatoria"
 msgid "Customer type, fiscal code and VAT number will be required"
 msgstr "I campi: tipo di cliente, codice fiscale e P.IVA saranno sempre richiesti"
 
+#: src/admin/Admin.php:186
+msgid "Custom rates settings updated successfully."
+msgstr "Impostazioni di tassazione aggiornati con successo."
+
 #: src/admin/Admin.php:201
 msgid "EU Settings"
 msgstr "Settaggi per Unione Europea"
 
+#: src/admin/Admin.php:228
+msgctxt "Admin table"
+msgid "Both"
+msgstr "Entrambi"
+
+#: src/admin/Admin.php:229
+msgctxt "Admin table"
+msgid "Individual"
+msgstr "Privato"
+
+#: src/admin/Admin.php:230
+msgctxt "Admin table"
+msgid "Company"
+msgstr "Azienda"
+
+#: src/admin/Admin.php:234
+msgctxt "Admin table"
+msgid "Exclude this tax when VAT is VIES Valid"
+msgstr "Escludi questa tassa se la P.IVA è valida nella comunità europea (VIES)"
+
+#: src/frontend/Frontend.php:227
+msgctxt "WC Field"
+msgid "Request invoice"
+msgstr "Richiedi fattura"
+
+#: src/frontend/Frontend.php:233
+msgctxt "WC Field"
+msgid "Customer type"
+msgstr "Tipo di cliente"
+
+#: src/frontend/Frontend.php:236
+msgctxt "WC Field"
+msgid "Private individual"
+msgstr "Privato"
+
+#: src/frontend/Frontend.php:237
+msgctxt "WC Field"
+msgid "Company"
+msgstr "Azienda"
+
+#: src/frontend/Frontend.php:246
+msgctxt "WC Field"
+msgid "Fiscal code"
+msgstr "Codice fiscale"
+
+#: src/frontend/Frontend.php:254
+msgctxt "WC Field"
+msgid "VAT"
+msgstr "P.IVA"
+
+#: src/frontend/Frontend.php:265
+msgctxt "WC Field"
+msgid "My VAT is VIES Valid"
+msgstr "La P.IVA è valida in UE."
+
 #: src/frontend/Frontend.php:295
+#, php-format
 msgctxt "WC Validation Message"
 msgid "%s is required."
 msgstr "%s è richiesto."
 
+#: src/frontend/Frontend.php:296
+msgid "Customer type"
+msgstr "Tipo di cliente."
+
 #: src/frontend/Frontend.php:320
+#, php-format
 msgctxt "WC Validation Message"
 msgid "%s is not valid."
 msgstr "%s non è valido."
 
+#: src/frontend/Frontend.php:337
+msgid "Fiscal code is not valid"
+msgstr "Il codice fiscale non è valido."
+
 #: src/frontend/Frontend.php:370
+#, php-format
 msgctxt "WC Validation Message"
 msgid "%s is not a valid."
 msgstr "%s non è un valido."
 
+#: src/frontend/Frontend.php:371
+msgid "VAT Number"
+msgstr "P.IVA"
+
+#: src/frontend/Frontend.php:388 src/frontend/Frontend.php:395
+msgid "No valid VAT provided"
+msgstr "Non è stata fornita una P.IVA valida"
+
+#: src/includes/Plugin.php:46
+msgid "WB EU Taxation for WooCommerce requires WooCommerce to work"
+msgstr "WB EU Taxation for WooCommerce richiede WooCoommerce per funzionare"
+
 #: src/includes/Plugin.php:246
+#, php-format
 msgctxt "WC Field Validation"
 msgid "%s is required"
 msgstr "%s è richiesto"
@@ -78,6 +196,7 @@ msgid "Fiscal code"
 msgstr "Codice fiscale"
 
 #: src/includes/Plugin.php:253
+#, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Must have 16 character."
 msgstr "%s. Deve essere composto da 16 caratteri."
@@ -88,24 +207,99 @@ msgid "Incorrect fiscal code length"
 msgstr "Lunghezza codice fiscale non corretta"
 
 #: src/includes/Plugin.php:261
+#, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Only letters and numbers are valid."
 msgstr "%s. Solo numeri e lettere sono caratteri validi."
 
-#: src/includes/Plugin.php:262, src/includes/Plugin.php:318,
+#: src/includes/Plugin.php:262 src/includes/Plugin.php:318
 #: src/includes/Plugin.php:328
 msgctxt "WC Field Validation"
 msgid "Invalid fiscal code"
 msgstr "Codice fiscale non valido."
 
 #: src/includes/Plugin.php:317
+#, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Wrong control code detected."
 msgstr "%s. Trovato un codice di controllo non valido."
 
 #: src/includes/Plugin.php:327
+#, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Unexpected error occurred. Please contact the administration."
 msgstr ""
 "%s. Si è verificato un errore inaspettato. Perfavore, contattare "
 "l'amministrazione."
+
+#: src/views/admin/html-settings-tax.php:2
+#, php-format
+msgid "\"%s\" Tax Rates"
+msgstr "\"%s\" Tassazioni"
+
+#: src/views/admin/html-settings-tax.php:2
+msgid "Standard"
+msgstr "Standard"
+
+#: src/views/admin/html-settings-tax.php:6
+msgid "Country&nbsp;Code"
+msgstr "Codice&nbsp;paese"
+
+#: src/views/admin/html-settings-tax.php:7
+msgid "State&nbsp;Code"
+msgstr "Codice&nbsp;stato"
+
+#: src/views/admin/html-settings-tax.php:8
+msgid "ZIP/Postcode"
+msgstr "Codice postale"
+
+#: src/views/admin/html-settings-tax.php:9
+msgid "City"
+msgstr "Città"
+
+#: src/views/admin/html-settings-tax.php:10
+msgid "Rate&nbsp;%"
+msgstr "Tassa&nbsp;%"
+
+#: src/views/admin/html-settings-tax.php:11
+msgid "Tax&nbsp;Name"
+msgstr "Nome&nspb;tassa"
+
+#: src/views/admin/html-settings-tax.php:12
+msgid "Priority"
+msgstr "Priorità"
+
+#: src/views/admin/html-settings-tax.php:13
+msgid "Compound"
+msgstr "Composta"
+
+#: src/views/admin/html-settings-tax.php:14
+msgid "Shipping"
+msgstr "Spedizione"
+
+#: src/views/admin/html-settings-tax.php:15
+msgctxt "Admin table"
+msgid "Applies to"
+msgstr "Si applica a"
+
+#: src/views/admin/html-settings-tax.php:16
+msgctxt "Admin table"
+msgid "Exclude for VIES Valid VAT numbers (EU only)"
+msgstr "Escludi per P.IVA valida in EU."
+
+#: src/views/admin/html-settings-tax.php:23
+msgid "No Matching Tax Rates Found."
+msgstr "Nessuna tassazione trovata."
+
+#: src/views/admin/html-settings-tax.php:34
+#: src/views/admin/html-settings-tax.php:35
+msgid "Yes"
+msgstr "Si"
+
+#: src/views/admin/html-settings-tax.php:34
+#: src/views/admin/html-settings-tax.php:35
+msgid "No"
+msgstr "No"
+
+#~ msgid "WB Fiscalità Italiana for WooCommerce requires WooCommerce to work"
+#~ msgstr "WB EU Taxation for WooCommerce richiede WooCommerce"
