@@ -3,8 +3,8 @@
 	<table class="wc_tax_rates wc_input_table sortable widefat">
 	<thead>
 	<tr>
-		<!-- <th width="8%"><?php _e( 'Country&nbsp;Code', 'woocommerce' ); ?></th>
-		<th width="8%"><?php _e( 'State&nbsp;Code', 'woocommerce' ); ?></th>
+		<th width="8%"><?php _e( 'Country&nbsp;Code', 'woocommerce' ); ?></th>
+		<!-- <th width="8%"><?php _e( 'State&nbsp;Code', 'woocommerce' ); ?></th>
 		<th width="8%"><?php _e( 'ZIP/Postcode', 'woocommerce' ); ?></th>
 		<th width="8%"><?php _e( 'City', 'woocommerce' ); ?></th>
 		<th width="8%"><?php _e( 'Rate&nbsp;%', 'woocommerce' ); ?></th> -->
@@ -13,7 +13,7 @@
 		<th width="8%"><?php _e( 'Compound', 'woocommerce' ); ?></th>
 		<th width="8%"><?php _e( 'Shipping', 'woocommerce' ); ?></th> -->
 		<!--<th width="8%"><?php _ex( 'Applies to', 'Admin table', $textdomain ); ?></th>-->
-		<th width="8%"><?php _ex( 'Escludi dalle imposte (solo EU)', 'Admin table', $textdomain ); ?></th>
+		<th width="8%"><?php _ex( 'Exclude for VIES Valid VAT numbers (EU only)', 'Admin table', $textdomain ); ?></th>
 	</tr>
 	</thead>
 	<tfoot>
@@ -24,8 +24,8 @@
 	<?php else: ?>
 	<?php foreach($values as $value): ?>
 			<tr>
-				<!-- <td><?php if($value->tax_rate_country == "") echo "*"; else echo $value->tax_rate_country; ?></td>
-				<td><?php if($value->tax_rate_state == "") echo "*"; else echo $value->tax_rate_state; ?></td>
+				<td><?php if($value->tax_rate_country == "") echo "*"; else echo $value->tax_rate_country; ?></td>
+				<!-- <td><?php if($value->tax_rate_state == "") echo "*"; else echo $value->tax_rate_state; ?></td>
 				<td><?php if(!isset($value->postcode)) echo "*"; else echo implode(";",$value->postcode); ?></td>
 				<td><?php if(!isset($value->city)) echo "*"; else echo implode(";",$value->city); ?></td>
 				<td><?php echo $value->tax_rate; ?></td> -->
