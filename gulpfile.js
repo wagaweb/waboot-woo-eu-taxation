@@ -38,6 +38,8 @@ var paths = {
         "!gulpfile.js", 
         "!package.json",
         "!bower.json",
+        "!composer.json",
+        "!composer.lock",
         "!{builds,builds/**}",
         "!{node_modules,node_modules/**}",
         "!{bower_components,bower_components/**}"
@@ -108,7 +110,7 @@ gulp.task('browserify', function(){
  */
 gulp.task('make-package', function(){
     return gulp.src(paths.build)
-        .pipe(copy(paths.builddir+"/pkg/"+"wb-woo-fiscalita-italiana"));
+        .pipe(copy(paths.builddir+"/pkg/"+"wb-woo-eu-taxation"));
 });
 
 /**
@@ -116,7 +118,7 @@ gulp.task('make-package', function(){
  */
 gulp.task('archive', function(){
     return gulp.src(paths.builddir+"/pkg/**")
-        .pipe(zip("wb-woo-fiscalita-italiana"+'-'+pkg.version+'.zip'))
+        .pipe(zip("wb-woo-eu-taxation"+'-'+pkg.version+'.zip'))
         .pipe(gulp.dest("./builds"));
 });
 
@@ -152,7 +154,7 @@ gulp.task('bower-update',function(){
  * Runs a build
  */
 gulp.task('build', function(callback) {
-    runSequence('bower-update', 'make-pot', ['compile_js', 'compile_css'], 'make-package', 'archive', callback);
+    runSequence('bower-update', ['compile_js', 'compile_css'], 'make-package', 'archive', callback);
 });
 
 /**
