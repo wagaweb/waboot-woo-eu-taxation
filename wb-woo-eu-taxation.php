@@ -5,7 +5,6 @@ namespace WBWooEUT;
 /**
  * The plugin bootstrap file
  *
- * @link              http://www.waboot.com
  * @package           WBWooEUT
  *
  * @wordpress-plugin
@@ -57,16 +56,6 @@ spl_autoload_register( function($class){
 		require_once $file;
 	}else{
 		return;
-	}
-});
-
-//Backward compatibility autoloader for pub\Pub
-spl_autoload_register(function($class){
-	$prefix = "WBWooEUT\\";
-	$plugin_path = plugin_dir_path( __FILE__ );
-	$base_dir = $plugin_path."src/";
-	if($class == $prefix."pub\\Pub"){
-		require_once $base_dir."public/Public.php";
 	}
 });
 
