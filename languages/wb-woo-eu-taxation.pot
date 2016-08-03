@@ -1,0 +1,98 @@
+# Copyright (C) 2016 wb-woo-eu-taxation
+# This file is distributed under the same license as the wb-woo-eu-taxation package.
+msgid ""
+msgstr ""
+"Project-Id-Version: wb-woo-eu-taxation\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Language-Team: Waga <info@waga.it>\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
+
+#: src/admin/Admin.php:116
+msgid "Shop billing country"
+msgstr ""
+
+#: src/admin/Admin.php:117
+msgid "Select the country your shop billing from"
+msgstr ""
+
+#: src/admin/Admin.php:135
+msgid "Shop billing country tax rate as default for EU countries"
+msgstr ""
+
+#: src/admin/Admin.php:136
+msgid "The tax rate associated with shop billing country will be applied when there is no rates for customer billing country"
+msgstr ""
+
+#: src/admin/Admin.php:142
+msgid "Invoice data are required"
+msgstr ""
+
+#: src/admin/Admin.php:143
+msgid "Customer type, fiscal code and VAT number will be required"
+msgstr ""
+
+#: src/admin/Admin.php:201
+msgid "EU Settings"
+msgstr ""
+
+#: src/frontend/Frontend.php:295
+msgctxt "WC Validation Message"
+msgid "%s is required."
+msgstr ""
+
+#: src/frontend/Frontend.php:320
+msgctxt "WC Validation Message"
+msgid "%s is not valid."
+msgstr ""
+
+#: src/frontend/Frontend.php:370
+msgctxt "WC Validation Message"
+msgid "%s is not a valid."
+msgstr ""
+
+#: src/includes/Plugin.php:246
+msgctxt "WC Field Validation"
+msgid "%s is required"
+msgstr ""
+
+#: src/includes/Plugin.php:247
+msgid "Fiscal code"
+msgstr ""
+
+#: src/includes/Plugin.php:253
+msgctxt "WC Field Validation"
+msgid "%s. Must have 16 character."
+msgstr ""
+
+#: src/includes/Plugin.php:254
+msgctxt "WC Field Validation"
+msgid "Incorrect fiscal code length"
+msgstr ""
+
+#: src/includes/Plugin.php:261
+msgctxt "WC Field Validation"
+msgid "%s. Only letters and numbers are valid."
+msgstr ""
+
+#: src/includes/Plugin.php:262, src/includes/Plugin.php:318, src/includes/Plugin.php:328
+msgctxt "WC Field Validation"
+msgid "Invalid fiscal code"
+msgstr ""
+
+#: src/includes/Plugin.php:317
+msgctxt "WC Field Validation"
+msgid "%s. Wrong control code detected."
+msgstr ""
+
+#: src/includes/Plugin.php:327
+msgctxt "WC Field Validation"
+msgid "%s. Unexpected error occurred. Please contact the administration."
+msgstr ""
