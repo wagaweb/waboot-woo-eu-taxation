@@ -316,7 +316,7 @@ class Utilities{
 		$wbf_notice_manager = self::get_wbf_notice_manager();
 		
 		$args = wp_parse_args($args,[
-			"category" => 'base',
+			"category" => '_flash_',
 			"condition" => null,
 			"cond_args" => null
 		]);

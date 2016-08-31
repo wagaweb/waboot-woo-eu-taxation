@@ -6,6 +6,10 @@ use WBF\components\license\License;
 use WBF\components\notices\Notice_Manager;
 use WBF\components\utils\Utilities;
 
+if(is_file(dirname(__FILE__)."/vendor/autoload.php")){
+	require_once "vendor/autoload.php";
+}
+
 class Plugin_Update_Checker extends \PluginUpdateChecker{
 
 	/**
