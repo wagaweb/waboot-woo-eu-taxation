@@ -42,7 +42,7 @@ msgstr ""
 msgid "Company"
 msgstr ""
 
-#: src/admin/Admin.php:87 src/frontend/Frontend.php:324
+#: src/admin/Admin.php:87 src/frontend/Frontend.php:325
 msgid "Fiscal Code"
 msgstr ""
 
@@ -102,72 +102,76 @@ msgctxt "Admin table"
 msgid "Exclude this tax when VAT is VIES Valid"
 msgstr ""
 
-#: src/frontend/Frontend.php:230
+#: src/frontend/Frontend.php:226
+msgid "required"
+msgstr ""
+
+#: src/frontend/Frontend.php:231
 msgctxt "WC Field"
 msgid "Request invoice"
 msgstr ""
 
-#: src/frontend/Frontend.php:236
+#: src/frontend/Frontend.php:237
 msgctxt "WC Field"
 msgid "Customer type"
 msgstr ""
 
-#: src/frontend/Frontend.php:239
+#: src/frontend/Frontend.php:240
 msgctxt "WC Field"
 msgid "Private individual"
 msgstr ""
 
-#: src/frontend/Frontend.php:240
+#: src/frontend/Frontend.php:241
 msgctxt "WC Field"
 msgid "Company"
 msgstr ""
 
-#: src/frontend/Frontend.php:249
+#: src/frontend/Frontend.php:250
 msgctxt "WC Field"
 msgid "Fiscal code"
 msgstr ""
 
-#: src/frontend/Frontend.php:257
+#: src/frontend/Frontend.php:258
 msgctxt "WC Field"
 msgid "VAT"
 msgstr ""
 
-#: src/frontend/Frontend.php:268
+#: src/frontend/Frontend.php:269
 msgctxt "WC Field"
 msgid "My VAT is VIES Valid"
 msgstr ""
 
-#: src/frontend/Frontend.php:298
+#: src/frontend/Frontend.php:299
 #, php-format
 msgctxt "WC Validation Message"
 msgid "%s is required."
 msgstr ""
 
-#: src/frontend/Frontend.php:299
+#: src/frontend/Frontend.php:300
 msgid "Customer type"
 msgstr ""
 
-#: src/frontend/Frontend.php:323
+#: src/frontend/Frontend.php:324
 #, php-format
 msgctxt "WC Validation Message"
 msgid "%s is not valid."
 msgstr ""
 
-#: src/frontend/Frontend.php:340
+#: src/frontend/Frontend.php:341
 msgid "Fiscal code is not valid"
 msgstr ""
 
-#: src/frontend/Frontend.php:373
+#: src/frontend/Frontend.php:374
 #, php-format
 msgctxt "WC Validation Message"
 msgid "%s is not a valid."
 msgstr ""
 
-#: src/frontend/Frontend.php:374
+#: src/frontend/Frontend.php:375
 msgid "VAT Number"
 msgstr ""
 
-#: src/frontend/Frontend.php:391 src/frontend/Frontend.php:398
+#: src/frontend/Frontend.php:392 src/frontend/Frontend.php:399
 msgid "No valid VAT provided"
 msgstr ""
 

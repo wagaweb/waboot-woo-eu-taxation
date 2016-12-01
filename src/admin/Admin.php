@@ -68,7 +68,7 @@ class Admin {
 	 * @return mixed
 	 */
 	public function add_woocommerce_customer_meta_fields($fields_array) {
-
+        $req = $this->plugin->is_invoice_data_required();
 		$fields = $fields_array['billing']['fields'];
 		$billing_wb_woo_fi_customer_type = [
 			Plugin::FIELD_CUSTOMER_TYPE => [

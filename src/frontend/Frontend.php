@@ -223,6 +223,7 @@ class Frontend {
 	 * @return array
 	 */
 	public function add_billing_fields($address_fields, $country){
+		$req = ($this->plugin->is_invoice_data_required() == 'yes') ? ' <abbr class="required" title="'.__("required", $this->plugin->get_textdomain()).'">*</abbr> ' : '';
 		$invoice_required = get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no");
 
 		$request_billing = [
@@ -246,7 +247,7 @@ class Frontend {
 		];
 		$fiscal_code = [
 			Plugin::FIELD_FISCAL_CODE => [
-				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()),
+				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()).$req,
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
 				'class' => ['wbeut-hidden']
@@ -254,7 +255,7 @@ class Frontend {
 		];
 		$vat = [
 			Plugin::FIELD_VAT => [
-				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()),
+				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()).$req,
 				'type' => 'text',
 				'validate' => ['vat'],
 				'class' => ['wbeut-hidden'],

@@ -168,7 +168,7 @@ gulp.task('build', function(callback) {
  * Rerun the task when a file changes
  */
 gulp.task('watch', function() {
-    gulp.watch(paths.mainjs, ['compile_js']);
+    gulp.watch(paths.scripts, ['compile_js']);
     gulp.watch(paths.mainscss, ['compile_sass']);
 });
 
