@@ -71,3 +71,4 @@ temp/
 .Trashes
 .svn
 *.codekit
+yarn.lock

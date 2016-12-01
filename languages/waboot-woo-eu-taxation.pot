@@ -1,305 +1,290 @@
 # Copyright (C) 2016 wb-woo-eu-taxation
 # This file is distributed under the same license as the wb-woo-eu-taxation package.
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: wb-woo-eu-taxation\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-08-03 14:58+0200\n"
-"Last-Translator: \n"
-"Language-Team: Waga <info@waga.it>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Language-Team: Waga <info@waga.it>\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.4\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: builds\n"
 
 #: src/admin/Admin.php:52
 #, php-format
-msgid ""
-"WB Woo EU Taxation requires a tax rate with the following settings: <br/><br/> "
-"<strong>Country:</strong> %s <br/><br/> You can change shop billing country in "
-"WooCommerce tax settings. "
+msgid "WB Woo EU Taxation requires a tax rate with the following settings: <br/><br/> <strong>Country:</strong> %s <br/><br/> You can change shop billing country in WooCommerce tax settings. "
 msgstr ""
-"WB Woo EU Taxation richiede la presenza di una tassazione con i seguenti "
-"settaggi: <br/><br/> <strong>Nazione:</strong> %s <br/><br/> Puoi modificare il "
-"paese di fatturazione dello shop dai settaggi delle imposte di WooCommerce"
 
 #: src/admin/Admin.php:75
 msgid "Customer Type"
-msgstr "Tipo di cliente"
+msgstr ""
 
 #: src/admin/Admin.php:79
 msgid "Select a Customer Category"
-msgstr "Seleziona una categoria di cliente"
+msgstr ""
 
 #: src/admin/Admin.php:80
 msgid "Individual"
-msgstr "Privato"
+msgstr ""
 
 #: src/admin/Admin.php:81
 msgid "Company"
-msgstr "Azienda"
+msgstr ""
 
-#: src/admin/Admin.php:87 src/frontend/Frontend.php:321
+#: src/admin/Admin.php:87 src/frontend/Frontend.php:324
 msgid "Fiscal Code"
-msgstr "Codice fiscale"
+msgstr ""
 
 #: src/admin/Admin.php:93
 msgid "VAT"
-msgstr "P.IVA"
+msgstr ""
 
 #: src/admin/Admin.php:116
 msgid "Shop billing country"
-msgstr "Paese di fatturazione dello shop"
+msgstr ""
 
 #: src/admin/Admin.php:117
 msgid "Select the country your shop billing from"
-msgstr "Seleziona il paese da cui lo shop fattura"
+msgstr ""
 
 #: src/admin/Admin.php:135
 msgid "Shop billing country tax rate as default for EU countries"
-msgstr "Tassa del paese di fatturazione dello shop come base per i paesi europei"
+msgstr ""
 
 #: src/admin/Admin.php:136
-msgid ""
-"The tax rate associated with shop billing country will be applied when there is "
-"no rates for customer billing country"
+msgid "The tax rate associated with shop billing country will be applied when there is no rates for customer billing country"
 msgstr ""
-"La tassazione associata al paese di fatturazione dello shop sarà applicata quando "
-"non esistono tassazioni per il paese di fatturazione del cliente"
 
 #: src/admin/Admin.php:142
 msgid "Invoice data are required"
-msgstr "Fattura obbligatoria"
+msgstr ""
 
 #: src/admin/Admin.php:143
 msgid "Customer type, fiscal code and VAT number will be required"
-msgstr "I campi: tipo di cliente, codice fiscale e P.IVA saranno sempre richiesti"
+msgstr ""
 
 #: src/admin/Admin.php:186
 msgid "Custom rates settings updated successfully."
-msgstr "Impostazioni di tassazione aggiornati con successo."
+msgstr ""
 
 #: src/admin/Admin.php:201
 msgid "EU Settings"
-msgstr "Settaggi per Unione Europea"
+msgstr ""
 
 #: src/admin/Admin.php:228
 msgctxt "Admin table"
 msgid "Both"
-msgstr "Entrambi"
+msgstr ""
 
 #: src/admin/Admin.php:229
 msgctxt "Admin table"
 msgid "Individual"
-msgstr "Privato"
+msgstr ""
 
 #: src/admin/Admin.php:230
 msgctxt "Admin table"
 msgid "Company"
-msgstr "Azienda"
+msgstr ""
 
 #: src/admin/Admin.php:234
 msgctxt "Admin table"
 msgid "Exclude this tax when VAT is VIES Valid"
-msgstr "Escludi questa tassa se la P.IVA è valida nella comunità europea (VIES)"
+msgstr ""
 
-#: src/frontend/Frontend.php:227
+#: src/frontend/Frontend.php:230
 msgctxt "WC Field"
 msgid "Request invoice"
-msgstr "Richiedi fattura"
-
-#: src/frontend/Frontend.php:233
-msgctxt "WC Field"
-msgid "Customer type"
-msgstr "Tipo di cliente"
+msgstr ""
 
 #: src/frontend/Frontend.php:236
 msgctxt "WC Field"
-msgid "Private individual"
-msgstr "Privato"
+msgid "Customer type"
+msgstr ""
 
-#: src/frontend/Frontend.php:237
+#: src/frontend/Frontend.php:239
+msgctxt "WC Field"
+msgid "Private individual"
+msgstr ""
+
+#: src/frontend/Frontend.php:240
 msgctxt "WC Field"
 msgid "Company"
-msgstr "Azienda"
+msgstr ""
 
-#: src/frontend/Frontend.php:246
+#: src/frontend/Frontend.php:249
 msgctxt "WC Field"
 msgid "Fiscal code"
-msgstr "Codice fiscale"
+msgstr ""
 
-#: src/frontend/Frontend.php:254
+#: src/frontend/Frontend.php:257
 msgctxt "WC Field"
 msgid "VAT"
-msgstr "P.IVA"
+msgstr ""
 
-#: src/frontend/Frontend.php:265
+#: src/frontend/Frontend.php:268
 msgctxt "WC Field"
 msgid "My VAT is VIES Valid"
-msgstr "La P.IVA è valida in UE."
+msgstr ""
 
-#: src/frontend/Frontend.php:295
+#: src/frontend/Frontend.php:298
 #, php-format
 msgctxt "WC Validation Message"
 msgid "%s is required."
-msgstr "%s è richiesto."
+msgstr ""
 
-#: src/frontend/Frontend.php:296
+#: src/frontend/Frontend.php:299
 msgid "Customer type"
-msgstr "Tipo di cliente."
+msgstr ""
 
-#: src/frontend/Frontend.php:320
+#: src/frontend/Frontend.php:323
 #, php-format
 msgctxt "WC Validation Message"
 msgid "%s is not valid."
-msgstr "%s non è valido."
+msgstr ""
 
-#: src/frontend/Frontend.php:337
+#: src/frontend/Frontend.php:340
 msgid "Fiscal code is not valid"
-msgstr "Il codice fiscale non è valido."
+msgstr ""
 
-#: src/frontend/Frontend.php:370
+#: src/frontend/Frontend.php:373
 #, php-format
 msgctxt "WC Validation Message"
 msgid "%s is not a valid."
-msgstr "%s non è un valido."
+msgstr ""
 
-#: src/frontend/Frontend.php:371
+#: src/frontend/Frontend.php:374
 msgid "VAT Number"
-msgstr "P.IVA"
+msgstr ""
 
-#: src/frontend/Frontend.php:388 src/frontend/Frontend.php:395
+#: src/frontend/Frontend.php:391 src/frontend/Frontend.php:398
 msgid "No valid VAT provided"
-msgstr "Non è stata fornita una P.IVA valida"
+msgstr ""
 
 #: src/includes/Plugin.php:46
 msgid "WB EU Taxation for WooCommerce requires WooCommerce to work"
-msgstr "WB EU Taxation for WooCommerce richiede WooCoommerce per funzionare"
+msgstr ""
 
 #: src/includes/Plugin.php:246
 #, php-format
 msgctxt "WC Field Validation"
 msgid "%s is required"
-msgstr "%s è richiesto"
+msgstr ""
 
 #: src/includes/Plugin.php:247
 msgid "Fiscal code"
-msgstr "Codice fiscale"
+msgstr ""
 
 #: src/includes/Plugin.php:253
 #, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Must have 16 character."
-msgstr "%s. Deve essere composto da 16 caratteri."
+msgstr ""
 
 #: src/includes/Plugin.php:254
 msgctxt "WC Field Validation"
 msgid "Incorrect fiscal code length"
-msgstr "Lunghezza codice fiscale non corretta"
+msgstr ""
 
 #: src/includes/Plugin.php:261
 #, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Only letters and numbers are valid."
-msgstr "%s. Solo numeri e lettere sono caratteri validi."
+msgstr ""
 
 #: src/includes/Plugin.php:262 src/includes/Plugin.php:318
 #: src/includes/Plugin.php:328
 msgctxt "WC Field Validation"
 msgid "Invalid fiscal code"
-msgstr "Codice fiscale non valido."
+msgstr ""
 
 #: src/includes/Plugin.php:317
 #, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Wrong control code detected."
-msgstr "%s. Trovato un codice di controllo non valido."
+msgstr ""
 
 #: src/includes/Plugin.php:327
 #, php-format
 msgctxt "WC Field Validation"
 msgid "%s. Unexpected error occurred. Please contact the administration."
 msgstr ""
-"%s. Si è verificato un errore inaspettato. Perfavore, contattare "
-"l'amministrazione."
 
 #: src/views/admin/html-settings-tax.php:2
 #, php-format
 msgid "\"%s\" Tax Rates"
-msgstr "\"%s\" Tassazioni"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:2
 msgid "Standard"
-msgstr "Standard"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:6
 msgid "Country&nbsp;Code"
-msgstr "Codice&nbsp;paese"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:7
 msgid "State&nbsp;Code"
-msgstr "Codice&nbsp;stato"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:8
 msgid "ZIP/Postcode"
-msgstr "Codice postale"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:9
 msgid "City"
-msgstr "Città"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:10
 msgid "Rate&nbsp;%"
-msgstr "Tassa&nbsp;%"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:11
 msgid "Tax&nbsp;Name"
-msgstr "Nome&nspb;tassa"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:12
 msgid "Priority"
-msgstr "Priorità"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:13
 msgid "Compound"
-msgstr "Composta"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:14
 msgid "Shipping"
-msgstr "Spedizione"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:15
 msgctxt "Admin table"
 msgid "Applies to"
-msgstr "Si applica a"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:16
 msgctxt "Admin table"
 msgid "Exclude for VIES Valid VAT numbers (EU only)"
-msgstr "Escludi per P.IVA valida in EU."
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:23
 msgid "No Matching Tax Rates Found."
-msgstr "Nessuna tassazione trovata."
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:34
 #: src/views/admin/html-settings-tax.php:35
 msgid "Yes"
-msgstr "Si"
+msgstr ""
 
 #: src/views/admin/html-settings-tax.php:34
 #: src/views/admin/html-settings-tax.php:35
 msgid "No"
-msgstr "No"
-
-#~ msgid "WB Fiscalità Italiana for WooCommerce requires WooCommerce to work"
-#~ msgstr "WB EU Taxation for WooCommerce richiede WooCommerce"
+msgstr ""

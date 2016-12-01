@@ -110,7 +110,7 @@ gulp.task('browserify', function(){
  */
 gulp.task('make-package', function(){
     return gulp.src(paths.build)
-        .pipe(copy(paths.builddir+"/pkg/"+"wb-woo-eu-taxation"));
+        .pipe(copy(paths.builddir+"/pkg/"+"waboot-woo-eu-taxation"));
 });
 
 /**
@@ -118,7 +118,7 @@ gulp.task('make-package', function(){
  */
 gulp.task('archive', function(){
     return gulp.src(paths.builddir+"/pkg/**")
-        .pipe(zip("wb-woo-eu-taxation"+'-'+pkg.version+'.zip'))
+        .pipe(zip("waboot-woo-eu-taxation"+'-'+pkg.version+'.zip'))
         .pipe(gulp.dest("./builds"));
 });
 
@@ -129,8 +129,8 @@ gulp.task('make-pot', function () {
     return gulp.src(['*.php', 'src/**/*.php'])
         .pipe(sort())
         .pipe(wpPot( {
-            domain: "wb-woo-eu-taxation",
-            destFile: 'wb-woo-eu-taxation.pot',
+            domain: "waboot-woo-eu-taxation",
+            destFile: 'waboot-woo-eu-taxation.pot',
             team: 'Waga <info@waga.it>'
         } ))
         .pipe(gulp.dest('languages/'));
@@ -148,6 +148,13 @@ gulp.task('bower-install',function(){
  */
 gulp.task('bower-update',function(){
     return bower({cmd: 'update'});
+});
+
+/**
+ * Runs a setup
+ */
+gulp.task('setup', function(callback) {
+    runSequence('bower-update', ['compile_js', 'compile_css'], callback);
 });
 
 /**

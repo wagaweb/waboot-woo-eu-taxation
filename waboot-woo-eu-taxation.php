@@ -8,15 +8,15 @@ namespace WBWooEUT;
  * @package           WBWooEUT
  *
  * @wordpress-plugin
- * Plugin Name:       WB EU Taxation for WooCommerce
+ * Plugin Name:       Waboot EU Taxation for WooCommerce
  * Plugin URI:        http://www.waga.it/
  * Description:       EU Taxation management for WooCommerce
- * Version:           1.0.0
+ * Version:           2.0.0
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wb-woo-eu-taxation
+ * Text Domain:       waboot-woo-eu-taxation
  * Domain Path:       /languages
  */
 
