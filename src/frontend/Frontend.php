@@ -283,6 +283,25 @@ class Frontend {
 	}
 
 	/**
+	 * Move company billing field in another position
+	 *
+     * @hooked 'woocommerce_billing_fields', 11
+     *
+	 * @param array $billing_fields
+	 * @param string $country
+     *
+     * @return array
+	 */
+	public function move_company_field($billing_fields,$country){
+	    if(isset($billing_fields['billing_company'])){
+		    $company_field = ["billing_company" => $billing_fields['billing_company']];
+		    unset($billing_fields['billing_company']);
+		    $billing_fields = Utilities::associative_array_add_element_after($company_field,'billing_wb_woo_fi_fiscal_code',$billing_fields);
+        }
+        return $billing_fields;
+    }
+
+	/**
 	 * Performs validation on $customer_type
 	 *
 	 * @hooked 'woocommerce_process_checkout_field_*'

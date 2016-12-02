@@ -65,6 +65,7 @@ class Plugin extends TemplatePlugin {
 
 		//Checkout and account fields
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'add_billing_fields', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'move_company_field', 11, 2 );
 
 		//Fields management
 		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_CUSTOMER_TYPE, $plugin_public, "add_customer_type_to_customer_data", 10, 1);
