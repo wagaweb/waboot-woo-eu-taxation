@@ -1,7 +1,7 @@
 <?php
 
 namespace WBWooEUT\includes;
-use WBF\components\pluginsframework\TemplatePlugin;
+use WBF\components\pluginsframework\BasePlugin;
 use WBF\components\utils\Utilities;
 
 /**
@@ -17,7 +17,7 @@ use WBF\components\utils\Utilities;
  * @package    WBWooEUT
  * @subpackage WBWooEUT/includes
  */
-class Plugin extends TemplatePlugin {
+class Plugin extends BasePlugin {
 
 	const FIELD_REQUEST_INVOICE = "billing_wb_woo_fi_request_invoice";
 	const FIELD_CUSTOMER_TYPE = "billing_wb_woo_fi_customer_type";
