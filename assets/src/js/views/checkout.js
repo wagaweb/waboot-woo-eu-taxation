@@ -82,12 +82,14 @@ export default class extends Backbone.Model{
             case 'individual':
                 event.data.hide_vat();
                 event.data.hide_vies_check();
+                event.data.hide_company();
                 break;
             case 'company':
                 event.data.show_vat();
                 if(current_country != wbFIData.shop_billing_country && $.inArray(current_country,wbFIData.eu_vat_countries) != -1){
                     event.data.show_vies_check();
                 }
+                event.data.show_company();
                 break;
         }
         $(document.body).trigger( 'update_checkout');
@@ -268,6 +270,25 @@ export default class extends Backbone.Model{
     }
 
     /**
+     * Show company field
+     */
+    show_company(show = true){
+        let $company_input = $("#billing_company_field");
+        if(show){
+            $company_input.removeClass("wbeut-hidden woocommerce-validated").addClass('validate-required woocommerce-invalid-required-field woocommerce-invalid');
+        }else{
+            $company_input.addClass("wbeut-hidden").removeClass('validate-required woocommerce-invalid-required-field woocommerce-invalid');
+        }
+    }
+
+    /**
+     * Hides company field
+     */
+    hide_company(){
+        this.show_company(false);
+    }
+
+    /**
      * Hides all fields
      */
     hide_all(){
@@ -275,5 +296,6 @@ export default class extends Backbone.Model{
         this.hide_fiscal_code();
         this.hide_vat();
         this.hide_vies_check();
+        this.hide_company();
     }
 }
