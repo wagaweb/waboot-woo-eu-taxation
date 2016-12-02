@@ -6,6 +6,7 @@ npm-debug.log
 vendor/bin
 vendor/composer
 vendor/yahnis-elsts
+vendor/wbf
 vendor/autoload.php
 composer.lock
 
