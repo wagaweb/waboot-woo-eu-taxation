@@ -42,7 +42,8 @@ var paths = {
         "!composer.lock",
         "!{builds,builds/**}",
         "!{node_modules,node_modules/**}",
-        "!{bower_components,bower_components/**}"
+        "!{bower_components,bower_components/**}",
+        "!{vendor,vendor/**}",
     ]
 };
 

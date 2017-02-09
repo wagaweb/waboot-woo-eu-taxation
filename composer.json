@@ -1,5 +1,9 @@
 {
-  "name": "waga/wb-woo-fiscalita-italiana",
+  "name": "waga/waboot-woo-eu-taxation",
+  "description": "EU taxation for WooCommerce",
+  "keywords": ["wordpress","woocommerce","taxation","europe"],
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
   "authors": [
     {
       "name": "Riccardo D'Angelo",
@@ -15,23 +19,6 @@
     }
   ],
   "require": {
-    "wbf/assets": "dev-master",
-    "wbf/pluginsframework": "dev-master",
-    "wbf/customupdater": "dev-master",
-    "wbf/mvc": "dev-master"
-  },
-  "autoload": {
-    "classmap": [
-      "vendor/wbf/assets",
-      "vendor/wbf/customupdater",
-      "vendor/wbf/customupdater/vendor/theme-update-checker.php",
-      "vendor/yahnis-elsts/plugin-update-checker",
-      "vendor/wbf/mvc",
-      "vendor/wbf/notices",
-      "vendor/wbf/pluginsframework",
-      "vendor/wbf/utils",
-      "vendor/wbf/license"
-    ]
-  },
-  "minimum-stability": "dev"
+    "composer/installers": "^1.2.0"
+  }
 }

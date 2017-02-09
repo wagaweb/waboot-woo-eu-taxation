@@ -11,7 +11,7 @@ namespace WBWooEUT;
  * Plugin Name:       Waboot EU Taxation for WooCommerce
  * Plugin URI:        http://www.waga.it/
  * Description:       EU Taxation management for WooCommerce
- * Version:           2.0.0
+ * Version:           2.1.0
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+
@@ -28,7 +28,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die; //If this file is called directly, abort.
 }
 
-require_once "vendor/autoload.php";
+if(file_exists("vendor/autoload")){
+    require_once "vendor/autoload.php";
+}
 
 /********************************************************/
 /****************** PLUGIN BEGIN ************************
@@ -59,9 +61,22 @@ spl_autoload_register( function($class){
 	}
 });
 
-register_activation_hook( __FILE__, function(){ Activator::activate(); } );
-register_deactivation_hook( __FILE__, function(){ Deactivator::deactivate(); } );
+require_once 'src/includes/wbf-plugin-check-functions.php';
+includes\include_wbf_autoloader();
 
-require_once 'src/includes/Plugin.php';
-$plugin = new Plugin();
-$plugin->run();
+if(class_exists("\\WBF\\components\\pluginsframework\\BasePlugin")){
+	register_activation_hook( __FILE__, function(){ Activator::activate(); } );
+	register_deactivation_hook( __FILE__, function(){ Deactivator::deactivate(); } );
+	$plugin = new Plugin();
+	$plugin->run();
+}else {
+	if(is_admin()){
+		add_action( 'admin_notices', function(){
+			?>
+			<div class="error">
+				<p><?php _e( basename(__FILE__). ' requires Waboot Framework' ); ?></p>
+			</div>
+			<?php
+		});
+	}
+}
