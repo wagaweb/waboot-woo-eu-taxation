@@ -46,6 +46,12 @@ class Plugin extends BasePlugin {
 				Utilities::add_admin_notice("wb-woo-eut-require-wc",__("WB EU Taxation for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
 			});
 		}
+
+		// migration from other plugins for 2.0
+		require_once 'migrations/Migration.php';
+		$r = new Migration($this);
+
+
 	}
 
 	/**
