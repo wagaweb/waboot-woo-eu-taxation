@@ -22,6 +22,7 @@ assets/dist/*.*
 ############
 assets/dist/css/*
 assets/dist/js/*
+!assets/dist/js/migrations.js
 
 ############
 ## IDEs

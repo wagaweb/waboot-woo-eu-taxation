@@ -3,6 +3,7 @@
 namespace WBWooEUT\includes;
 use WBF\components\pluginsframework\BasePlugin;
 use WBF\components\utils\Utilities;
+use WBWooEUT\includes\migrations\Migration;
 
 /**
  * The core plugin class.
@@ -47,11 +48,8 @@ class Plugin extends BasePlugin {
 			});
 		}
 
-		// migration from other plugins for 2.0
-		require_once 'migrations/Migration.php';
-		$r = new Migration($this);
-
-
+		//Addons:
+		new Migration($this); //migration from other plugins for 2.0
 	}
 
 	/**

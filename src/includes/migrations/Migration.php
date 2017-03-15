@@ -1,6 +1,6 @@
 <?php
 
-namespace WBWooEUT\includes;
+namespace WBWooEUT\includes\migrations;
 
 use WBF\components\assets\AssetsManager;
 
@@ -133,8 +133,8 @@ class Migration {
 	public function enqueue_scripts() {
 		$assets = [
 			'eutax-migration' => [
-				'uri'   => $this->plugin->get_uri() . 'src/includes/migrations/migrations.js',
-				'path'  => $this->plugin->get_dir() . 'src/includes/migrations/migrations.js',
+				'uri'   => $this->plugin->get_uri() . 'assets/dist/js/migrations.js',
+				'path'  => $this->plugin->get_dir() . 'assets/dist/js/migrations.js',
 				'type'  => "js",
 				'deps'  => ['jquery'],
 				'i10n'  => [
