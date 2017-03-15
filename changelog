@@ -5,6 +5,7 @@ Version 2.1.2 - 03/15/2017
 - Moved some checkout fields around
 - Added "*" to required fields
 - Refactoring of Migration inclusion
+- Now customer type, vat and fiscal code are saved alongside the order and displayed in dashboard
 
 Version 2.1.1 - 03/10/2017
 ---------------------------------
