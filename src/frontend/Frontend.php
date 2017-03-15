@@ -237,10 +237,10 @@ class Frontend {
 				'label' => _x("Customer type", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'select',
 				'options' => [
+					'company' => _x("Company","WC Field",$this->plugin->get_textdomain()),
 					'individual' => _x("Private individual","WC Field",$this->plugin->get_textdomain()),
-					'company' => _x("Company","WC Field",$this->plugin->get_textdomain())
 				],
-				'default' => 'individual',
+				'default' => 'company',
 				'required' => $invoice_required == "yes",
 				'class' => $invoice_required != "yes" ? ['wbeut-hidden'] : []
 			]
@@ -273,9 +273,9 @@ class Frontend {
 		];
 
 		if($invoice_required == "yes"){
-			$address_fields = array_merge($address_fields,$customer_type,$fiscal_code,$vat,$vies_valid_check);
+			$address_fields = array_merge($address_fields,$customer_type,$vat,$vies_valid_check,$fiscal_code);
 		}else{
-			$address_fields = array_merge($address_fields,$request_billing,$customer_type,$fiscal_code,$vat,$vies_valid_check);
+			$address_fields = array_merge($address_fields,$request_billing,$customer_type,$vat,$vies_valid_check,$fiscal_code);
 		}
 
 
@@ -296,7 +296,7 @@ class Frontend {
 	    if(isset($billing_fields['billing_company'])){
 		    $company_field = ["billing_company" => $billing_fields['billing_company']];
 		    unset($billing_fields['billing_company']);
-		    $billing_fields = Utilities::associative_array_add_element_after($company_field,'billing_wb_woo_fi_fiscal_code',$billing_fields);
+		    $billing_fields = Utilities::associative_array_add_element_after($company_field,'billing_wb_woo_fi_customer_type',$billing_fields);
         }
         return $billing_fields;
     }
