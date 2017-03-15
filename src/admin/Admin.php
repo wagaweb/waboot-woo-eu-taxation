@@ -238,4 +238,24 @@ class Admin {
 		}
 		return $settings;
 	}
+
+	/**
+	 * Display plugin custom meta in order details
+	 *
+	 * @hooked 'woocommerce_admin_order_data_after_order_details'
+	 *
+	 * @param \WC_Order $order
+	 */
+	public function display_custom_meta_on_order($order){
+		$custom_meta = Plugin::get_custom_meta_from_order($order->id);
+
+		$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
+
+		$v->display([
+			'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
+			'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
+			'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] : "",
+			'textdomain' => $this->plugin->get_textdomain()
+		]);
+	}
 }

@@ -82,7 +82,7 @@ class Plugin extends BasePlugin {
 		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_VAT, $plugin_public, "validate_vat_on_checkout", 11, 1);
 
 		//Orders related
-		$this->loader->add_filter("woocommerce_checkout_update_order_meta", $plugin_public, "update_order_meta_on_checkout", 11, 2);
+		$this->loader->add_action("woocommerce_checkout_update_order_meta", $plugin_public, "update_order_meta_on_checkout", 11, 2);
 
 		//Ajax
 		$this->loader->add_action( 'wp_ajax_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
@@ -107,6 +107,9 @@ class Plugin extends BasePlugin {
 
 		$this->loader->add_filter("woocommerce_get_sections_"."tax", $plugin_admin, "alter_tax_sections", 10, 1);
 		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);
+
+		//Orders related
+		$this->loader->add_action("woocommerce_admin_order_data_after_order_details", $plugin_admin, "display_custom_meta_on_order", 10, 1);
 	}
 
 	/**
@@ -405,5 +408,24 @@ class Plugin extends BasePlugin {
 	 */
 	protected function load_dependencies() {
 		parent::load_dependencies();
+	}
+
+	/**
+	 * Retrieve plugin custom meta from an order
+	 *
+	 * @param $order_id
+	 *
+	 * @return array;
+	 */
+	public static function get_custom_meta_from_order($order_id){
+		$custom_meta = [];
+
+		$custom_meta[self::FIELD_CUSTOMER_TYPE] = get_post_meta($order_id,self::FIELD_CUSTOMER_TYPE,true);
+		$custom_meta[self::FIELD_VAT] = get_post_meta($order_id,self::FIELD_VAT,true);
+		$custom_meta[self::FIELD_FISCAL_CODE] = get_post_meta($order_id,self::FIELD_FISCAL_CODE,true);
+
+		$custom_meta = array_filter($custom_meta);
+
+		return $custom_meta;
 	}
 }
