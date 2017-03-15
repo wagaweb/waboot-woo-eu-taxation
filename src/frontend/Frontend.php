@@ -421,6 +421,27 @@ class Frontend {
 	}
 
 	/**
+	 * Adds new order meta on checkout
+     *
+     * @hooked 'woocommerce_checkout_update_order_meta'
+	 */
+	public function update_order_meta_on_checkout($order_id, $posted){
+		$form_vars = $_POST;
+
+		$new_meta = [
+            Plugin::FIELD_CUSTOMER_TYPE => isset($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) ? sanitize_text_field($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) : false,
+            Plugin::FIELD_VAT => isset($form_vars[Plugin::FIELD_VAT]) ? sanitize_text_field($form_vars[Plugin::FIELD_VAT]) : false,
+            Plugin::FIELD_FISCAL_CODE => isset($form_vars[Plugin::FIELD_FISCAL_CODE]) ? sanitize_text_field($form_vars[Plugin::FIELD_FISCAL_CODE]) : false,
+        ];
+
+		$new_meta = array_filter($new_meta); //remove FALSE values
+
+        foreach ($new_meta as $k => $v){
+	        update_post_meta($order_id,$k,$v);
+        }
+    }
+
+	/**
 	 * Adds customer type to WC Customer object
 	 *
 	 * @hooked 'woocommerce_process_checkout_field_*'

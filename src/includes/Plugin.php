@@ -81,6 +81,9 @@ class Plugin extends BasePlugin {
 		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_FISCAL_CODE, $plugin_public, "validate_fiscal_code_on_checkout", 11, 1);
 		$this->loader->add_filter("woocommerce_process_checkout_field_".self::FIELD_VAT, $plugin_public, "validate_vat_on_checkout", 11, 1);
 
+		//Orders related
+		$this->loader->add_filter("woocommerce_checkout_update_order_meta", $plugin_public, "update_order_meta_on_checkout", 11, 2);
+
 		//Ajax
 		$this->loader->add_action( 'wp_ajax_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
 		$this->loader->add_action( 'wp_ajax_nopriv_validate_fiscal_code', $plugin_public, "ajax_validate_fiscal_code" );
