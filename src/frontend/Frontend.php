@@ -335,6 +335,7 @@ class Frontend {
 	 * @return mixed
 	 */
 	function validate_fiscal_code_on_checkout($fiscal_code){
+		if(!isset($_POST[Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK])) return $fiscal_code;
 		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] != "IT" || !$this->plugin->is_invoice_data_required()) return $fiscal_code;
 		$result = $this->plugin->validate_fiscal_code($fiscal_code);
 		if(!$result['is_valid']){
@@ -379,7 +380,9 @@ class Frontend {
 	 * @return mixed
 	 */
 	function validate_vat_on_checkout($vat){
-		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST[Plugin::FIELD_CUSTOMER_TYPE] == "individual") return $vat;
+		if(!isset($_POST[Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK])) return $vat;
+	    if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST[Plugin::FIELD_CUSTOMER_TYPE] == "individual") return $vat;
+
 		if(isset($_POST[Plugin::FIELD_VIES_VALID_CHECK])){
 			//Advanced validation
 			$vies_validation_flag = true;
