@@ -258,4 +258,21 @@ class Admin {
 			'textdomain' => $this->plugin->get_textdomain()
 		]);
 	}
+
+	public function display_custom_meta_on_order_listing($column){
+		global $post, $woocommerce, $the_order;
+
+		if ( empty( $the_order ) || $the_order->id != $post->ID ) {
+			$the_order = wc_get_order( $post->ID );
+		}
+
+		if(!$the_order instanceof \WC_Order) return;
+
+		switch($column){
+			case 'billing_address':
+				$custom_meta = Plugin::get_custom_meta_from_order($the_order->id);
+				$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
+				break;
+		}
+	}
 }

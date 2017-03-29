@@ -109,7 +109,8 @@ class Plugin extends BasePlugin {
 		$this->loader->add_filter("woocommerce_get_settings_"."tax", $plugin_admin, "display_tax_settings", 10, 1);
 
 		//Orders related
-		$this->loader->add_action("woocommerce_admin_order_data_after_order_details", $plugin_admin, "display_custom_meta_on_order", 10, 1);
+		$this->loader->add_action("woocommerce_admin_order_data_after_billing_address", $plugin_admin, "display_custom_meta_on_order", 10, 1);
+		$this->loader->add_action("manage_shop_order_posts_custom_column",$plugin_admin,"display_custom_meta_on_order_listing", 3, 1);
 	}
 
 	/**
@@ -423,6 +424,9 @@ class Plugin extends BasePlugin {
 		$custom_meta[self::FIELD_CUSTOMER_TYPE] = get_post_meta($order_id,self::FIELD_CUSTOMER_TYPE,true);
 		$custom_meta[self::FIELD_VAT] = get_post_meta($order_id,self::FIELD_VAT,true);
 		$custom_meta[self::FIELD_FISCAL_CODE] = get_post_meta($order_id,self::FIELD_FISCAL_CODE,true);
+		$custom_meta[self::FIELD_REQUEST_INVOICE] = get_post_meta($order_id,self::FIELD_REQUEST_INVOICE,true);
+
+		//todo: se non ci sono campi custom, settare la request incoice a false, se ci sono, settarla a true (per gli ordini già salvati)
 
 		$custom_meta = array_filter($custom_meta);
 

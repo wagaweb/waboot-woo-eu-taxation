@@ -426,10 +426,12 @@ class Frontend {
 	/**
 	 * Adds new order meta on checkout
      *
-     * @hooked 'woocommerce_checkout_update_order_meta'
+     * @hooked 'woocommerce_admin_order_data_after_billing_address'
 	 */
 	public function update_order_meta_on_checkout($order_id, $posted){
 		$form_vars = $_POST;
+
+		if(!isset($posted[Plugin::FIELD_REQUEST_INVOICE]) || $posted[Plugin::FIELD_REQUEST_INVOICE] != 1) return; //Do not save meta if the invoice was not requested
 
 		$new_meta = [
             Plugin::FIELD_CUSTOMER_TYPE => isset($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) ? sanitize_text_field($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) : false,
