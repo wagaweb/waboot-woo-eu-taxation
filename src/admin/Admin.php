@@ -260,6 +260,9 @@ class Admin {
 		]);
 	}
 
+	/**
+	 * @param $column
+	 */
 	public function display_custom_meta_on_order_listing($column){
 		global $post, $woocommerce, $the_order;
 
@@ -285,5 +288,46 @@ class Admin {
 				}
 				break;
 		}
+	}
+
+	/**
+	 * Adds the custom fields to admin new order email
+	 *
+	 * @param array $fields
+	 * @param bool $sent_to_admin
+	 * @param \WC_Order $order
+	 *
+	 * @hooked 'woocommerce_email_customer_details_fields'
+	 *
+	 * @return mixed
+	 */
+	public function add_custom_meta_fields_on_new_order_email($fields, $sent_to_admin, $order){
+		if($sent_to_admin){
+			$custom_meta = Plugin::get_custom_meta_from_order($order->id);
+			if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
+				$fields['customer_type'] = [
+					'label' => __('Customer Type',$this->plugin->get_textdomain()),
+					'value' => $custom_meta[Plugin::FIELD_CUSTOMER_TYPE]
+				];
+
+				if(isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) && $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] == "company"){
+					$fields['company_name'] = [
+						'label' => __('Company name',$this->plugin->get_textdomain()),
+						'value' => $order->billing_company
+					];
+				}
+
+				$fields['vat'] = [
+					'label' => __('VAT',$this->plugin->get_textdomain()),
+					'value' => $custom_meta[Plugin::FIELD_VAT]
+				];
+
+				$fields['fiscal_code'] = [
+					'label' => __('Fiscal code',$this->plugin->get_textdomain()),
+					'value' => $custom_meta[Plugin::FIELD_FISCAL_CODE]
+				];
+			}
+		}
+		return $fields;
 	}
 }
