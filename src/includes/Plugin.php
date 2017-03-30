@@ -427,6 +427,11 @@ class Plugin extends BasePlugin {
 		$custom_meta[self::FIELD_REQUEST_INVOICE] = get_post_meta($order_id,self::FIELD_REQUEST_INVOICE,true);
 
 		//todo: se non ci sono campi custom, settare la request incoice a false, se ci sono, settarla a true (per gli ordini già salvati)
+		if($custom_meta[self::FIELD_VAT] != "" || $custom_meta[self::FIELD_FISCAL_CODE] != ""){
+			if($custom_meta[self::FIELD_REQUEST_INVOICE] == ""){
+				$custom_meta[self::FIELD_REQUEST_INVOICE] = true;
+			}
+		}
 
 		$custom_meta = array_filter($custom_meta);
 

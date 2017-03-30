@@ -431,13 +431,20 @@ class Frontend {
 	public function update_order_meta_on_checkout($order_id, $posted){
 		$form_vars = $_POST;
 
-		if(!isset($posted[Plugin::FIELD_REQUEST_INVOICE]) || $posted[Plugin::FIELD_REQUEST_INVOICE] != 1) return; //Do not save meta if the invoice was not requested
+		$invoice_required = $this->plugin->is_invoice_data_required();
 
-		$new_meta = [
-            Plugin::FIELD_CUSTOMER_TYPE => isset($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) ? sanitize_text_field($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) : false,
-            Plugin::FIELD_VAT => isset($form_vars[Plugin::FIELD_VAT]) ? sanitize_text_field($form_vars[Plugin::FIELD_VAT]) : false,
-            Plugin::FIELD_FISCAL_CODE => isset($form_vars[Plugin::FIELD_FISCAL_CODE]) ? sanitize_text_field($form_vars[Plugin::FIELD_FISCAL_CODE]) : false,
-        ];
+		if( (isset($posted[Plugin::FIELD_REQUEST_INVOICE]) && $posted[Plugin::FIELD_REQUEST_INVOICE] == 1) || $invoice_required ){
+			$new_meta = [
+				Plugin::FIELD_CUSTOMER_TYPE => isset($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) ? sanitize_text_field($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) : false,
+				Plugin::FIELD_VAT => isset($form_vars[Plugin::FIELD_VAT]) ? sanitize_text_field($form_vars[Plugin::FIELD_VAT]) : false,
+				Plugin::FIELD_FISCAL_CODE => isset($form_vars[Plugin::FIELD_FISCAL_CODE]) ? sanitize_text_field($form_vars[Plugin::FIELD_FISCAL_CODE]) : false,
+				Plugin::FIELD_REQUEST_INVOICE => true,
+			];
+        }else{
+			$new_meta = [
+				Plugin::FIELD_REQUEST_INVOICE => false,
+			];
+        }
 
 		$new_meta = array_filter($new_meta); //remove FALSE values
 
