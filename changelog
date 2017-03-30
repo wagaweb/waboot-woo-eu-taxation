@@ -1,5 +1,10 @@
 == Change log ==
 
+Version 2.1.5 - 03/30/2017
+---------------------------------
+- Now company name is displayed in single order edit form
+- Now custom meta is displayed in admin new order email
+
 Version 2.1.4 - 03/30/2017
 ---------------------------------
 - Now the plugin will save the value for "request invoice" checkbox
