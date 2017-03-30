@@ -252,6 +252,7 @@ class Admin {
 		$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
 		$v->display([
+			'company_name' => isset($order->billing_company) ? $order->billing_company : "",
 			'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 			'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
 			'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] : "",
@@ -275,6 +276,7 @@ class Admin {
 				if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
 					$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 					$v->display([
+						'company_name' => isset($the_order->billing_company) ? $the_order->billing_company : "",
 						'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 						'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
 						'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] : "",
