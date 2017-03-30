@@ -11,7 +11,7 @@ namespace WBWooEUT;
  * Plugin Name:       Waboot EU Taxation for WooCommerce
  * Plugin URI:        http://www.waga.it/
  * Description:       EU Taxation management for WooCommerce
- * Version:           2.1.4
+ * Version:           2.1.5
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+
