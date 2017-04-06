@@ -438,4 +438,32 @@ class Plugin extends BasePlugin {
 
 		return $custom_meta;
 	}
+
+	/**
+	 * Get the customer type label
+	 *
+	 * @param $name
+	 *
+	 * @return string
+	 */
+	public static function get_customer_type_label($name){
+		$textdomain = call_user_func(function(){
+			$self = Plugin::get_instances_of("waboot-woo-eu-taxation");
+			if(is_array($self) && isset($self['core'])){
+				return $self['core']->get_textdomain();
+			}
+			return "";
+		});
+
+		switch($name){
+			case "individual":
+				return _x("Private individual","WC Field",$textdomain);
+				break;
+			case "company":
+				return _x("Company","WC Field",$textdomain);
+				break;
+		}
+
+		return "";
+	}
 }

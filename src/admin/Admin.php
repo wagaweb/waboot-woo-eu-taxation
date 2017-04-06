@@ -255,7 +255,7 @@ class Admin {
 			'company_name' => isset($order->billing_company) ? $order->billing_company : "",
 			'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 			'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
-			'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] : "",
+			'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? Plugin::get_customer_type_label($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) : "",
 			'textdomain' => $this->plugin->get_textdomain()
 		]);
 	}
@@ -282,7 +282,7 @@ class Admin {
 						'company_name' => isset($the_order->billing_company) ? $the_order->billing_company : "",
 						'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 						'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
-						'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] : "",
+						'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? Plugin::get_customer_type_label($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) : "",
 						'textdomain' => $this->plugin->get_textdomain()
 					]);
 				}

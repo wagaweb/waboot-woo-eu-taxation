@@ -237,8 +237,8 @@ class Frontend {
 				'label' => _x("Customer type", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'select',
 				'options' => [
-					'company' => _x("Company","WC Field",$this->plugin->get_textdomain()),
-					'individual' => _x("Private individual","WC Field",$this->plugin->get_textdomain()),
+					'company' => Plugin::get_customer_type_label('company'),
+					'individual' => Plugin::get_customer_type_label('individual'),
 				],
 				'default' => 'company',
 				'required' => $invoice_required == "yes",
@@ -337,6 +337,7 @@ class Frontend {
 	function validate_fiscal_code_on_checkout($fiscal_code){
 		if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE])) return $fiscal_code;
 		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] != "IT" || !$this->plugin->is_invoice_data_required()) return $fiscal_code;
+		if($_POST[Plugin::FIELD_CUSTOMER_TYPE] == "company") return $fiscal_code; //v2.1.6 - Do not verify fiscal code for companies (many companies use vat as fiscal code)
 		$result = $this->plugin->validate_fiscal_code($fiscal_code);
 		if(!$result['is_valid']){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_notice',

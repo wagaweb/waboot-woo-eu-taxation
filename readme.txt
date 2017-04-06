@@ -18,6 +18,10 @@ This plugin enables shop owner to apply EU taxation rules during checkout.
 3. Point the zip file and click 'Install Now'
 4. Activate it
 
+== Usage ==
+
+
+
 == Frequently asked questions ==
 
 == Changelog ==

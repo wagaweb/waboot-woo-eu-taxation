@@ -1,5 +1,10 @@
 == Change log ==
 
+Version 2.1.6 - 04/06/2017
+---------------------------------
+- Now fiscal code is no longer verified for companies
+- Now customer type is displayed by label in dashboard
+
 Version 2.1.5 - 03/30/2017
 ---------------------------------
 - Now company name is displayed in single order edit form

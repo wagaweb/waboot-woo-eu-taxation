@@ -220,6 +220,12 @@ export default class extends Backbone.Model{
                 $fiscal_code.removeClass('validate-required validate-fiscal-code woocommerce-invalid-required-field woocommerce-invalid');
             }
         }
+
+        //v2.1.6 - Do not verify fiscal code for companies (many companies use vat as fiscal code)
+        let $customer_type = $("#"+wbFIData.fields_id.customer_type+"_field");
+        if($customer_type.find("select").val() === "company"){
+            $fiscal_code.removeClass('validate-fiscal-code');
+        }
     }
 
     /**
