@@ -233,7 +233,7 @@ class Plugin extends BasePlugin {
 	 */
 	public function is_invoice_data_required(){
 		$field_name = self::FIELD_REQUEST_INVOICE;
-		$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no") == "yes" || WC()->customer->$field_name;
+		$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no") == "yes" || WC()->customer->get_meta($field_name);
 		return $r;
 	}
 
