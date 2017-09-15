@@ -251,8 +251,11 @@ class Admin {
 
 		$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
+		//Order data:
+		$billing_company = $order->get_billing_company();
+
 		$v->display([
-			'company_name' => isset($order->billing_company) ? $order->billing_company : "",
+			'company_name' => isset($billing_company) ? $billing_company : "",
 			'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 			'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
 			'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? Plugin::get_customer_type_label($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) : "",
@@ -266,7 +269,7 @@ class Admin {
 	public function display_custom_meta_on_order_listing($column){
 		global $post, $woocommerce, $the_order;
 
-		if ( empty( $the_order ) || $the_order->id != $post->ID ) {
+		if ( empty( $the_order ) || $the_order->get_id() != $post->ID ) {
 			$the_order = wc_get_order( $post->ID );
 		}
 
@@ -278,8 +281,12 @@ class Admin {
 				$custom_meta = Plugin::get_custom_meta_from_order($the_order->get_id());
 				if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
 					$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
+
+					//Order data:
+					$billing_company = $the_order->get_billing_company();
+
 					$v->display([
-						'company_name' => isset($the_order->billing_company) ? $the_order->billing_company : "",
+						'company_name' => isset($billing_company) ? $billing_company : "",
 						'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 						'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
 						'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? Plugin::get_customer_type_label($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) : "",
@@ -313,7 +320,7 @@ class Admin {
 				if(isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) && $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] == "company"){
 					$fields['company_name'] = [
 						'label' => __('Company name',$this->plugin->get_textdomain()),
-						'value' => $order->billing_company
+						'value' => $order->get_billing_company()
 					];
 				}
 
