@@ -229,7 +229,8 @@ class Frontend {
 		$request_billing = [
 			Plugin::FIELD_REQUEST_INVOICE => [
 				'label' => _x("Request invoice", "WC Field", $this->plugin->get_textdomain()),
-				'type' => 'checkbox'
+				'type' => 'checkbox',
+                'priority' => 120
 			]
 		];
 		$customer_type = [
@@ -242,7 +243,8 @@ class Frontend {
 				],
 				'default' => 'company',
 				'required' => $invoice_required == "yes",
-				'class' => $invoice_required != "yes" ? ['wbeut-hidden'] : []
+				'class' => $invoice_required != "yes" ? ['wbeut-hidden'] : [],
+				'priority' => 121
 			]
 		];
 		$fiscal_code = [
@@ -250,7 +252,8 @@ class Frontend {
 				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()).$req,
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
-				'class' => ['wbeut-hidden']
+				'class' => ['wbeut-hidden'],
+				'priority' => 123
 			]
 		];
 		$vat = [
@@ -261,7 +264,8 @@ class Frontend {
 				'class' => ['wbeut-hidden'],
 				'custom_attributes' => [
 					'country' => $country
-				]
+				],
+				'priority' => 124
 			]
 		];
 		$vies_valid_check = [
@@ -269,6 +273,7 @@ class Frontend {
 				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
 				'class' => ['wbeut-hidden'],
+				'priority' => 125
 			]
 		];
 
@@ -297,7 +302,8 @@ class Frontend {
 		    $company_field = ["billing_company" => $billing_fields['billing_company']];
 		    unset($billing_fields['billing_company']);
 		    $billing_fields = Utilities::associative_array_add_element_after($company_field,'billing_wb_woo_fi_customer_type',$billing_fields);
-        }
+            $billing_fields['billing_company']['priority'] = 122;
+	    }
         return $billing_fields;
     }
 
