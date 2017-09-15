@@ -1,5 +1,9 @@
 == Change log ==
 
+Version 2.1.7 - 09/15/2017
+---------------------------------
+- WooCommerce 3 compatibility
+
 Version 2.1.6 - 04/06/2017
 ---------------------------------
 - Now fiscal code is no longer verified for companies

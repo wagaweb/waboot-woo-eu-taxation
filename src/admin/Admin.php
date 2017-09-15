@@ -247,7 +247,7 @@ class Admin {
 	 * @param \WC_Order $order
 	 */
 	public function display_custom_meta_on_order($order){
-		$custom_meta = Plugin::get_custom_meta_from_order($order->id);
+		$custom_meta = Plugin::get_custom_meta_from_order($order->get_id());
 
 		$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
@@ -275,7 +275,7 @@ class Admin {
 		switch($column){
 			case 'billing_address':
 			case 'shipping_address':
-				$custom_meta = Plugin::get_custom_meta_from_order($the_order->id);
+				$custom_meta = Plugin::get_custom_meta_from_order($the_order->get_id());
 				if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
 					$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 					$v->display([
@@ -303,7 +303,7 @@ class Admin {
 	 */
 	public function add_custom_meta_fields_on_new_order_email($fields, $sent_to_admin, $order){
 		if($sent_to_admin){
-			$custom_meta = Plugin::get_custom_meta_from_order($order->id);
+			$custom_meta = Plugin::get_custom_meta_from_order($order->get_id());
 			if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
 				$fields['customer_type'] = [
 					'label' => __('Customer Type',$this->plugin->get_textdomain()),
