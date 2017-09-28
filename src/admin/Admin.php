@@ -252,7 +252,11 @@ class Admin {
 		$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
 		//Order data:
-		$billing_company = $order->get_billing_company();
+		if($this->plugin->is_woocommerce_3()){
+			$billing_company = $order->get_billing_company();
+		}else{
+			$billing_company = $order->billing_company;
+		}
 
 		$v->display([
 			'company_name' => isset($billing_company) ? $billing_company : "",
@@ -283,7 +287,11 @@ class Admin {
 					$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
 					//Order data:
-					$billing_company = $the_order->get_billing_company();
+					if($this->plugin->is_woocommerce_3()){
+						$billing_company = $the_order->get_billing_company();
+					}else{
+						$billing_company = $the_order->billing_company;
+					}
 
 					$v->display([
 						'company_name' => isset($billing_company) ? $billing_company : "",
@@ -320,7 +328,7 @@ class Admin {
 				if(isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) && $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] == "company"){
 					$fields['company_name'] = [
 						'label' => __('Company name',$this->plugin->get_textdomain()),
-						'value' => $order->get_billing_company()
+						'value' => $this->plugin->is_woocommerce_3() ? $order->get_billing_company() : $order->billing_company
 					];
 				}
 

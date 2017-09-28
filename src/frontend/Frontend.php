@@ -316,7 +316,7 @@ class Frontend {
 	 *
 	 * @return string
 	 */
-	function validate_customer_type_on_checkout($customer_type){
+	public function validate_customer_type_on_checkout($customer_type){
 		if($this->plugin->is_invoice_data_required()){
 			if($customer_type == ""){
 				wc_add_notice( apply_filters( 'wb_woo_fi/invalid_customer_type_field_notice',
@@ -340,10 +340,18 @@ class Frontend {
 	 *
 	 * @return mixed
 	 */
-	function validate_fiscal_code_on_checkout($fiscal_code){
-		if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE])) return $fiscal_code;
-		if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] != "IT" || !$this->plugin->is_invoice_data_required()) return $fiscal_code;
-		if($_POST[Plugin::FIELD_CUSTOMER_TYPE] == "company") return $fiscal_code; //v2.1.6 - Do not verify fiscal code for companies (many companies use vat as fiscal code)
+	public function validate_fiscal_code_on_checkout($fiscal_code){
+        $has_to_validate_fiscal_code = call_user_func(function(){
+	        if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE])) return false;
+	        if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] !== 'IT' || !$this->plugin->is_invoice_data_required()) return false;
+	        if($_POST[Plugin::FIELD_CUSTOMER_TYPE] === "company") return false; //v2.1.6 - Do not verify fiscal code for companies (many companies use vat as fiscal code)
+            return true;
+        });
+
+        $has_to_validate_fiscal_code = apply_filters('wb_woo_fi/checkout/must_validate_fiscal_code',$has_to_validate_fiscal_code);
+
+        if(!$has_to_validate_fiscal_code) return $fiscal_code;
+
 		$result = $this->plugin->validate_fiscal_code($fiscal_code);
 		if(!$result['is_valid']){
 			wc_add_notice( apply_filters( 'wb_woo_fi/invalid_fiscal_code_notice',
@@ -386,7 +394,7 @@ class Frontend {
 	 *
 	 * @return mixed
 	 */
-	function validate_vat_on_checkout($vat){
+	public function validate_vat_on_checkout($vat){
 		if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE])) return $vat;
 	    if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST[Plugin::FIELD_CUSTOMER_TYPE] == "individual") return $vat;
 
@@ -414,7 +422,7 @@ class Frontend {
 	public function ajax_validate_eu_vat(){
 		if(!defined("DOING_AJAX") || !DOING_AJAX) return;
 		$vat = isset($_POST['vat']) ? $_POST['vat'] : false;
-		$view_check = isset($_POST['view_check']) ? (bool) $_POST['view_check'] : false;
+		$vies_check = isset($_POST['vies_check']) ? (bool) $_POST['vies_check'] : false;
 		if(!$vat){
 			echo json_encode([
 				'valid' => false,
@@ -422,7 +430,7 @@ class Frontend {
 			]);
 			die();
 		}
-		$result = $this->plugin->validate_eu_vat($vat,$view_check);
+		$result = $this->plugin->validate_eu_vat($vat,$vies_check);
 		echo json_encode([
 			'valid' => $result,
 			'error' => !$result ? __("No valid VAT provided", $this->plugin->get_textdomain()) : ""

@@ -31,7 +31,7 @@ export default class extends Backbone.Model{
                 event.data.do_validation($vat,$vat_parent,{
                     action: "validate_vat",
                     vat: $vat.val(),
-                    view_check: $vies_check.is(":checked") ? 1 : 0
+                    vies_check: $vies_check.is(":checked") ? 1 : 0
                 });
                 //Trigger checkout update
                 $(document.body).trigger( 'update_checkout');
@@ -120,7 +120,7 @@ export default class extends Backbone.Model{
                 event.data.do_validation($el,$parent,{
                     action: "validate_vat",
                     vat: $el.val(),
-                    view_check: $vies_check.is(":checked") ? 1 : 0
+                    vies_check: $vies_check.is(":checked") ? 1 : 0
                 });
             }
         }

@@ -175,7 +175,7 @@ class Plugin extends BasePlugin {
 	 * @return bool
 	 */
 	public function can_apply_shop_billing_country_as_default_tax_rate(){
-		$r = get_option(self::FIELD_ADMIN_SHOP_BILLING_COUNTRY_RATE_AS_DEFAULT,"yes") == "yes";
+		$r = get_option(self::FIELD_ADMIN_SHOP_BILLING_COUNTRY_RATE_AS_DEFAULT,"yes") === "yes";
 		return $r;
 	}
 
@@ -195,9 +195,15 @@ class Plugin extends BasePlugin {
 
 		//Get the current user customer type
 		if(!$customer_type){
-			$customer_type = "individual";
-			if(isset(WC()->customer->billing_wb_woo_fi_customer_type)){
-				$customer_type = WC()->customer->billing_wb_woo_fi_customer_type;
+			$customer_type = 'individual';
+			$_customer_type = call_user_func(function(){
+				if(!$this->is_woocommerce_3()){
+					return WC()->customer->billing_wb_woo_fi_customer_type;
+				}
+				return WC()->customer->get_meta('billing_wb_woo_fi_customer_type');
+			});
+			if(isset($_customer_type)){
+				$customer_type = $_customer_type;
 			}else{
 				$current_user = wp_get_current_user();
 				if($current_user instanceof \WP_User){
@@ -209,7 +215,7 @@ class Plugin extends BasePlugin {
 			}	
 		}
 		
-		return $current_custom_rate_group == "both" || $current_custom_rate_group == $customer_type;
+		return $current_custom_rate_group === 'both' || $current_custom_rate_group == $customer_type;
 	}
 
 	/**
@@ -221,7 +227,15 @@ class Plugin extends BasePlugin {
 	 */
 	public function can_exclude_taxes($rate_id){
 		$vies_valid_check_field_name = Plugin::FIELD_VIES_VALID_CHECK;
-		if(!isset(WC()->customer->$vies_valid_check_field_name) || !WC()->customer->$vies_valid_check_field_name) return false;
+
+		if($this->is_woocommerce_3()){
+			$vies_valid_check =	WC()->customer->get_meta($vies_valid_check_field_name);
+		}else{
+			$vies_valid_check = WC()->customer->$vies_valid_check_field_name;
+		}
+
+		if(!isset($vies_valid_check) || !$vies_valid_check) return false;
+
 		$custom_rates = $this->get_custom_tax_rate_settings();
 		return array_key_exists($rate_id,$custom_rates['add_to_tax_exclusion']) && $custom_rates['add_to_tax_exclusion'][$rate_id];
 	}
@@ -233,7 +247,11 @@ class Plugin extends BasePlugin {
 	 */
 	public function is_invoice_data_required(){
 		$field_name = self::FIELD_REQUEST_INVOICE;
-		$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no") == "yes" || WC()->customer->get_meta($field_name);
+		if($this->is_woocommerce_3()){
+			$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,'no') === 'yes' || WC()->customer->get_meta($field_name);
+		}else{
+			$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,'no') === 'yes' || WC()->customer->$field_name;
+		}
 		return $r;
 	}
 
@@ -355,9 +373,9 @@ class Plugin extends BasePlugin {
 	public function validate_eu_vat($vat, $vies_vat = false){
 		if($vies_vat){
 			return $this->validate_eu_vies_vat($vat);
-		}else{
-			return $this->validate_eu_simple_vat($vat);
 		}
+
+		return $this->validate_eu_simple_vat($vat);
 	}
 
 	/**
@@ -368,10 +386,14 @@ class Plugin extends BasePlugin {
 	 * @return bool
 	 */
 	public function validate_eu_simple_vat($vat){
-		if($vat == "" || !is_string($vat)){
+		if($vat === "" || !is_string($vat)){
 			return false;
 		}
-		return true; //todo: implement this
+		$regex = "|([a-zA-Z]{2,})?[0-9]{11}|";
+		if(!preg_match($regex,$vat)){
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -465,5 +487,20 @@ class Plugin extends BasePlugin {
 		}
 
 		return "";
+	}
+
+	/**
+	 * Check if WooCommerce is at least at version 3.0
+	 *
+	 * @return bool
+	 */
+	public function is_woocommerce_3() {
+		if ( function_exists( 'is_woocommerce' ) ) {
+			global $woocommerce;
+			if( isset($woocommerce) && version_compare( $woocommerce->version, '3.0', '>=' ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
