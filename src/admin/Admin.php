@@ -247,7 +247,14 @@ class Admin {
 	 * @param \WC_Order $order
 	 */
 	public function display_custom_meta_on_order($order){
-		$custom_meta = Plugin::get_custom_meta_from_order($order->get_id());
+		$order_id = call_user_func(function() use($order){
+			if(!$this->plugin->is_woocommerce_3()){
+				return $order->id;
+			}
+			return $order->get_id();
+		});
+
+		$custom_meta = Plugin::get_custom_meta_from_order($order_id);
 
 		$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
@@ -273,7 +280,15 @@ class Admin {
 	public function display_custom_meta_on_order_listing($column){
 		global $post, $woocommerce, $the_order;
 
-		if ( empty( $the_order ) || $the_order->get_id() != $post->ID ) {
+		$order_id = call_user_func(function() use($the_order){
+			if(empty($the_order)) return 0;
+			if(!$this->plugin->is_woocommerce_3()){
+				return $the_order->id;
+			}
+			return $the_order->get_id();
+		});
+
+		if ( empty( $the_order ) || $order_id != $post->ID ) {
 			$the_order = wc_get_order( $post->ID );
 		}
 
@@ -282,7 +297,7 @@ class Admin {
 		switch($column){
 			case 'billing_address':
 			case 'shipping_address':
-				$custom_meta = Plugin::get_custom_meta_from_order($the_order->get_id());
+				$custom_meta = Plugin::get_custom_meta_from_order($order_id);
 				if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
 					$v = new HTMLView($this->plugin->get_src_dir()."/views/admin/order-custom-meta.php",$this->plugin,false);
 
@@ -318,7 +333,13 @@ class Admin {
 	 */
 	public function add_custom_meta_fields_on_new_order_email($fields, $sent_to_admin, $order){
 		if($sent_to_admin){
-			$custom_meta = Plugin::get_custom_meta_from_order($order->get_id());
+			$order_id = call_user_func(function() use($order){
+				if(!$this->plugin->is_woocommerce_3()){
+					return $order->id;
+				}
+				return $order->get_id();
+			});
+			$custom_meta = Plugin::get_custom_meta_from_order($order_id);
 			if(isset($custom_meta[Plugin::FIELD_REQUEST_INVOICE]) && $custom_meta[Plugin::FIELD_REQUEST_INVOICE]){
 				$fields['customer_type'] = [
 					'label' => __('Customer Type',$this->plugin->get_textdomain()),
