@@ -3,12 +3,11 @@
 namespace WBWooEUT\includes;
 use WBF\components\pluginsframework\BasePlugin;
 use WBF\components\utils\Utilities;
-use WBWooEUT\includes\migrations\Migration;
 
 /**
  * The core plugin class.
  *
- * @package    WBWooEUT
+ * @package WBWooEUT
  */
 class Plugin extends BasePlugin {
 
@@ -39,9 +38,6 @@ class Plugin extends BasePlugin {
 				Utilities::add_admin_notice("wb-woo-eut-require-wc",__("WB EU Taxation for WooCommerce requires WooCommerce to work"),"nag",["category" => '_flash_']);
 			});
 		}
-
-		//Addons:
-		new Migration($this); //migration from other plugins for 2.0
 	}
 
 	/**
