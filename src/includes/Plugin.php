@@ -8,15 +8,7 @@ use WBWooEUT\includes\migrations\Migration;
 /**
  * The core plugin class.
  *
- * This is used to define internationalization, dashboard-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- *
- * @since      1.0.0
  * @package    WBWooEUT
- * @subpackage WBWooEUT/includes
  */
 class Plugin extends BasePlugin {
 

@@ -8,19 +8,13 @@ use WBF\components\utils\Utilities;
 /**
  * The public-facing functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the dashboard-specific stylesheet and JavaScript.
- *
- * @package    WBWooEUT
- * @subpackage WBWooEUT/admin
+ * @package WBWooEUT
  */
 class Admin {
 
 	/**
 	 * The main plugin class
 	 * @var \WBWooEUT\includes\Plugin
-	 *
-	 * [IT] E' possibile utilizzare $this->plugin->public_plugin per riferirsi alla classe in class-admin.php
 	 */
 	private $plugin;
 
@@ -29,9 +23,8 @@ class Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @var      string    $plugin_name       The name of the plugin.
-	 * @var      string    $version    The version of this plugin.
+	 * @var string $plugin_name The name of the plugin.
+	 * @var string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name = null, $version = null, $core = null ) {
 		if(isset($core)) $this->plugin = $core;
@@ -205,9 +198,6 @@ class Admin {
 	/**
 	 * Inject our settings page.
 	 *
-	 * WARNING: This is insane.
-	 * Dear WooCommerce, why in the name of your god of choice you had hardcoded the tax rate tables columns and made so difficult to add more tabs that are neither a series of settings or a rate table?
-	 *
 	 * @param $settings
 	 *
 	 * @return array
@@ -346,7 +336,7 @@ class Admin {
 					'value' => $custom_meta[Plugin::FIELD_CUSTOMER_TYPE]
 				];
 
-				if(isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) && $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] == "company"){
+				if(isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) && $custom_meta[Plugin::FIELD_CUSTOMER_TYPE] === "company"){
 					$fields['company_name'] = [
 						'label' => __('Company name',$this->plugin->get_textdomain()),
 						'value' => $this->plugin->is_woocommerce_3() ? $order->get_billing_company() : $order->billing_company

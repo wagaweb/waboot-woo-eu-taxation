@@ -7,9 +7,7 @@ namespace WBWooEUT\includes;
  *
  * This class defines all code necessary to run during the plugin's deactivation.
  *
- * @since      1.0.0
- * @package    WBWooEUT
- * @subpackage WBWooEUT/includes
+ * @package WBWooEUT
  */
 class Deactivator {
 	public static function deactivate() {}
