@@ -48,9 +48,9 @@ function get_wbf_admin_download_link(){
  */
 function get_wbf_download_button($plugin_name){
 	$button = sprintf(
-		__( '<strong>'.$plugin_name.'</strong> requires Waboot Framework. <span class="wbf-install-now"><a class="wbf-install-btn button" href="#">%s</a></span>'),
-		__( 'Install Now' ),
-		get_wbf_admin_download_link()
+		__( '<strong>'.$plugin_name.'</strong> requires Waboot Framework. <span class="wbf-install-now"><a class="wbf-install-btn button" href="%s">%s</a></span>'),
+		get_wbf_admin_download_link(),
+		__( 'Install Now' )
     );
 	return $button;
 }
