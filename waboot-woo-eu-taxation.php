@@ -11,7 +11,7 @@ namespace WBWooEUT;
  * Plugin Name:       Waboot EU Taxation for WooCommerce
  * Plugin URI:        http://www.waga.it/
  * Description:       EU Taxation management for WooCommerce
- * Version:           2.1.8
+ * Version:           2.1.9
  * Author:            WAGA
  * Author URI:        http://www.waga.it/
  * License:           GPL-2.0+
@@ -22,7 +22,10 @@ namespace WBWooEUT;
 
 use WBWooEUT\includes\Activator;
 use WBWooEUT\includes\Deactivator;
+use function WBWooEUT\includes\get_wbf_admin_download_link;
+use function WBWooEUT\includes\install_wbf_wp_update_hooks;
 use WBWooEUT\includes\Plugin;
+use WBWooEUT\includes\WBFInstaller;
 
 if ( ! defined( 'WPINC' ) ) {
 	die; //If this file is called directly, abort.
@@ -61,7 +64,7 @@ spl_autoload_register( function($class){
 	}
 });
 
-require_once 'src/includes/wbf-plugin-check-functions.php';
+require_once 'src/includes/wbf-utils.php';
 includes\include_wbf_autoloader();
 
 if(class_exists("\\WBF\\components\\pluginsframework\\BasePlugin")){
@@ -71,10 +74,18 @@ if(class_exists("\\WBF\\components\\pluginsframework\\BasePlugin")){
 	$plugin->run();
 }else {
 	if(is_admin()){
+	    add_action( 'admin_init' , function(){
+	        install_wbf_wp_update_hooks();
+        });
 		add_action( 'admin_notices', function(){
 			?>
 			<div class="error">
-				<p><?php _e( basename(__FILE__). ' requires Waboot Framework' ); ?></p>
+				<p>
+                    <?php printf(
+				        __( basename(__FILE__). ' requires Waboot Framework. Please <a href="%s">install</a>.'),
+	                    get_wbf_admin_download_link() );
+				    ?>
+                </p>
 			</div>
 			<?php
 		});
