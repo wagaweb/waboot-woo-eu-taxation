@@ -5,15 +5,15 @@ namespace WBWooEUT;
 /**
  * The plugin bootstrap file
  *
- * @package           WBWooEUT
+ * @package WBWooEUT
  *
  * @wordpress-plugin
  * Plugin Name:       Waboot EU Taxation for WooCommerce
- * Plugin URI:        http://www.waga.it/
- * Description:       EU Taxation management for WooCommerce
+ * Plugin URI:        https://www.waboot.io/
+ * Description:       Adds fiscal code and VAT fields (with validation and tax management) in checkout.
  * Version:           2.1.9
  * Author:            WAGA
- * Author URI:        http://www.waga.it/
+ * Author URI:        https://www.waboot.io/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       waboot-woo-eu-taxation
