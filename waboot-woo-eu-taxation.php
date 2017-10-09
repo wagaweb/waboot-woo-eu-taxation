@@ -13,7 +13,7 @@ namespace WBWooEUT;
  * Description:       Adds fiscal code and VAT fields (with validation and tax management) in checkout.
  * Version:           2.1.9
  * Author:            WAGA
- * Author URI:        https://www.waboot.io/
+ * Author URI:        https://www.waga.it/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       waboot-woo-eu-taxation
