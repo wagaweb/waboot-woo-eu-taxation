@@ -14,12 +14,12 @@ The system will also validate VAT numbers and fiscal codes.
 
 - Go to "Standard Rate" tab and add your country VAT tax. For example, for Italy, add a tax like that:
 
-    Country code: IT
-    State code: *
-    Postcode/ZIP: *
-    City: *
-    Rate %: 222
-    Tax name: IVA
-    Priority: 1
-    Compound: NOT checked
-    Shippinh: checked
+    Country code: IT  
+    State code: *  
+    Postcode/ZIP: *  
+    City: *  
+    Rate %: 222  
+    Tax name: IVA  
+    Priority: 1  
+    Compound: NOT checked  
+    Shippinh: checked  
