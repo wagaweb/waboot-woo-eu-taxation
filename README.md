@@ -22,4 +22,4 @@ The system will also validate VAT numbers and fiscal codes.
     Tax name: IVA  
     Priority: 1  
     Compound: NOT checked  
-    Shippinh: checked  
+    Shipping: checked  
