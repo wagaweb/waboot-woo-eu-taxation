@@ -2,6 +2,7 @@
 namespace WBWooEUT\admin;
 
 use WBF\components\mvc\HTMLView;
+use WBWooEUT\includes\options\OptionsTab;
 use WBWooEUT\includes\Plugin;
 use WBF\components\utils\Utilities;
 
@@ -28,6 +29,16 @@ class Admin {
 	 */
 	public function __construct( $plugin_name = null, $version = null, $core = null ) {
 		if(isset($core)) $this->plugin = $core;
+	}
+
+	/**
+	 * @param $tabs
+	 *
+	 * @return array
+	 */
+	public function add_plugin_options($tabs){
+		$tabs[] = new OptionsTab('Waboot Woo EU Taxation');
+		return $tabs;
 	}
 
 	/**

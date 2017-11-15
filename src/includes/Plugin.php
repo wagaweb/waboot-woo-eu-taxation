@@ -100,6 +100,9 @@ class Plugin extends BasePlugin {
 		$this->loader->add_action("woocommerce_admin_order_data_after_billing_address", $plugin_admin, "display_custom_meta_on_order", 10, 1);
 		$this->loader->add_action("manage_shop_order_posts_custom_column",$plugin_admin,"display_custom_meta_on_order_listing", 3, 1);
 		$this->loader->add_filter("woocommerce_email_customer_details_fields", $plugin_admin, "add_custom_meta_fields_on_new_order_email", 10, 3);
+
+		//Options
+		$this->loader->add_filter("wbf/modules/plugins_options/tabs",$plugin_admin,'add_plugin_options');
 	}
 
 	/**
