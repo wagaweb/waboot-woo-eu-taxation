@@ -39,7 +39,10 @@ class Admin {
 	 * @return array
 	 */
 	public function add_plugin_options($tabs){
-		$tabs[] = new OptionsTab($this->plugin,'Waboot Woo EU Taxation');
+		$tab = new OptionsTab($this->plugin,'Waboot Woo EU Taxation');
+		//$tab->add_section(new WBWooEUT\includes\options\SectionOne($tab,'Section One'));
+		//$tab->add_section(new WBWooEUT\includes\options\SectionTwo($tab,'Section Two'));
+		$tabs[] = $tab;
 		return $tabs;
 	}
 
