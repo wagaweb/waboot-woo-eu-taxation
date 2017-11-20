@@ -34,11 +34,25 @@ class Admin {
 	/**
 	 * @param $tabs
 	 *
+	 * @hooked 'wbf/modules/plugins_options/tabs'
+	 *
 	 * @return array
 	 */
 	public function add_plugin_options($tabs){
-		$tabs[] = new OptionsTab('Waboot Woo EU Taxation');
+		$tabs[] = new OptionsTab($this->plugin,'Waboot Woo EU Taxation');
 		return $tabs;
+	}
+
+	/**
+	 * @param $saved_tabs
+	 * @param $posted
+	 *
+	 * @hooked 'wbf/modules/plugin_options/save_settings'
+	 */
+	public function save_plugins_options($saved_tabs,$posted){
+		if($saved_tabs !== 'waboot-woo-eu-taxation'){
+			return;
+		}
 	}
 
 	/**

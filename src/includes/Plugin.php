@@ -103,6 +103,7 @@ class Plugin extends BasePlugin {
 
 		//Options
 		$this->loader->add_filter("wbf/modules/plugins_options/tabs",$plugin_admin,'add_plugin_options');
+		$this->loader->add_action("wbf/modules/plugin_options/save_settings",$plugin_admin,'save_plugins_options',10,2);
 	}
 
 	/**
