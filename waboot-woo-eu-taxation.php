@@ -11,7 +11,7 @@ namespace WBWooEUT;
  * Plugin Name:       Waboot EU Taxation for WooCommerce
  * Plugin URI:        https://www.waboot.io/
  * Description:       Adds fiscal code and VAT fields (with validation and tax management) in checkout.
- * Version:           2.1.9
+ * Version:           2.2.0
  * Author:            WAGA
  * Author URI:        https://www.waga.it/
  * License:           GPL-2.0+
