@@ -60,7 +60,9 @@ class Frontend {
 							'customer_type' => Plugin::FIELD_CUSTOMER_TYPE,
 							'fiscal_code' => Plugin::FIELD_FISCAL_CODE,
 							'vat' => Plugin::FIELD_VAT,
-							'vies_valid_check' => Plugin::FIELD_VIES_VALID_CHECK
+							'vies_valid_check' => Plugin::FIELD_VIES_VALID_CHECK,
+                            'unique_code' => Plugin::FIELD_UNIQUE_CODE,
+                            'pec' => Plugin::FIELD_PEC
 						],
 						'eu_vat_countries' => WC()->countries->get_european_union_countries('eu_vat'),
 						'invoice_required' => get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no"),
@@ -264,19 +266,35 @@ class Frontend {
 				'priority' => 124
 			]
 		];
+		$code = [
+		    Plugin::FIELD_UNIQUE_CODE => [
+                'label' => _x("Unique code", "WC Field", $this->plugin->get_textdomain()).$req,
+                'type' => 'text',
+                'class' => ['wbeut-hidden'],
+                'priority' => 125
+            ]
+        ];
+        $pec = [
+            Plugin::FIELD_PEC => [
+                'label' => _x("PEC", "WC Field", $this->plugin->get_textdomain()).$req,
+                'type' => 'text',
+                'class' => ['wbeut-hidden'],
+                'priority' => 126
+            ]
+        ];
 		$vies_valid_check = [
 			Plugin::FIELD_VIES_VALID_CHECK => [
 				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
 				'class' => ['wbeut-hidden'],
-				'priority' => 125
+				'priority' => 127
 			]
 		];
 
 		if($invoice_required == "yes"){
-			$address_fields = array_merge($address_fields,$customer_type,$vat,$vies_valid_check,$fiscal_code);
+			$address_fields = array_merge($address_fields,$customer_type,$vat,$vies_valid_check,$fiscal_code,$code,$pec);
 		}else{
-			$address_fields = array_merge($address_fields,$request_billing,$customer_type,$vat,$vies_valid_check,$fiscal_code);
+			$address_fields = array_merge($address_fields,$request_billing,$customer_type,$vat,$vies_valid_check,$fiscal_code,$code,$pec);
 		}
 
 
@@ -299,6 +317,7 @@ class Frontend {
 		    unset($billing_fields['billing_company']);
 		    $billing_fields = Utilities::associative_array_add_element_after($company_field,'billing_wb_woo_fi_customer_type',$billing_fields);
             $billing_fields['billing_company']['priority'] = 122;
+            $billing_fields['billing_company']['class'] = ['wbeut-hidden'];
 	    }
         return $billing_fields;
     }
@@ -449,6 +468,8 @@ class Frontend {
 				Plugin::FIELD_CUSTOMER_TYPE => isset($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) ? sanitize_text_field($form_vars[Plugin::FIELD_CUSTOMER_TYPE]) : false,
 				Plugin::FIELD_VAT => isset($form_vars[Plugin::FIELD_VAT]) ? sanitize_text_field($form_vars[Plugin::FIELD_VAT]) : false,
 				Plugin::FIELD_FISCAL_CODE => isset($form_vars[Plugin::FIELD_FISCAL_CODE]) ? sanitize_text_field($form_vars[Plugin::FIELD_FISCAL_CODE]) : false,
+				Plugin::FIELD_PEC => isset($form_vars[Plugin::FIELD_PEC]) ? sanitize_text_field($form_vars[Plugin::FIELD_PEC]) : false,
+				Plugin::FIELD_UNIQUE_CODE => isset($form_vars[Plugin::FIELD_UNIQUE_CODE]) ? sanitize_text_field($form_vars[Plugin::FIELD_UNIQUE_CODE]) : false,
 				Plugin::FIELD_REQUEST_INVOICE => true,
 			];
         }else{

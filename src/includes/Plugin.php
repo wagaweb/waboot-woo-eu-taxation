@@ -17,6 +17,10 @@ class Plugin extends BasePlugin {
 	const FIELD_VAT = "billing_wb_woo_fi_vat";
 	const FIELD_VIES_VALID_CHECK = "billing_wb_woo_fi_vies_valid";
 
+	//Update 06/14/19
+    const FIELD_UNIQUE_CODE = 'billing_wb_woo_fi_unique_code';
+    const FIELD_PEC = 'billing_wb_woo_fi_pec';
+
 	const FIELD_ADMIN_SHOP_BILLING_COUNTRY = "wb_woo_fi_shop_billing_country";
 	const FIELD_ADMIN_REQUEST_INVOICE_CHECK = "wb_woo_fi_request_invoice_check";
 	const FIELD_ADMIN_SHOP_BILLING_COUNTRY_RATE_AS_DEFAULT = "wb_woo_fi_shop_billing_country_is_default_rate";
@@ -435,6 +439,8 @@ class Plugin extends BasePlugin {
 		$custom_meta[self::FIELD_CUSTOMER_TYPE] = get_post_meta($order_id,self::FIELD_CUSTOMER_TYPE,true);
 		$custom_meta[self::FIELD_VAT] = get_post_meta($order_id,self::FIELD_VAT,true);
 		$custom_meta[self::FIELD_FISCAL_CODE] = get_post_meta($order_id,self::FIELD_FISCAL_CODE,true);
+		$custom_meta[self::FIELD_PEC] = get_post_meta($order_id,self::FIELD_PEC,true);
+		$custom_meta[self::FIELD_UNIQUE_CODE] = get_post_meta($order_id,self::FIELD_UNIQUE_CODE,true);
 		$custom_meta[self::FIELD_REQUEST_INVOICE] = get_post_meta($order_id,self::FIELD_REQUEST_INVOICE,true);
 
 		//todo: se non ci sono campi custom, settare la request incoice a false, se ci sono, settarla a true (per gli ordini già salvati)

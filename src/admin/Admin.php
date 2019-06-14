@@ -260,6 +260,8 @@ class Admin {
 			'fiscal_code' => isset($custom_meta[Plugin::FIELD_FISCAL_CODE]) ? $custom_meta[Plugin::FIELD_FISCAL_CODE] : "",
 			'vat' => isset($custom_meta[Plugin::FIELD_VAT]) ? $custom_meta[Plugin::FIELD_VAT] : "",
 			'customer_type' => isset($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) ? Plugin::get_customer_type_label($custom_meta[Plugin::FIELD_CUSTOMER_TYPE]) : "",
+			'unique_code' => isset($custom_meta[Plugin::FIELD_UNIQUE_CODE]) ? $custom_meta[Plugin::FIELD_UNIQUE_CODE] : "",
+			'pec' => isset($custom_meta[Plugin::FIELD_PEC]) ? $custom_meta[Plugin::FIELD_PEC] : "",
 			'textdomain' => $this->plugin->get_textdomain()
 		]);
 	}

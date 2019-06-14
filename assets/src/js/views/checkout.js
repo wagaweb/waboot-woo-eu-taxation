@@ -92,6 +92,10 @@ export default class extends Backbone.Model{
                 event.data.show_company();
                 break;
         }
+
+        event.data.show_unique_code();
+        event.data.show_pec();
+
         $(document.body).trigger( 'update_checkout');
     }
 
@@ -295,6 +299,46 @@ export default class extends Backbone.Model{
     }
 
     /**
+     * Toggle unique code
+     * @param show
+     */
+    show_unique_code(show = true){
+        let $unique_code = $("#"+wbFIData.fields_id.unique_code+"_field");
+        if(show){
+            $unique_code.removeClass("wbeut-hidden");
+        }else{
+            $unique_code.addClass("wbeut-hidden");
+        }
+    }
+
+    /**
+     * Hides unique code
+     */
+    hide_unique_code(){
+        this.show_unique_code(false);
+    }
+
+    /**
+     * Toggle pec
+     * @param show
+     */
+    show_pec(show = true){
+        let $unique_code = $("#"+wbFIData.fields_id.pec+"_field");
+        if(show){
+            $unique_code.removeClass("wbeut-hidden");
+        }else{
+            $unique_code.addClass("wbeut-hidden");
+        }
+    }
+
+    /**
+     * Hides unique code
+     */
+    hide_pec(){
+        this.show_pec(false);
+    }
+
+    /**
      * Hides all fields
      */
     hide_all(){
@@ -303,5 +347,7 @@ export default class extends Backbone.Model{
         this.hide_vat();
         this.hide_vies_check();
         this.hide_company();
+        this.hide_unique_code();
+        this.hide_pec();
     }
 }
