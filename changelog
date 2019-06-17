@@ -1,5 +1,9 @@
 == Change log ==
 
+Version 2.2.0 - 06/17/2019
+---------------------------------
+- Added "unique code" and "pec" fields for companies
+
 Version 2.1.9 - 10/05/2017
 ---------------------------------
 - WBF automatic installer
