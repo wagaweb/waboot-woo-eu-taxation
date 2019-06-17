@@ -9,6 +9,7 @@ export default class extends Backbone.Model{
             $fiscal_code = $("#"+fields_ids.fiscal_code+"_field"),
             $vat = $("#"+fields_ids.vat+"_field");
         if($checkout_form.length > 0){
+            let $requestInvoiceCheckbox = $checkout_form.find(".input-checkbox[name='"+fields_ids.request_invoice+"']");
             //On request invoice change:
             $checkout_form.on("blur change", ".input-checkbox[name='"+fields_ids.request_invoice+"']", this, function(event){
                 if($(this).is(":checked")){
@@ -39,6 +40,10 @@ export default class extends Backbone.Model{
             //On Billing country change:
             $checkout_form.on("change", "#billing_country", this, this.toggle_fields);
             //$(document).on("update_checkout", "body", this, this.toggle_fields);
+            if($requestInvoiceCheckbox.is(':checked')){
+                //If, for some reason, the request invoice checkbox is already checked, trigger a change event
+                $requestInvoiceCheckbox.trigger('change');
+            }
         }
         if($fiscal_code.is(".wbeut-hidden")){
             $fiscal_code.removeClass("validate-fiscal-code");
@@ -83,6 +88,8 @@ export default class extends Backbone.Model{
                 event.data.hide_vat();
                 event.data.hide_vies_check();
                 event.data.hide_company();
+                event.data.hide_unique_code();
+                event.data.hide_pec();
                 break;
             case 'company':
                 event.data.show_vat();
@@ -90,11 +97,10 @@ export default class extends Backbone.Model{
                     event.data.show_vies_check();
                 }
                 event.data.show_company();
+                event.data.show_unique_code();
+                event.data.show_pec();
                 break;
         }
-
-        event.data.show_unique_code();
-        event.data.show_pec();
 
         $(document.body).trigger( 'update_checkout');
     }

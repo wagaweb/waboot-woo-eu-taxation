@@ -61,7 +61,7 @@ class Admin {
 	 * @return mixed
 	 */
 	public function add_woocommerce_customer_meta_fields($fields_array) {
-        $req = $this->plugin->is_invoice_data_required();
+        //$req = $this->plugin->is_invoice_data_required();
 		$fields = $fields_array['billing']['fields'];
 		$billing_wb_woo_fi_customer_type = [
 			Plugin::FIELD_CUSTOMER_TYPE => [
@@ -87,9 +87,23 @@ class Admin {
 				'description' => ""
 			]
 		];
+		$billing_wb_woo_fi_code = [
+            Plugin::FIELD_UNIQUE_CODE => [
+                'label' => __('Codice destinatario', "WC Field", $this->plugin->get_textdomain()), //todo: trovare traduzione inglese
+                'description' => ""
+            ]
+        ];
+		$billing_wb_woo_fi_pec = [
+            Plugin::FIELD_PEC => [
+                'label' => __('PEC', "WC Field", $this->plugin->get_textdomain()),
+                'description' => ""
+            ]
+        ];
 		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_customer_type,"billing_company",$fields);
 		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_fiscal_code,Plugin::FIELD_CUSTOMER_TYPE,$new_fields);
 		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_vat,Plugin::FIELD_FISCAL_CODE,$new_fields);
+		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_code,Plugin::FIELD_VAT,$new_fields);
+		$new_fields = Utilities::associative_array_add_element_after($billing_wb_woo_fi_pec,Plugin::FIELD_VAT,$new_fields);
 
 		$fields_array['billing']['fields'] = $new_fields;
 		return $fields_array;

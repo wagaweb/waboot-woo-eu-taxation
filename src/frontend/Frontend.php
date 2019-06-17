@@ -268,7 +268,7 @@ class Frontend {
 		];
 		$code = [
 		    Plugin::FIELD_UNIQUE_CODE => [
-                'label' => _x("Unique code", "WC Field", $this->plugin->get_textdomain()).$req,
+                'label' => _x("Codice destinatario", "WC Field", $this->plugin->get_textdomain()).$req, //todo: trovare traduzione inglese
                 'type' => 'text',
                 'class' => ['wbeut-hidden'],
                 'priority' => 125

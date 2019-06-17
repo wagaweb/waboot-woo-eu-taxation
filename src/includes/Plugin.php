@@ -238,6 +238,10 @@ class Plugin extends BasePlugin {
 	 * @return bool
 	 */
 	public function is_invoice_data_required(){
+	    $r = false;
+	    if(!WC()->customer instanceof \WC_Customer){
+	        return $r;
+        }
 		$field_name = self::FIELD_REQUEST_INVOICE;
 		if($this->is_woocommerce_3()){
 			$r = get_option(self::FIELD_ADMIN_REQUEST_INVOICE_CHECK,'no') === 'yes' || WC()->customer->get_meta($field_name);
