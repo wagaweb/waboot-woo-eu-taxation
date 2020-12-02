@@ -1,8 +1,8 @@
 <?php
 
 namespace WBWooEUT\frontend;
-use WBF\components\assets\AssetsManager;
-use WBF\components\utils\Utilities;
+use WBWooEUT\core\assets\AssetsManager;
+use WBWooEUT\core\utils\Utilities;
 use WBWooEUT\includes\Plugin;
 
 /**
