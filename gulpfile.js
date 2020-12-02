@@ -1,10 +1,32 @@
-var pkg = require('./package.json');
+let pkg = require('./package.json'),
+    plugin_slug = "wb-woo-eut",
+    paths = {
+        builddir: "./builds",
+        scripts: ['./assets/src/js/**/*.js'],
+        mainjs: ['./assets/src/js/main.js'],
+        bundlejs: ['./assets/dist/js/bundle.js'],
+        mainscss: './assets/src/scss/main.scss',
+        maincss: './assets/src/css/main.css',
+        build: [
+            "**/*",
+            "!.*" ,
+            "!Gruntfile.js",
+            "!gulpfile.js",
+            "!package.json",
+            "!bower.json",
+            "!composer.json",
+            "!composer.lock",
+            "!{builds,builds/**}",
+            "!{node_modules,node_modules/**}",
+            "!{bower_components,bower_components/**}",
+            "!{vendor,vendor/**}",
+        ]
+    },
+    node_env = 'development';
 
-var gulp = require('gulp'),
-    concat = require('gulp-concat'),
+let gulp = require('gulp'),
     rename = require("gulp-rename"),
     sourcemaps = require('gulp-sourcemaps'),
-    jsmin = require('gulp-jsmin'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
     browserify = require('browserify'),
@@ -12,45 +34,43 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'), //https://www.npmjs.com/package/vinyl-buffer
     babelify = require('babelify'),
     zip = require('gulp-zip'),
-    bower = require('gulp-bower'),
     copy = require('gulp-copy'),
-    csso = require('gulp-csso'),
     postcss = require('gulp-postcss'),
     autoprefixer = require('autoprefixer'),
     cssnano = require('cssnano'),
-    runSequence  = require('run-sequence'),
-    wpPot = require('gulp-wp-pot'),
-    sort = require('gulp-sort');
+    wpPot = require('gulp-wp-pot');
 
-var plugin_slug = "wb-woo-eut";
+/**
+ * Browserify magic! Creates bundle.js
+ */
+function compileJsBundle(){
+    return browserify(paths.mainjs,{
+        insertGlobals : true,
+        debug: true
+    })
+        .transform("babelify", {presets: ["@babel/preset-env"]})
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(buffer()) //This might be not required, it works even if commented
+        .pipe(gulp.dest('./assets/dist/js'));
+}
 
-var paths = {
-    builddir: "./builds",
-    scripts: ['./assets/src/js/**/*.js'],
-    mainjs: ['./assets/src/js/main.js'],
-    bundlejs: ['./assets/dist/js/bundle.js'],
-    mainscss: './assets/src/scss/main.scss',
-    maincss: './assets/src/css/main.css',
-    build: [
-        "**/*", 
-        "!.*" , 
-        "!Gruntfile.js", 
-        "!gulpfile.js", 
-        "!package.json",
-        "!bower.json",
-        "!composer.json",
-        "!composer.lock",
-        "!{builds,builds/**}",
-        "!{node_modules,node_modules/**}",
-        "!{bower_components,bower_components/**}",
-        "!{vendor,vendor/**}",
-    ]
-};
+/**
+ * Creates and minimize bundle.js into <pluginslug>.min.js
+ */
+function minifyJs() {
+    return gulp.src(paths.bundlejs)
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(rename(plugin_slug+'.min.js'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./assets/dist/js'));
+}
 
 /**
  * Compile .scss into <pluginslug>.min.css
  */
-gulp.task('compile_sass',function(){
+function compileCss(){
     var processors = [
         autoprefixer({browsers: ['last 1 version']}),
         cssnano()
@@ -62,71 +82,29 @@ gulp.task('compile_sass',function(){
         .pipe(rename(plugin_slug+'.min.css'))
         .pipe(sourcemaps.write("."))
         .pipe(gulp.dest('./assets/dist/css'));
-});
-
-/**
- * Compile .css into <pluginslug>.min.css
- */
-gulp.task('compile_css',function(){
-    var processors = [
-        autoprefixer({browsers: ['last 1 version']}),
-        cssnano()
-    ];
-    return gulp.src(paths.maincss)
-        .pipe(sourcemaps.init())
-        .pipe(postcss(processors))
-        .pipe(rename(plugin_slug+'.min.css'))
-        .pipe(sourcemaps.write("."))
-        .pipe(gulp.dest('./assets/dist/css'));
-});
-
-/**
- * Creates and minimize bundle.js into <pluginslug>.min.js
- */
-gulp.task('compile_js', ['browserify'] ,function(){
-    return gulp.src(paths.bundlejs)
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(rename(plugin_slug+'.min.js'))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('./assets/dist/js'));
-});
-
-/**
- * Browserify magic! Creates bundle.js
- */
-gulp.task('browserify', function(){
-    return browserify(paths.mainjs,{
-            insertGlobals : true,
-            debug: true
-        })
-        .transform("babelify", {presets: ["es2015"]}).bundle()
-        .pipe(source('bundle.js'))
-        .pipe(buffer()) //This might be not required, it works even if commented
-        .pipe(gulp.dest('./assets/dist/js'));
-});
+}
 
 /**
  * Creates the plugin package
  */
-gulp.task('make-package', function(){
+function makePackage(){
     return gulp.src(paths.build)
         .pipe(copy(paths.builddir+"/pkg/"+"waboot-woo-eu-taxation"));
-});
+}
 
 /**
  * Compress che package directory
  */
-gulp.task('archive', function(){
+function archive(){
     return gulp.src(paths.builddir+"/pkg/**")
         .pipe(zip("waboot-woo-eu-taxation"+'-'+pkg.version+'.zip'))
         .pipe(gulp.dest("./builds"));
-});
+}
 
 /*
   * Make the pot file
  */
-gulp.task('make-pot', function () {
+function makePot() {
     return gulp.src(['*.php', 'src/**/*.php'])
         .pipe(sort())
         .pipe(wpPot( {
@@ -135,47 +113,21 @@ gulp.task('make-pot', function () {
             team: 'Waga <info@waga.it>'
         } ))
         .pipe(gulp.dest('languages/'));
-});
-
-/**
- * Bower vendors Install
- */
-gulp.task('bower-install',function(){
-    return bower();
-});
-
-/**
- * Bower Update
- */
-gulp.task('bower-update',function(){
-    return bower({cmd: 'update'});
-});
-
-/**
- * Runs a setup
- */
-gulp.task('setup', function(callback) {
-    runSequence('bower-update', ['compile_js', 'compile_css'], callback);
-});
-
-/**
- * Runs a build
- */
-gulp.task('build', function(callback) {
-    runSequence('bower-update', ['compile_js', 'compile_css'], 'make-package', 'archive', callback);
-});
+}
 
 /**
  * Rerun the task when a file changes
  */
-gulp.task('watch', function() {
-    gulp.watch(paths.scripts, ['compile_js']);
-    gulp.watch(paths.mainscss, ['compile_sass']);
-});
+function watch() {
+    gulp.watch(paths.scripts, compileJs);
+    gulp.watch(paths.mainscss, compileCss);
+}
 
-/**
- * Default task
- */
-gulp.task('default', function(callback){
-    runSequence('bower-install', ['compile_js', 'compile_sass'], 'watch', callback);
-});
+let compileJs = gulp.series(compileJsBundle,minifyJs);
+let build = gulp.series(makePot,compileJsBundle,minifyJs,compileCss,makePackage,archive);
+
+exports.compile_css = compileCss;
+exports.compile_js = compileJs;
+exports.watch = watch;
+exports.build = build;
+exports.default = watch;
