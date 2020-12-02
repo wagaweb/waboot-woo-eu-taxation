@@ -19,7 +19,6 @@ let pkg = require('./package.json'),
             "!{builds,builds/**}",
             "!{node_modules,node_modules/**}",
             "!{bower_components,bower_components/**}",
-            "!{vendor,vendor/**}",
         ]
     },
     node_env = 'development';
