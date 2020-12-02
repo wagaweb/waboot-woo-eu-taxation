@@ -38,7 +38,8 @@ let gulp = require('gulp'),
     postcss = require('gulp-postcss'),
     autoprefixer = require('autoprefixer'),
     cssnano = require('cssnano'),
-    wpPot = require('gulp-wp-pot');
+    wpPot = require('gulp-wp-pot'),
+    sort = require('gulp-sort');
 
 /**
  * Browserify magic! Creates bundle.js
