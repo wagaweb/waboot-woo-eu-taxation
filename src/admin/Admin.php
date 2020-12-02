@@ -1,9 +1,9 @@
 <?php
 namespace WBWooEUT\admin;
 
-use WBF\components\mvc\HTMLView;
+use WBWooEUT\core\mvc\HTMLView;
 use WBWooEUT\includes\Plugin;
-use WBF\components\utils\Utilities;
+use WBWooEUT\core\utils\Utilities;
 
 /**
  * The public-facing functionality of the plugin.

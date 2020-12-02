@@ -12,5 +12,13 @@
   ],
   "require": {
     "composer/installers": "^1.2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "WBWooEUT\\": "src/"
+    },
+    "exclude-from-classmap": [
+      "**/tests/"
+    ]
   }
 }

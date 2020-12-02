@@ -1,8 +1,9 @@
 <?php
 
 namespace WBWooEUT\includes;
-use WBF\components\pluginsframework\BasePlugin;
-use WBF\components\utils\Utilities;
+
+use WBWooEUT\core\utils\Utilities;
+use WBWooEUT\core\pluginsframework\BasePlugin;
 
 /**
  * The core plugin class.
