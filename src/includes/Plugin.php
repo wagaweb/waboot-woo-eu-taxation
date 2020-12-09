@@ -62,6 +62,7 @@ class Plugin extends BasePlugin {
 
 		//Checkout and account fields
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'add_billing_fields', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_form_field_args', $plugin_public, 'alter_woocommerce_form_field_args', 10, 3 );
 		$this->loader->add_filter( 'woocommerce_' . "billing_" . 'fields', $plugin_public, 'move_company_field', 11, 2 );
 
 		//Fields management
@@ -251,6 +252,19 @@ class Plugin extends BasePlugin {
 		}
 		return $r;
 	}
+
+    /**
+     * @param $field_key
+     * @return bool
+     */
+	public function is_fillable_wbwooeut_field($field_key){
+	    return \in_array($field_key,[
+	        self::FIELD_VAT,
+            self::FIELD_FISCAL_CODE,
+            //self::FIELD_UNIQUE_CODE,
+            //self::FIELD_PEC
+        ]);
+    }
 
 	/**
 	 * Validate a fiscal code

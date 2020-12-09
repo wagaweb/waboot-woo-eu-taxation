@@ -5,6 +5,7 @@ export default class extends Backbone.Model{
     initialize() {
         "use strict";
         let fields_ids = wbFIData.fields_id,
+            invoice_required = wbFIData.invoice_required !== 'no',
             $checkout_form = $( 'form.checkout' ),
             $fiscal_code = $("#"+fields_ids.fiscal_code+"_field"),
             $vat = $("#"+fields_ids.vat+"_field");
@@ -43,6 +44,9 @@ export default class extends Backbone.Model{
             if($requestInvoiceCheckbox.is(':checked')){
                 //If, for some reason, the request invoice checkbox is already checked, trigger a change event
                 $requestInvoiceCheckbox.trigger('change');
+            }
+            if(invoice_required){
+                $(".select[name='"+fields_ids.customer_type+"']").trigger('change');
             }
         }
         if($fiscal_code.is(".wbeut-hidden")){
@@ -83,6 +87,10 @@ export default class extends Backbone.Model{
         }else{
             event.data.hide_fiscal_code();
         }
+
+        let $fiscal_code = $("#"+wbFIData.fields_id.fiscal_code+"_field");
+        let $vat = $("#"+wbFIData.fields_id.vat+"_field");
+
         switch(current_customer_type){
             case 'individual':
                 event.data.hide_vat();
@@ -90,6 +98,8 @@ export default class extends Backbone.Model{
                 event.data.hide_company();
                 event.data.hide_unique_code();
                 event.data.hide_pec();
+                $fiscal_code.find('span.optional').hide();
+                $vat.find('span.optional').show();
                 break;
             case 'company':
                 event.data.show_vat();
@@ -99,6 +109,8 @@ export default class extends Backbone.Model{
                 event.data.show_company();
                 event.data.show_unique_code();
                 event.data.show_pec();
+                $fiscal_code.find('span.optional').show();
+                $vat.find('span.optional').hide();
                 break;
         }
 

@@ -221,8 +221,15 @@ class Frontend {
 	 * @return array
 	 */
 	public function add_billing_fields($address_fields, $country){
-		$req = ($this->plugin->is_invoice_data_required() == 'yes') ? ' <abbr class="required" title="'.__("required", $this->plugin->get_textdomain()).'">*</abbr> ' : '';
-		$invoice_required = get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no");
+		//$req = $this->plugin->is_invoice_data_required() ? ' <abbr class="required" title="'.__("required", $this->plugin->get_textdomain()).'">*</abbr> ' : '';
+		$req = '';
+		//$invoice_required = get_option(Plugin::FIELD_ADMIN_REQUEST_INVOICE_CHECK,"no") === 'yes';
+		$invoice_required = $this->plugin->is_invoice_data_required();
+
+		/*
+		 * We can't make them all required, because we need to differentiate between required fields when individual
+		 * and required fields when company
+		 */
 
 		$request_billing = [
 			Plugin::FIELD_REQUEST_INVOICE => [
@@ -241,8 +248,8 @@ class Frontend {
 					'individual' => Plugin::get_customer_type_label('individual'),
 				],
 				'default' => 'company',
-				'required' => $invoice_required == "yes",
-				'class' => $invoice_required != "yes" ? ['form-row-wide wbeut-hidden'] : ['form-row-wide'],
+				'required' => $invoice_required,
+				'class' => ['form-row-wide wbeut-hidden'],
 				'priority' => 121
 			]
 		];
@@ -271,8 +278,8 @@ class Frontend {
 		    Plugin::FIELD_UNIQUE_CODE => [
                 'label' => _x("Codice destinatario", "WC Field", $this->plugin->get_textdomain()).$req, //todo: trovare traduzione inglese
                 'type' => 'text',
-                'class' => ['form-row-wide wbeut-hidden'],
-                'priority' => 125
+                'class' => ['wbeut-hidden'],
+                'priority' => 126
             ]
         ];
         $pec = [
@@ -280,7 +287,7 @@ class Frontend {
                 'label' => _x("PEC", "WC Field", $this->plugin->get_textdomain()).$req,
                 'type' => 'text',
                 'class' => ['form-row-wide wbeut-hidden'],
-                'priority' => 126
+                'priority' => 127
             ]
         ];
 		$vies_valid_check = [
@@ -288,11 +295,11 @@ class Frontend {
 				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
 				'class' => ['form-row-wide wbeut-hidden'],
-				'priority' => 127
+				'priority' => 128
 			]
 		];
 
-		if($invoice_required == "yes"){
+		if($invoice_required){
 			$address_fields = array_merge($address_fields,$customer_type,$vat,$vies_valid_check,$fiscal_code,$code,$pec);
 		}else{
 			$address_fields = array_merge($address_fields,$request_billing,$customer_type,$vat,$vies_valid_check,$fiscal_code,$code,$pec);
@@ -301,6 +308,24 @@ class Frontend {
 
 		return $address_fields;
 	}
+
+    /**
+     * Place "*" at our required fields label.
+     * We can't make them all defaults, because we need to differentiate between required fields when individual and required fields when company
+     *
+     * @hooked 'woocommerce_form_field_args'
+     */
+	public function alter_woocommerce_form_field_args($args, $key, $value){
+        $invoice_required = $this->plugin->is_invoice_data_required();
+        if(!$invoice_required){
+            return $args;
+        }
+        if(!$this->plugin->is_fillable_wbwooeut_field($key)){
+            return $args;
+        }
+        $args['required'] = true; //By putting true here, WooCommerce place the "*" symbol at the field label
+        return $args;
+    }
 
 	/**
 	 * Move company billing field in another position
@@ -317,7 +342,7 @@ class Frontend {
 		    $company_field = ["billing_company" => $billing_fields['billing_company']];
 		    unset($billing_fields['billing_company']);
 		    $billing_fields = Utilities::associative_array_add_element_after($company_field,'billing_wb_woo_fi_customer_type',$billing_fields);
-            $billing_fields['billing_company']['priority'] = 122;
+            $billing_fields['billing_company']['priority'] = 125;
             $billing_fields['billing_company']['class'] = ['wbeut-hidden'];
 	    }
         return $billing_fields;
@@ -358,7 +383,7 @@ class Frontend {
 	 */
 	public function validate_fiscal_code_on_checkout($fiscal_code){
         $has_to_validate_fiscal_code = call_user_func(function(){
-	        if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE])) return false;
+	        if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE]) && !$this->plugin->is_invoice_data_required()) return false;
 	        if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST['billing_country'] !== 'IT' || !$this->plugin->is_invoice_data_required()) return false;
 	        if($_POST[Plugin::FIELD_CUSTOMER_TYPE] === "company") return false; //v2.1.6 - Do not verify fiscal code for companies (many companies use vat as fiscal code)
             return true;
@@ -411,8 +436,13 @@ class Frontend {
 	 * @return mixed
 	 */
 	public function validate_vat_on_checkout($vat){
-		if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE])) return $vat;
+		if(!isset($_POST[Plugin::FIELD_REQUEST_INVOICE]) && !$this->plugin->is_invoice_data_required()) return $vat;
 	    if(!isset($_POST[Plugin::FIELD_CUSTOMER_TYPE]) || $_POST[Plugin::FIELD_CUSTOMER_TYPE] == "individual") return $vat;
+
+	    if($vat === ''){
+            wc_add_notice( sprintf( __( '%s is a required field.', 'woocommerce' ), '<strong>'.__("VAT Number", $this->plugin->get_textdomain()).'</strong>' ), 'error', array( 'id' => Plugin::FIELD_VAT ) );
+            return $vat;
+	    }
 
 		if(isset($_POST[Plugin::FIELD_VIES_VALID_CHECK])){
 			//Advanced validation
