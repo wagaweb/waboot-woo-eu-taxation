@@ -79,12 +79,12 @@ msgstr ""
 
 #: src/admin/Admin.php:142
 msgid "Invoice data are required"
-msgstr "Fattura obbligatoria"
+msgstr "Documento fiscale"
 
 #: src/admin/Admin.php:143
 msgid "Customer type, fiscal code and VAT number will be required"
 msgstr ""
-"I campi: tipo di cliente, codice fiscale e P.IVA saranno sempre richiesti"
+"Rendi obbligatorio la scelta di un profilo e i relativi campi di fatturazione"
 
 #: src/admin/Admin.php:186
 msgid "Custom rates settings updated successfully."

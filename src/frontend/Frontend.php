@@ -236,7 +236,7 @@ class Frontend {
 				'label' => _x("Request invoice", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
                 'priority' => 120,
-                'class' => ['form-row-wide']
+                //'class' => ['form-row-wide']
 			]
 		];
 		$customer_type = [
@@ -244,33 +244,33 @@ class Frontend {
 				'label' => _x("Customer type", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'select',
 				'options' => [
+                    'individual' => Plugin::get_customer_type_label('individual'),
 					'company' => Plugin::get_customer_type_label('company'),
-					'individual' => Plugin::get_customer_type_label('individual'),
 				],
-				'default' => 'company',
+				'default' => 'individual',
 				'required' => $invoice_required,
-				'class' => ['form-row-wide wbeut-hidden'],
+				'class' => ['wbeut-hidden'],
 				'priority' => 121
 			]
 		];
+        $vat = [
+            Plugin::FIELD_VAT => [
+                'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()).$req,
+                'type' => 'text',
+                'validate' => ['vat'],
+                'class' => ['form-row-wide wbeut-hidden'],
+                'custom_attributes' => [
+                    'country' => $country
+                ],
+                'priority' => 123
+            ]
+        ];
 		$fiscal_code = [
 			Plugin::FIELD_FISCAL_CODE => [
 				'label' => _x("Fiscal code", "WC Field", $this->plugin->get_textdomain()).$req,
 				'type' => 'text',
 				'validate' => ['fiscal-code'],
 				'class' => ['form-row-wide wbeut-hidden'],
-				'priority' => 123
-			]
-		];
-		$vat = [
-			Plugin::FIELD_VAT => [
-				'label' => _x("VAT", "WC Field", $this->plugin->get_textdomain()).$req,
-				'type' => 'text',
-				'validate' => ['vat'],
-				'class' => ['form-row-wide wbeut-hidden'],
-				'custom_attributes' => [
-					'country' => $country
-				],
 				'priority' => 124
 			]
 		];
@@ -286,7 +286,7 @@ class Frontend {
             Plugin::FIELD_PEC => [
                 'label' => _x("PEC", "WC Field", $this->plugin->get_textdomain()).$req,
                 'type' => 'text',
-                'class' => ['form-row-wide wbeut-hidden'],
+                'class' => ['wbeut-hidden'],
                 'priority' => 127
             ]
         ];
@@ -294,7 +294,7 @@ class Frontend {
 			Plugin::FIELD_VIES_VALID_CHECK => [
 				'label' => _x("My VAT is VIES Valid", "WC Field", $this->plugin->get_textdomain()),
 				'type' => 'checkbox',
-				'class' => ['form-row-wide wbeut-hidden'],
+				'class' => ['wbeut-hidden'],
 				'priority' => 128
 			]
 		];
